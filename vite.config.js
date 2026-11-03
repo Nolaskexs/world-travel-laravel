@@ -1,0 +1,35 @@
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import { bunny } from 'laravel-vite-plugin/fonts';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/styles.css',
+                'resources/css/login.css',
+                'resources/css/register.css',
+                'resources/css/search.css',
+                'resources/css/search_3.css',
+                'resources/js/main.js',
+                'resources/js/login.js',
+                'resources/js/register.js',
+                'resources/js/search.js',
+                'resources/js/searchmain.js'
+            ],
+            refresh: true,
+            fonts: [
+                bunny('Instrument Sans', {
+                    weights: [400, 500, 600],
+                }),
+            ],
+        }),
+        tailwindcss(),
+    ],
+    server: {
+        watch: {
+            ignored: ['**/storage/framework/views/**'],
+        },
+    },
+});
