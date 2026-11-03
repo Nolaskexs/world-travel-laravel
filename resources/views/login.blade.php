@@ -10,7 +10,7 @@
       <h1 id="t">Bienvenido</h1>
       <p class="lead">Hoy es un nuevo día. Es tu día. Tú le das forma. Inicia sesión para empezar a gestionar tus proyectos</p>
 
-      <form id="loginForm" action="#" method="post">
+      <form id="loginForm" action="{{ route('dashboard') }}" method="GET">
         <div class="fld">
           <label for="email">Email</label>
           <input class="inp" id="email" name="email" type="email" placeholder="Example@gmail.com" autocomplete="email" required>
