@@ -8,11 +8,12 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/styles.css',
+                'resources/css/dashboard.css',
                 'resources/css/login.css',
                 'resources/css/register.css',
                 'resources/css/search.css',
-                'resources/css/search_3.css',
                 'resources/js/main.js',
+                'resources/js/dashboard.js',
                 'resources/js/login.js',
                 'resources/js/register.js',
                 'resources/js/search.js',

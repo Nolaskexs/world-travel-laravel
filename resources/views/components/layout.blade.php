@@ -9,7 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  {{-- Aquí Vite inyectará los recursos que cada página pida específicamente --}}
+  {{-- 1. Cargar el CSS global del header y footer para todas las páginas --}}
+  @vite(['resources/css/styles.css'])
+
+  {{-- 2. Aquí Vite inyectará los recursos específicos (como login.css) --}}
   {{ $recursos ?? '' }}
 </head>
 <body>
