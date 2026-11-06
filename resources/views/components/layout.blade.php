@@ -6,9 +6,9 @@
   <title>{{ $titulo ?? 'World Travel' }}</title>
   <link rel="icon" type="image/png" href="{{ asset('icons/logo-cut.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+
   {{-- 1. Cargar el CSS global del header y footer para todas las páginas --}}
   @vite(['resources/css/styles.css'])
 
@@ -66,8 +66,26 @@
       </div>
     </div>
     <nav class="wrap tabs" role="tablist" aria-label="Servicios">
-      <button class="tab is-active" role="tab" aria-selected="true"><svg class="i"><use href="#i-plane"/></svg>Vuelos</button>
-      <button class="tab" role="tab" aria-selected="false"><svg class="i"><use href="#i-bed"/></svg>Alojamientos</button>
+
+
+      <a href="{{ route('inicio') }}"
+        class="tab {{ request()->routeIs('inicio') ? 'is-active' : '' }}"
+        aria-current="{{ request()->routeIs('inicio') ? 'page' : 'false' }}">
+          <svg class="i">
+              <use href="#i-plane"/>
+          </svg>
+          Vuelos
+      </a>  
+
+
+      <a href="{{ route('alojamientos') }}"
+          class="tab {{ request()->routeIs('alojamientos') ? 'is-active' : '' }}"
+          aria-current="{{ request()->routeIs('alojamientos') ? 'page' : 'false' }}">
+            <svg class="i">
+                <use href="#i-bed"/>
+            </svg>
+            Alojamientos
+      </a>
       <button class="tab" role="tab" aria-selected="false"><svg class="i"><use href="#i-case"/></svg>Paquetes</button>
       <button class="tab" role="tab" aria-selected="false"><svg class="i"><use href="#i-car"/></svg>Autos</button>
       <button class="tab" role="tab" aria-selected="false"><svg class="i"><use href="#i-flame"/></svg>Ofertas</button>

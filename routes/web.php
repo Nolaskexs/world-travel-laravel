@@ -12,3 +12,4 @@ Route::view('/login', 'login')->name('login');
 Route::view('/registro', 'register')->name('register');
 Route::view('/buscar', 'search')->name('search');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::view('/alojamientos', 'alojamientos')->name('alojamientos');
