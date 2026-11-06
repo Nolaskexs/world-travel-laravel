@@ -95,9 +95,11 @@
                                 <small>Precio referencial / noche</small>
                                 <strong>S/ 250</strong>
                             </div>
-                            <button type="button" class="hotel-ver">
+
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'cusco']) }}"
+                            class="hotel-ver">
                                 Ver detalles
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -123,9 +125,10 @@
                                 <small>Precio referencial / noche</small>
                                 <strong>S/ 320</strong>
                             </div>
-                            <button type="button" class="hotel-ver">
+                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'lima']) }}"
+                             class="hotel-ver">
                                 Ver detalles
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -151,9 +154,10 @@
                                 <small>Precio referencial / noche</small>
                                 <strong>S/ 120</strong>
                             </div>
-                            <button type="button" class="hotel-ver">
-                                Ver detalles
-                            </button>
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'arequipa']) }}"
+                             class="hotel-ver">
+                             Ver detalles
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -361,8 +365,11 @@
             color: #0b2535;
         }
 
-        .hotel-ver {
+        .hotel-ver { 
             padding: 11px 13px;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
         }
 
         .hotel-vacio {
@@ -459,11 +466,7 @@
 
             tipo.addEventListener('change', filtrar);
 
-            document.querySelectorAll('.hotel-ver').forEach(boton => {
-                boton.addEventListener('click', () => {
-                    alert('Próximamente: detalles y reservas del alojamiento.');
-                });
-            });
+            
         });
     </script>
 </x-layout>
