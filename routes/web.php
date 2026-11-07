@@ -13,3 +13,6 @@ Route::view('/registro', 'register')->name('register');
 Route::view('/buscar', 'search')->name('search');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::view('/alojamientos', 'alojamientos')->name('alojamientos');
+Route::get('/alojamientos/{codigo}', function (string $codigo) {
+    return view('detalle-alojamiento', compact('codigo'));
+})->whereIn('codigo', ['cusco', 'lima', 'arequipa'])->name('alojamientos.detalle');
