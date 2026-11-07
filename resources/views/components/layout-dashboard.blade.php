@@ -52,7 +52,6 @@
 
     <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-    <script src="{{ asset('js/dashboard.js') }}" defer></script>
     {{ $scripts ?? '' }}
 </body>
 </html>
