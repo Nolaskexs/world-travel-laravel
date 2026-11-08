@@ -25,38 +25,53 @@
   ];
 
   const packCard = ([t, code, price, off, image, logoAerolinea]) => `
-  <article class="card">
+  <article class="card hotel-card" data-destino="${code}" data-tipo="paquete">
     <div class="card__media">
-      <img src="${image}" alt="${t}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+      <img src="${image}" alt="${t}" loading="lazy">
       <span class="badge">-${off}%</span>
     </div>
-    <div class="card__body">
-      <div class="card__row">
-        <h3>${t}</h3>
-        <div class="airline">
-          <!-- Aquí reemplazamos el span por la imagen del logo -->
+    <div class="card-info">
+      <div class="card-header-row">
+        <div>
+          <span class="card-tipo">PAQUETE</span>
+          <h3>${t}</h3>
+        </div>
+        <div class="card-aerolinea">
           <img src="${logoAerolinea}" alt="Aerolínea" style="width: 90px; height: 28px; object-fit: contain;">
           <span class="stock">Stock limitado</span>
         </div>
       </div>
-      <p class="route">LIM ⇆ ${code}</p>
-      <p class="sm">Precio por persona desde</p>
-      <p class="price">US$ <strong>${price}</strong></p>
-      <p class="dates-note">Elige tus fechas entre 30 nov y 28 feb 2027</p>
-      <a class="btn-dark" href="#">Ver vuelo</a>
+      <p class="card-ubicacion">${code}</p>
+      <p class="card-servicios">Vuelo · Alojamiento · Traslados</p>
+      <div class="card-footer">
+        <div class="card-precio">
+          <small>Precio referencial</small>
+          <strong>US$ ${price}</strong>
+        </div>
+        <a href="#" class="btn-ver-detalles">Ver detalles</a>
+      </div>
     </div>
   </article>`;
 
   const hotelCard = ([n, score, stars, room, stay, old, now, tags, image]) => `
-    <article class="card">
+    <article class="card hotel-card" data-destino="${n}" data-tipo="hotel">
       <div class="card__media">
-        <img src="${image}" alt="${n}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        <img src="${image}" alt="${n}" loading="lazy">
         ${tags.map(([t, c]) => `<span class="badge badge--${c}">${t}</span>`).join('')}
       </div>
-      <div class="card__body"><h3>${n}</h3>
-        <div class="rate"><span class="score">${score}</span><span class="stars" aria-label="${stars} estrellas">${ICON('star').repeat(stars)}</span></div>
+      <div class="card-info">
+        <span class="card-tipo">HOTEL</span>
+        <h3>${n}</h3>
+        <p class="card-ubicacion">${room}</p>
+        <p class="card-servicios">${stay}</p>
+        <div class="card-footer">
+          <div class="card-precio">
+            <small>Precio referencial / noche</small>
+            <strong>S/ ${now}</strong>
+          </div>
+          <a href="#" class="btn-ver-detalles">Ver detalles</a>
+        </div>
       </div>
-      <div class="card__foot"><span>${room}</span><span>${stay}</span><span class="old">US$ ${old}</span><span class="now">US$ ${now}</span></div>
     </article>`;
 
   /* ---------- Pestañas ---------- */
@@ -254,8 +269,10 @@
   /* ---------- Formularios ---------- */
   function initForms() {
     $('#searchForm').addEventListener('submit', (e) => {
-      e.preventDefault(); // home: va a resultados; en search.html (existe #list) se queda y re-consulta
-      if (!$('#list')) location.href = 'search.html';
+      // En search.blade.php existe #list, se queda y re-consulta vía JS
+      // En inicio no hay #list, permitir envío natural del formulario hacia route('search')
+      if (!$('#list')) return;
+      e.preventDefault();
     });
     const f = $('#newsletter'), msg = $('#nlMsg');
     if (!f) return;

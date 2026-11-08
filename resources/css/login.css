@@ -1,6 +1,6 @@
 :root{--ink:#0C1B26;--field:#E0E0E0;--sky:#A8D8F0;--link:#1F7BBF;--mut:#5F6A74}
 *{box-sizing:border-box;margin:0}
-body{min-height:100dvh;display:flex;flex-direction:column;background:#fff;color:var(--ink);font:400 16px/1.5 Inter,system-ui,sans-serif}
+
 button,input{font:inherit;color:inherit}button{cursor:pointer;border:0}
 a{color:inherit;text-decoration:none}
 .i{width:1.25rem;height:1.25rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
@@ -21,12 +21,12 @@ a{color:inherit;text-decoration:none}
 
 /* Layout 50/50 */
 .auth{flex:1;display:grid;gap:2rem;width:min(100% - 2rem,1280px);margin:0 auto;padding:2rem 0}
-@media(min-width:900px){.auth{grid-template-columns:1fr 1fr;gap:3rem;padding:2.5rem 0}}
+@media(min-width:768px){.auth{grid-template-columns:1fr 1fr;gap:3rem;padding:2.5rem 0}}
 .pane{display:flex;flex-direction:column}
 .login{width:min(100%,440px);margin:auto}
 .visual{display:none;place-items:center;min-height:560px;border-radius:28px;background:#D9D9D9;color:#7b8288;font-size:.9rem}
 .visual img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
-@media(min-width:900px){.visual{display:grid}} /* en móvil la imagen se oculta */
+@media(min-width:768px){.visual{display:grid}} /* en móvil la imagen se oculta */
 
 /* Formulario */
 h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}

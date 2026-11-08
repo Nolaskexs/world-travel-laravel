@@ -5,8 +5,9 @@
         @vite(['resources/css/login.css', 'resources/css/register.css', 'resources/js/register.js'])
     </x-slot:recursos>
 
-  <section class="pane auth">
-    <div class="login">
+  <div class="auth">
+    <section class="pane">
+      <div class="login">
       <div id="intro">
         <h1>Crear tu cuenta</h1>
         <p class="lead">Regístrate para empezar a guardar tus itinerarios y planificar tu próximo viaje.</p>
@@ -59,5 +60,6 @@
   </section>
 
   <!-- Placeholder: reemplazar el contenido por <img src="..." alt="..."> -->
-  <div class="visual auth" role="img" aria-label="Imagen ilustrativa"><span>Imagen ilustrativa</span></div>
+  <div class="visual" role="img" aria-label="Imagen ilustrativa"><span>Imagen ilustrativa</span></div>
+  </div>
 </x-layout>

@@ -12,8 +12,8 @@
   {{-- 1. Cargar el CSS global del header y footer para todas las páginas --}}
   @vite(['resources/css/styles.css'])
 
-  {{-- 2. Aquí Vite inyectará los recursos específicos (como login.css) --}}
-  {{ $recursos ?? '' }}
+  {{-- Usar {!! !!} permite inyectar etiquetas HTML sin escaparlas --}}
+  {!! $recursos ?? '' !!}
 </head>
 <body>
   <!-- partial: sprite de iconos -->

@@ -1,6 +1,7 @@
 :root{--ink:#0C1B26;--bg:#F0F0F0;--chip:#D9D9D9;--line:#D6D9DC;--mut:#5B6670;--w:1120px}
 *{box-sizing:border-box;margin:0}
-body{font:400 16px/1.4 Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+body{font:400 16px/1.4 Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;min-height:100vh}
+main{flex:1}
 button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid #4C9AFF;outline-offset:2px}
@@ -96,7 +97,7 @@ a{color:inherit;text-decoration:none}
 @media(min-width:760px){.hero__slide{aspect-ratio:1200/420}}
 .arrow{width:38px;height:38px;border-radius:8px;background:#fff;display:grid;place-items:center;box-shadow:0 2px 8px #0003;transition:opacity .25s,visibility .25s,transform .2s}
 .arrow:hover{transform:scale(1.08)}
-.hero .arrow{position:absolute;top:50%;margin-top:-19px}
+.hero .arrow{position:absolute;top:45%;margin-top:-19px}
 .hero .arrow--l{left:.4rem}.hero .arrow--r{right:.4rem}
 
 /* Ofertas */
@@ -105,26 +106,29 @@ a{color:inherit;text-decoration:none}
 .slider{margin-bottom:2.5rem}
 .slider__view{overflow:hidden;padding:2px}
 .slider__track{display:flex;gap:1rem;transition:transform .5s cubic-bezier(.65,0,.35,1)}
-.card{flex:0 0 100%;background:#fff;border:1.5px solid var(--ink);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.card{flex:0 0 100%;background:#fff;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease}
+.card:hover{transform:translateY(-4px);border-radius:12px}
 @media(min-width:640px){.card{flex-basis:calc((100% - 1rem)/2)}}
 @media(min-width:1024px){.card{flex-basis:calc((100% - 2rem)/3)}}
-.card__media{position:relative;aspect-ratio:400/180;border:0;border-bottom:1.5px solid var(--ink)}
-.badge{position:absolute;top:.6rem;left:.6rem;background:#fff;color:var(--ink);border:1px solid var(--ink);border-radius:999px;padding:.1rem .6rem;font-size:.8rem;font-weight:500}
+.card__media{position:relative;aspect-ratio:400/250;border:0;overflow:hidden;border-radius:12px 12px 0 0}
+.card__media img{width:100%;height:100%;object-fit:cover;display:block}
+.badge{position:absolute;top:.8rem;left:.8rem;background:#fff;color:var(--ink);border:1px solid #E5E7EB;border-radius:999px;padding:.2rem .7rem;font-size:.8rem;font-weight:600;box-shadow:0 2px 4px rgba(0,0,0,0.08)}
 .badge--b{top:auto;bottom:.5rem;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;white-space:nowrap}
-.card__body{padding:1rem;display:grid;gap:.35rem;flex:1;align-content:start}
-.card__row{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
-.card h3{font-size:1.2rem}
-.airline{display:grid;justify-items:end;gap:.2rem}.airline .ph{width:90px;height:28px}
-.stock{color:#C0392B;font-size:.8rem}
-.route,.sm{font-size:.85rem;color:var(--mut)}
-.price{color:#1E3A8A;font-weight:700}.price strong{font-size:1.35rem}
-.dates-note{font-size:.75rem;text-align:center;margin:.3rem 0}
-.rate{display:flex;align-items:center;gap:.5rem}
-.score{background:var(--ink);color:#fff;border-radius:5px;padding:0 .4rem;font-size:.8rem;font-weight:600}
-.stars{display:flex;color:var(--ink);padding-left:.5rem;border-left:1px solid var(--ink)}.stars .i{fill:currentColor;stroke:none}
-.card__foot{border-top:1px solid var(--ink);padding:.8rem 1rem;font-size:.85rem;display:grid;gap:.1rem}
-.old{text-decoration:line-through;color:var(--mut);font-size:.8rem}.now{font-weight:700;font-size:1.1rem}
-.slider__nav{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+.card-info{padding:1rem 1rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.card-tipo{font-size:.75rem;font-weight:700;color:#1F7BBF;letter-spacing:.05em;text-transform:uppercase}
+.card-info h3{font-size:1.25rem;font-weight:700;color:var(--ink);margin:0;line-height:1.2}
+.card-ubicacion{font-size:.9rem;color:var(--mut);margin:0}
+.card-servicios{font-size:.85rem;color:var(--mut);margin:0}
+.card-header-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:.5rem;width:100%}
+.card-aerolinea{display:flex;flex-direction:column;align-items:flex-end;gap:.2rem}
+.stock{color:#C0392B;font-size:.75rem;font-weight:600}
+.card-footer{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:.75rem;border-top:1px solid #E5E7EB}
+.card-precio{display:flex;flex-direction:column}
+.card-precio small{font-size:.75rem;color:var(--mut)}
+.card-precio strong{font-size:1.5rem;font-weight:700;color:var(--ink)}
+.btn-ver-detalles{background:var(--ink);color:#fff;border:none;border-radius:8px;padding:.6rem 1.2rem;font-weight:600;font-size:.9rem;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block}
+.btn-ver-detalles:hover{background:#1a2d3d}
+.slider__nav{display:flex;align-items:center;justify-content:space-between;margin-top:2rem}
 .dots{display:flex;gap:.4rem}
 .dot{width:10px;height:10px;border-radius:99px;background:var(--ink);opacity:.4;padding:0;transition:width .3s,opacity .3s}
 .dot.on{width:44px;opacity:1}
@@ -135,8 +139,8 @@ a{color:inherit;text-decoration:none}
 .contact h3{margin-bottom:.6rem}
 .socials{display:flex;gap:.6rem}.soc{width:36px;height:36px;border-radius:50%}
 .app-title{font-size:clamp(1.4rem,3vw,1.9rem);margin:2rem 0 1.25rem}
-.app{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1rem 2rem;background:#fff;border:1px solid #9aa2a9;border-radius:16px;padding:1rem 1.25rem}
-.app p{flex:1 1 220px;max-width:340px;text-align:center;font-size:1.25rem;font-weight:600}
+.app{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;background:#fff;border:1px solid #9aa2a9;border-radius:20px;padding:2rem;max-width:700px;margin:0 auto;text-align:center}
+.app p{margin:0;font-size:1.1rem;font-weight:600;color:var(--ink)}
 .app__phone{width:110px;border-radius:12px}.app__qr{width:110px;height:110px;border-radius:8px}
 .news{text-align:center;margin:2rem 0 3rem}.news h3{font-size:1.35rem}
 .nl{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;max-width:560px;margin:1rem auto 0}

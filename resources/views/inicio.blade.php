@@ -7,7 +7,7 @@
 
   <!-- partial: buscador -->
   <section class="wrap" aria-label="Buscador de vuelos">
-    <form class="sf" id="searchForm" autocomplete="off">
+    <form class="sf" id="searchForm" method="GET" action="{{ route('search') }}" autocomplete="off">
       <div class="sf__top">
         <fieldset class="trip"><legend class="sr">Tipo de viaje</legend>
           <label class="radio"><input type="radio" name="trip" value="round" checked>Ida y vuelta</label>
@@ -98,7 +98,6 @@
     <div class="app">
       <img class="ph app__phone" src="{{ asset('icons/support-icon.png') }}" alt="App World Travel">
       <p>En nuestra app encontrarás precios más bajos y más beneficios</p>
-      <div class="ph app__qr"><br></div> <!-- QR Code -->
     </div>
     <div class="news">
       <h3>Ofertas exclusivas en tu email</h3>
