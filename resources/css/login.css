@@ -50,3 +50,312 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
 .or::before,.or::after{content:"";flex:1;height:1px;background:#d3d7da}
 .signup{margin-top:1.25rem;text-align:center}.signup a{color:var(--link);font-weight:600}
 .copy{margin-top:2rem;text-align:center;font-size:.85rem;color:#A9AFB5}
+
+
+    .auth.wt-login {
+        width: min(1160px, calc(100% - 40px));
+        margin: 38px auto 60px;
+        padding: 38px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+        gap: 48px;
+        align-items: stretch;
+        background: #ffffff;
+        border: 1px solid #e3eaf0;
+        border-radius: 22px;
+        box-shadow: 0 15px 40px rgba(15, 35, 55, 0.07);
+    }
+
+    .wt-login .pane {
+        min-width: 0;
+        width: 100%;
+        padding: 12px 0;
+        background: transparent;
+    }
+
+    .wt-login .login {
+        width: 100%;
+        max-width: 440px;
+        margin: 0;
+    }
+
+
+    .wt-login__intro {
+        margin-bottom: 30px;
+    }
+
+    .wt-login__eyebrow {
+        display: inline-block;
+        color: #0875e9;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 13px;
+    }
+
+    .wt-login h1 {
+        font-size: clamp(29px, 3vw, 38px);
+        color: #0b2535;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 12px;
+    }
+
+    .wt-login .lead {
+        color: #687b8c;
+        font-size: 14px;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+
+    .wt-login .fld {
+        margin-bottom: 21px;
+    }
+
+    .wt-login .fld label {
+        font-size: 13px;
+        color: #102331;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .wt-login .inp {
+        width: 100%;
+        height: 50px;
+        padding: 12px 15px;
+        border: 1px solid #d6e0e9;
+        border-radius: 10px;
+        background: #f8fafc;
+        color: #102331;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+
+    .wt-login .inp::placeholder {
+        color: #8997a4;
+    }
+
+    .wt-login .inp:focus {
+        outline: none;
+        background: white;
+        border-color: #0875e9;
+        box-shadow: 0 0 0 3px rgba(8, 117, 233, 0.12);
+    }
+
+
+
+    .wt-login .pw {
+        position: relative;
+    }
+
+    .wt-login .pw .inp {
+        padding-right: 52px;
+    }
+
+    .wt-login .eye {
+        color: #607789;
+    }
+
+    .wt-login .eye:hover {
+        color: #0875e9;
+    }
+
+
+    .wt-login .forgot {
+        color: #0875e9;
+        font-size: 13px;
+        font-weight: 600;
+        margin: -7px 0 20px;
+    }
+
+    .wt-login .signup {
+        font-size: 13px;
+        color: #657889;
+        margin-top: 24px;
+    }
+
+    .wt-login .signup a {
+        color: #0875e9;
+        font-weight: 700;
+    }
+
+
+
+    .wt-login .btn--primary {
+        width: 100%;
+        min-height: 51px;
+        background: #0875e9;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .wt-login .btn--primary:hover {
+        background: #075ec0;
+        transform: translateY(-1px);
+    }
+
+
+
+    .wt-login .or {
+        color: #81919e;
+        font-size: 13px;
+        margin: 25px 0;
+    }
+
+    .wt-login .or::before,
+    .wt-login .or::after {
+        background: #dbe3eb;
+    }
+
+
+    .wt-login .btn--soc {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 100%;
+        min-height: 49px;
+        background: #f8fafc;
+        border: 1px solid #dce4ec;
+        border-radius: 10px;
+        color: #102331;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .wt-login .btn--soc:hover {
+        background: #eaf3fb;
+        border-color: #b9d8ed;
+    }
+
+
+
+    .wt-login .visual {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        min-width: 0;
+        min-height: 600px;
+        overflow: hidden;
+        border-radius: 18px;
+        position: relative;
+        color: #ffffff;
+
+        background-color: #236fa9;
+        background-image:
+            linear-gradient(
+                to top,
+                rgba(5, 23, 41, 0.90),
+                rgba(5, 23, 41, 0.04) 75%
+            ),
+            url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=85");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .wt-login__visual-content {
+        position: relative;
+        z-index: 1;
+        padding: 39px;
+    }
+
+    .wt-login__visual-tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+        color: #dcefff;
+    }
+
+    .wt-login__visual-content h2 {
+        font-size: clamp(28px, 3vw, 42px);
+        line-height: 1.15;
+        color: white;
+        font-weight: 800;
+        margin: 0 0 15px;
+        max-width: 400px;
+    }
+
+    .wt-login__visual-content p {
+        color: #e6f0f8;
+        font-size: 15px;
+        line-height: 1.7;
+        max-width: 370px;
+    }
+
+    .wt-login__visual-footer {
+        border-top: 1px solid rgba(255,255,255,0.35);
+        padding-top: 16px;
+        margin-top: 26px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        color: #e6f0f8;
+    }
+
+
+
+    .wt-login .copy {
+        font-size: 12px;
+        color: #91a1af;
+        margin-top: 29px;
+    }
+
+
+
+    @media (max-width: 900px) {
+        .auth.wt-login {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            padding: 28px;
+        }
+
+        .wt-login .login {
+            max-width: none;
+        }
+
+        .wt-login .visual {
+            min-height: 310px;
+        }
+    }
+
+
+
+    @media (max-width: 520px) {
+        .auth.wt-login {
+            width: calc(100% - 24px);
+            margin: 18px auto 35px;
+            padding: 22px;
+            border-radius: 15px;
+        }
+
+        .wt-login h1 {
+            font-size: 29px;
+        }
+
+        .wt-login .visual {
+            min-height: 230px;
+        }
+
+        .wt-login__visual-content {
+            padding: 23px;
+        }
+
+        .wt-login__visual-content h2 {
+            font-size: 26px;
+        }
+
+        .wt-login__visual-content p {
+            font-size: 13px;
+        }
+    }
+

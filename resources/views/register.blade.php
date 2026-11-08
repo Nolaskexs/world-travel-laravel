@@ -59,7 +59,26 @@
     </div>
   </section>
 
-  <!-- Placeholder: reemplazar el contenido por <img src="..." alt="..."> -->
-  <div class="visual" role="img" aria-label="Imagen ilustrativa"><span>Imagen ilustrativa</span></div>
+  
+  <div class="visual">
+      <div class="visual__contenido visual__paso1">
+          <span>DESCUBRE WORLD TRAVEL</span>
+          <h2>Explora el mundo</h2>
+          <p>
+              Vuelos, hoteles, paquetes y experiencias
+              increíbles en un solo lugar.
+          </p>
+      </div>
+
+      <div class="visual__contenido visual__paso2">
+          <span>WORLD TRAVEL</span>
+          <h2>Tu próxima aventura te espera</h2>
+          <p>
+              Crea tu cuenta y comienza a planificar
+              los viajes que siempre imaginaste.
+          </p>
+      </div>
+  </div>
+
   </div>
 </x-layout>

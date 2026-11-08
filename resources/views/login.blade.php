@@ -5,11 +5,19 @@
         @vite(['resources/css/login.css', 'resources/js/login.js'])
     </x-slot:recursos>
 
-  <div class="auth">
+ <div class="auth wt-login">
     <section class="pane" aria-labelledby="t">
       <div class="login">
-        <h1 id="t">Bienvenido</h1>
-        <p class="lead">Hoy es un nuevo día. Es tu día. Tú le das forma. Inicia sesión para empezar a gestionar tus proyectos</p>
+        <div class="wt-login__intro">
+    <span class="wt-login__eyebrow">BIENVENIDO A WORLD TRAVEL</span>
+
+    <h1 id="t">¡Bienvenido de nuevo!</h1>
+
+    <p class="lead">
+        Inicia sesión para organizar tus viajes,
+        consultar tus reservas y descubrir nuevos destinos.
+    </p>
+ </div>
 
         <form id="loginForm" action="{{ route('dashboard') }}" method="GET">
           <div class="fld">
@@ -46,6 +54,30 @@
     </section>
 
     <!-- Placeholder: reemplazar el contenido por <img src="..." alt="..."> -->
-    <div class="visual" role="img" aria-label="Imagen ilustrativa"><span>Imagen ilustrativa</span></div>
+    
+    <div class="visual wt-login__visual">
+        <div class="wt-login__visual-content">
+
+            <span class="wt-login__visual-tag">
+                DESCUBRE WORLD TRAVEL
+            </span>
+
+            <h2>
+                Tu próxima aventura comienza aquí
+            </h2>
+
+            <p>
+                Explora destinos, organiza tus viajes y
+                vive experiencias inolvidables alrededor
+                del mundo.
+            </p>
+
+            <div class="wt-login__visual-footer">
+                WORLD TRAVEL · EXPLORA SIN LÍMITES
+            </div>
+
+        </div>
+    </div>
+
   </div>
 </x-layout>
