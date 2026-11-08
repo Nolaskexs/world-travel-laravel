@@ -22,3 +22,6 @@ Route::get('/alojamientos/{codigo}', function (string $codigo) {
 
 // 5. Panel de administración
 Route::view('/admin', 'dashboard-admin')->name('admin.dashboard');
+//6. Confirmación de reserva de alojamiento
+Route::view('/reservas/confirmar', 'confirmar-reserva')
+    ->name('reservas.confirmar');

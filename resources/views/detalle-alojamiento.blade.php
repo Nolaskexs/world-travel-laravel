@@ -55,30 +55,116 @@
                      alt="{{ $hotel['nombre'] }}">
 
                 <div class="detalle-columnas">
-                    <section class="detalle-info">
-                        <h2>Acerca de este alojamiento</h2>
-                        <p>{{ $hotel['descripcion'] }}</p>
+                    
+                <section class="detalle-info">
 
+                    <h2>Acerca de este alojamiento</h2>
+                    <p>{{ $hotel['descripcion'] }}</p>
+
+                    <div class="detalle-seccion">
                         <h2>Servicios disponibles</h2>
+
                         <div class="detalle-servicios">
                             @foreach($hotel['servicios'] as $servicio)
-                                <span>{{ $servicio }}</span>
+                                <span>✓ {{ $servicio }}</span>
                             @endforeach
                         </div>
-                    </section>
+                    </div>
 
+                    <div class="detalle-seccion">
+                        <h2>Información del alojamiento</h2>
+
+                        <div class="detalle-caracteristicas">
+                            <div>
+                                <strong>Check-in</strong>
+                                <p>Desde las 3:00 p. m.</p>
+                            </div>
+
+                            <div>
+                                <strong>Check-out</strong>
+                                <p>Hasta las 12:00 p. m.</p>
+                            </div>
+
+                            <div>
+                                <strong>Capacidad</strong>
+                                <p>De 1 a 4 huéspedes</p>
+                            </div>
+
+                            <div>
+                                <strong>Tipo de alojamiento</strong>
+                                <p>
+                                    @if($codigo === 'lima')
+                                        Resort
+                                    @elseif($codigo === 'cusco')
+                                        Hotel
+                                    @else
+                                        Hostal
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detalle-seccion">
+                        <h2>Políticas del alojamiento</h2>
+
+                        <p>
+                            Los horarios, servicios y condiciones mostrados
+                            son referenciales para esta demostración.
+                            La disponibilidad y las políticas definitivas
+                            se confirmarán al integrar el sistema de reservas.
+                        </p>
+                    </div>
+
+                </section>
+
+
+                   
                     <aside class="detalle-reserva">
+                        <h2>Reserva tu alojamiento</h2>
+
                         <p>Precio referencial por noche</p>
                         <strong>S/ {{ $hotel['precio'] }}</strong>
 
-                        <button type="button" id="reservarHotel">
-                            Reservar alojamiento
-                        </button>
+                        <form id="formReservaHotel" data-precio="{{ $hotel['precio'] }}">
 
-                        <small>
-                            Demostración: no se realizará ningún cobro.
-                        </small>
+                            <div class="reserva-campo">
+                                <label for="fechaEntrada">Fecha de entrada</label>
+                                <input type="date" id="fechaEntrada" required>
+                            </div>
+
+                            <div class="reserva-campo">
+                                <label for="fechaSalida">Fecha de salida</label>
+                                <input type="date" id="fechaSalida" required>
+                            </div>
+
+                            <div class="reserva-campo">
+                                <label for="cantidadHuespedes">Huéspedes</label>
+                                <select id="cantidadHuespedes" required>
+                                    <option value="1">1 huésped</option>
+                                    <option value="2" selected>2 huéspedes</option>
+                                    <option value="3">3 huéspedes</option>
+                                    <option value="4">4 huéspedes</option>
+                                </select>
+                            </div>
+
+                            <div class="reserva-resumen">
+                                <p>Noches: <span id="totalNoches">0</span></p>
+                                <p>Total estimado:</p>
+                                <h3 id="precioTotal">S/ 0.00</h3>
+                            </div>
+
+                            <button type="submit">
+                                Continuar con la reserva
+                            </button>
+
+                            <small>
+                                Demostración: no se realizará ningún cobro
+                                ni reserva real.
+                            </small>
+                        </form>
                     </aside>
+
                 </div>
             @else
                 <h1>Alojamiento no encontrado</h1>
@@ -206,17 +292,178 @@
                 height: 250px;
             }
         }
+
+                .reserva-campo {
+            margin: 16px 0;
+        }
+
+        .reserva-campo label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .reserva-campo input,
+        .reserva-campo select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dce2e8;
+            border-radius: 8px;
+            background: white;
+            color: #102331;
+            font: inherit;
+        }
+
+        .reserva-resumen {
+            margin: 20px 0;
+            padding: 18px;
+            background: #f3f7fa;
+            border-radius: 10px;
+        }
+
+        .reserva-resumen p {
+            margin: 5px 0;
+            font-size: 13px;
+        }
+
+        .reserva-resumen h3 {
+            font-size: 25px;
+            color: #0b2535;
+            margin-top: 10px;
+        }
+
+        .detalle-seccion {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e7edf2;
+        }
+
+        .detalle-caracteristicas {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .detalle-caracteristicas > div {
+            background: #f5f8fa;
+            border: 1px solid #edf0f3;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .detalle-caracteristicas strong {
+            color: #102331;
+            font-size: 14px;
+        }
+
+        .detalle-caracteristicas p {
+            color: #647482;
+            font-size: 13px;
+            margin: 8px 0 0;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .detalle-caracteristicas {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const boton = document.getElementById('reservarHotel');
+  
 
-            if (boton) {
-                boton.addEventListener('click', () => {
-                    alert('Próximamente podrás reservar este alojamiento.');
-                });
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const formulario = document.getElementById('formReservaHotel');
+
+        if (!formulario) return;
+
+        const entrada = document.getElementById('fechaEntrada');
+        const salida = document.getElementById('fechaSalida');
+        const huespedes = document.getElementById('cantidadHuespedes');
+        const nochesTexto = document.getElementById('totalNoches');
+        const totalTexto = document.getElementById('precioTotal');
+
+        const precioNoche = Number(formulario.dataset.precio);
+
+        // Obtener fecha actual en horario local.
+        const hoy = new Date();
+        const fechaLocal = new Date(
+            hoy.getTime() - hoy.getTimezoneOffset() * 60000
+        ).toISOString().slice(0, 10);
+
+        entrada.min = fechaLocal;
+        salida.min = fechaLocal;
+
+        function calcularTotal() {
+            if (!entrada.value || !salida.value) {
+                nochesTexto.textContent = '0';
+                totalTexto.textContent = 'S/ 0.00';
+                return;
             }
+
+            const inicio = Date.parse(entrada.value + 'T00:00:00Z');
+            const fin = Date.parse(salida.value + 'T00:00:00Z');
+
+            const noches = Math.round((fin - inicio) / 86400000);
+
+            if (noches <= 0) {
+                nochesTexto.textContent = '0';
+                totalTexto.textContent = 'S/ 0.00';
+                return;
+            }
+
+            nochesTexto.textContent = noches;
+            totalTexto.textContent =
+                'S/ ' + (noches * precioNoche).toFixed(2);
+        }
+
+        entrada.addEventListener('change', () => {
+            if (entrada.value) {
+                const siguiente = new Date(entrada.value + 'T00:00:00Z');
+                siguiente.setUTCDate(siguiente.getUTCDate() + 1);
+
+                salida.min = siguiente.toISOString().slice(0, 10);
+
+                if (salida.value && salida.value < salida.min) {
+                    salida.value = '';
+                }
+            } else {
+                salida.min = fechaLocal;
+            }
+
+            calcularTotal();
         });
+
+        salida.addEventListener('change', calcularTotal);
+
+        formulario.addEventListener('submit', (evento) => {
+            evento.preventDefault();
+
+            calcularTotal();
+
+            if (!formulario.reportValidity()) return;
+
+            if (!entrada.value || !salida.value ||
+                salida.value <= entrada.value) {
+                alert('Selecciona fechas válidas.');
+                return;
+            }
+
+            const parametros = new URLSearchParams({
+                hotel: @json($codigo),
+                entrada: entrada.value,
+                salida: salida.value,
+                huespedes: huespedes.value
+            });
+
+            const url = @json(route('reservas.confirmar'));
+
+            window.location.href =
+                url + '?' + parametros.toString();
+        });
+    });
     </script>
 </x-layout>
