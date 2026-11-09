@@ -87,7 +87,16 @@
             Alojamientos
       </a>
       <button class="tab" role="tab" aria-selected="false"><svg class="i"><use href="#i-case"/></svg>Paquetes</button>
-      <button class="tab" role="tab" aria-selected="false"><svg class="i"><use href="#i-car"/></svg>Autos</button>
+
+      <a href="{{ route('autos') }}"
+          class="tab {{ request()->routeIs('autos') ? 'is-active' : '' }}"
+          aria-current="{{ request()->routeIs('autos') ? 'page' : 'false' }}">
+            <svg class="i">
+                <use href="#i-car"/>
+            </svg>
+            Autos
+      </a>
+      
       <button class="tab" role="tab" aria-selected="false"><svg class="i"><use href="#i-flame"/></svg>Ofertas</button>
     </nav>
   </header>

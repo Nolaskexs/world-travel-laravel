@@ -1,0 +1,481 @@
+/* =========================================================
+   AUTOS — resources/css/autos.css
+   - Solo se carga en la vista autos.blade.php.
+   - Todas las clases nuevas llevan el prefijo .au- para no chocar con otras secciones.
+   - Reutiliza (sin modificar) las clases globales de styles.css:
+     .wrap .sf .sf__top .field .dd .dd-wrap .dd--list .dd--cal .cal .day .opt .go
+     .offers .slider .slider__view .slider__track .arrow .dots .dot .btn-dark .i
+   - Colores: variables de styles.css (--ink #0C1B26, --chip, --bg, --line, --mut)
+   ========================================================= */
+
+/* ---------- Buscador ---------- */
+.au-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.au-row {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Orden en el DOM: fecha retiro | hora retiro | fecha devolución | hora devolución */
+.au-dates {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 560px) {
+  .au-dates {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 0.9fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .au-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr) auto;
+    align-items: center;
+  }
+}
+
+/* Los textos largos no deben romper la caja del campo */
+.au-dates .field > span:not(.au-hour__lbl),
+.au-row input {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Campo de hora: etiqueta pequeña arriba + select nativo (accesible en móvil) */
+.au-hour {
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  padding-block: 0.35rem;
+}
+
+.au-hour__lbl {
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--mut);
+}
+
+.au-hour__sel {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 0 1.5rem 0 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.au-hour__chev {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.8rem;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+
+/* Campo con error: contorno punteado (no se introducen colores nuevos) */
+.au-search .is-invalid {
+  outline: 2px dashed var(--ink);
+  outline-offset: 2px;
+}
+
+.au-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Sin mensaje: no ocupa espacio (el grid de .sf agrega un gap de 1rem) */
+.au-msg:empty {
+  height: 0;
+  margin-top: -1rem;
+}
+
+/* ---------- Resumen de búsqueda ---------- */
+.au-summary {
+  margin-top: 1rem;
+}
+
+.au-summary__box {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 1.1rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.au-summary__text {
+  font-weight: 600;
+}
+
+.au-summary__note {
+  font-size: 0.85rem;
+  color: var(--mut);
+}
+
+/* ---------- Carrusel de ofertas ---------- */
+.au-slider {
+  margin-bottom: 2.5rem;
+}
+
+.au-slider__stage {
+  position: relative;
+}
+
+/* Espacio para la elevación y la sombra de las tarjetas al pasar el cursor */
+.au-slider .slider__view {
+  padding: 6px 2px 12px;
+}
+
+.au-slider .dots {
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.au-arrow {
+  position: absolute;
+  top: 50%;
+  margin-top: -19px;
+  z-index: 2;
+}
+
+.au-arrow--l {
+  left: 0.4rem;
+}
+
+.au-arrow--r {
+  right: 0.4rem;
+}
+
+/* ---------- Tarjeta de vehículo ---------- */
+.au-card {
+  position: relative; /* el botón "Ver detalles" cubre toda la tarjeta */
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.au-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px #0c1b2622;
+}
+
+.au-card:has(.au-card__cta:focus-visible) {
+  outline: 2px solid #4c9aff;
+  outline-offset: 2px;
+}
+
+@media (min-width: 560px) {
+  .au-card {
+    flex-basis: calc((100% - 1rem) / 2);
+  }
+}
+
+@media (min-width: 820px) {
+  .au-card {
+    flex-basis: calc((100% - 2rem) / 3);
+  }
+}
+
+@media (min-width: 1100px) {
+  .au-card {
+    flex-basis: calc((100% - 3rem) / 4);
+  }
+}
+
+.au-card__media {
+  aspect-ratio: 16 / 10;
+  padding: 0.75rem 0.75rem 0;
+  display: grid;
+  place-items: center;
+  background: #fff;
+}
+
+.au-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Se muestra si la foto del vehículo aún no existe en public/icons/autos */
+.au-ph {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--bg);
+  color: #9aa1a7;
+}
+
+.au-ph .i {
+  width: 3rem;
+  height: 3rem;
+  stroke-width: 1.5;
+}
+
+.au-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem 1rem;
+}
+
+.au-card__cat {
+  font-size: 0.75rem;
+  color: var(--mut);
+}
+
+.au-card__name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.au-card__place {
+  min-height: 2.5em; /* reserva 2 líneas para alinear todas las tarjetas */
+  font-size: 0.8rem;
+  line-height: 1.25;
+  color: var(--mut);
+}
+
+.au-card__co {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--mut);
+}
+
+.au-card__co .i {
+  width: 1rem;
+  height: 1rem;
+}
+
+.au-card__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.au-card__price small {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--mut);
+}
+
+.au-card__amount {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.au-card__amount s {
+  font-size: 0.8rem;
+  color: var(--mut);
+}
+
+.au-card__amount strong {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.au-card__flex {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.au-card__cta {
+  flex: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.au-card__cta:hover {
+  background: #1a2d3d;
+}
+
+/* Hace clicable toda la tarjeta sin anidar elementos de bloque dentro de un botón */
+.au-card__cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- Modal de detalle ---------- */
+body.au-lock {
+  overflow: hidden;
+}
+
+.au-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(12, 27, 38, 0.65);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.au-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.au-modal__box {
+  display: flex;
+  flex-direction: column;
+  width: min(520px, 100%);
+  max-height: min(88vh, 720px);
+  overflow: hidden;
+  background: #fff;
+  border-radius: 16px;
+  transform: translateY(16px);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.au-modal.is-open .au-modal__box {
+  transform: none;
+}
+
+.au-modal__head,
+.au-modal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+}
+
+.au-modal__head {
+  border-bottom: 1px solid var(--line);
+}
+
+.au-modal__head h2 {
+  font-size: 1.1rem;
+}
+
+.au-modal__foot {
+  border-top: 1px solid var(--line);
+}
+
+.au-modal__close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.au-modal__close:hover {
+  background: #e4e8eb;
+}
+
+.au-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+}
+
+.au-modal__foot .btn-dark {
+  padding: 0.65rem 1.4rem;
+}
+
+.au-modal__price small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--mut);
+}
+
+.au-modal__price strong {
+  font-size: 1.3rem;
+}
+
+.au-modal__img {
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.au-modal__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.au-modal__name {
+  font-size: 1.25rem;
+}
+
+.au-modal__sub {
+  margin-top: 0.15rem;
+  font-size: 0.9rem;
+  color: var(--mut);
+}
+
+.au-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.au-tag {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--chip);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.au-note {
+  font-size: 0.8rem;
+  color: var(--mut);
+}

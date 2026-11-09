@@ -25,3 +25,6 @@ Route::view('/admin', 'dashboard-admin')->name('admin.dashboard');
 //6. Confirmación de reserva de alojamiento
 Route::view('/reservas/confirmar', 'confirmar-reserva')
     ->name('reservas.confirmar');
+
+// 7. Autos (alquiler de autos)
+Route::view('/autos', 'autos')->name('autos');

@@ -17,7 +17,9 @@ export default defineConfig({
                 'resources/js/login.js',
                 'resources/js/register.js',
                 'resources/js/search.js',
-                'resources/js/searchmain.js'
+                'resources/js/searchmain.js',
+                'resources/css/autos.css',
+                'resources/js/autos.js',
             ],
             refresh: true,
             fonts: [
