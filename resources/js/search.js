@@ -144,7 +144,8 @@
         </button>
       </div>`;
   };
-  
+
+//Card HTML: muestra la tarjeta de cada vuelo, con los horarios seleccionados y el precio final. Los badges se muestran solo si el vuelo es el más barato o la mejor opción.
   const cardHTML = (f, tags) => `
     <article class="fcard" data-id="${f.id}">
       <div>
@@ -169,7 +170,7 @@
           <span>Precio final</span>
           <span>${money(total(f))}</span>
         </p>
-        <a class="btn-dark" href="#">Comprar</a>
+        <a class="btn-dark" href="#">Agregar al carrito</a>
       </div>
     </article>`;
 

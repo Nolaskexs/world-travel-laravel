@@ -117,6 +117,7 @@
       </form>
     </section>
 
+<!-- Filtros de búsqueda y resultados -->
     <div class="wrap layout">
       <button class="fbtn" id="openFilters" type="button" aria-controls="filters">
         <svg class="i"><use href="#i-filter"/></svg>Filtros
@@ -192,7 +193,8 @@
           </div>
         </section>
       </aside>
-      
+
+      <!-- Filtro de vuelos encontrados -->
       <section class="res" aria-label="Resultados de vuelos">
         <div class="sort" role="tablist" aria-label="Ordenar por">
           <button type="button" role="tab" class="is-active" aria-selected="true" data-sort="price">
