@@ -96,7 +96,7 @@
     </div>
     <h2 class="app-title">Recibe ofertas y descubre el mundo</h2>
     <div class="app">
-      <img class="ph app__phone" src="{{ asset('icons/support-icon.png') }}" alt="App World Travel">
+      <img class="ph app__phone" src="{{ asset('icons/icon-extends-black.png') }}" alt="App World Travel">
       <p>En nuestra app encontrarás precios más bajos y más beneficios</p>
     </div>
     <div class="news">

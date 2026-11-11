@@ -67,7 +67,8 @@
         <div class="card-footer">
           <div class="card-precio">
             <small>Precio referencial / noche</small>
-            <strong>S/ ${now}</strong>
+            <small class="precio-anterior">US$ ${old}</small>
+            <strong>US$ ${now}</strong>
           </div>
           <a href="#" class="btn-ver-detalles">Ver detalles</a>
         </div>

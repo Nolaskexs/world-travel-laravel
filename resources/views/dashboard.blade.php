@@ -27,8 +27,7 @@
         <aside class="sidebar" id="sidebar" aria-label="Navegación principal" data-drawer>
             <div class="sidebar__head">
                 <a href="{{ url('/dashboard') }}" class="brand">
-                    <span class="brand__logo"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg></span>
-                    <span class="brand__name">World Travel</span>
+                    <img src="{{ asset('icons/icon-extends-white.png') }}" alt="World Travel" class="brand__logo">
                 </a>
                 <button type="button" class="icon-btn sidebar__close" data-drawer-close>
                     <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
