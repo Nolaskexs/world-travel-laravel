@@ -46,18 +46,69 @@
   </section>
 
   <!-- partial: hero -->
-  <section class="wrap hero" aria-roledescription="carrusel" aria-label="Destacados">
-    <div class="hero__frame">
-      <div class="hero__view"><div class="hero__track">
-        <div class="hero__slide"><div class="ph">Banner 1<br>1200×420</div></div>
-        <div class="hero__slide"><div class="ph">Banner 2<br>1200×420</div></div>
-        <div class="hero__slide"><div class="ph">Banner 3<br>1200×420</div></div>
-        <div class="hero__slide"><div class="ph">Banner 4<br>1200×420</div></div>
-      </div></div>
-      <button class="arrow arrow--l" data-dir="-1" aria-label="Anterior"><svg class="i"><use href="#i-left"/></svg></button>
-      <button class="arrow arrow--r" data-dir="1" aria-label="Siguiente"><svg class="i"><use href="#i-right"/></svg></button>
-    </div>
-  </section>
+<section class="wrap hero" aria-roledescription="carrusel" aria-label="Destacados">
+  <div class="hero__frame">
+    <div class="hero__view"><div class="hero__track">
+
+      <div class="hero__slide">
+        <img class="hero__bg" src="/icons/Roma1-Carrusel.jpg" alt="Vuelo a Roma">
+        <div class="hero__shade"></div>
+        <div class="hero__logo">WORLD TRAVEL</div>
+        <div class="hero__badge">-11%</div>
+        <div class="hero__txt">
+          <span class="hero__tag">Italia · Europa</span>
+          <h2>Roma te espera</h2>
+          <p>Vuelo + hotel · Stock limitado</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 1,230</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+        </div>
+      </div>
+
+      <div class="hero__slide">
+        <img class="hero__bg" src="/icons/Tokio2-carrusel.jpg" alt="Vuelo a Tokio">
+        <div class="hero__shade"></div>
+        <div class="hero__logo">WORLD TRAVEL</div>
+        <div class="hero__badge">-9%</div>
+        <div class="hero__txt">
+          <span class="hero__tag">Japón · Asia</span>
+          <h2>Descubre Tokio</h2>
+          <p>Cultura, templos y primavera</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 2,890</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+        </div>
+      </div>
+
+      <div class="hero__slide">
+        <img class="hero__bg" src="/icons/India3-carrusel.jpg" alt="India">
+        <div class="hero__shade"></div>
+        <div class="hero__logo">WORLD TRAVEL</div>
+        <div class="hero__badge">-5%</div>
+        <div class="hero__txt">
+          <span class="hero__tag">India · Asia</span>
+          <h2>El encanto de la India</h2>
+          <p>Taj Mahal y Nueva Delhi</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 2,890</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+        </div>
+      </div>
+
+      <div class="hero__slide">
+        <img class="hero__bg" src="/icons/caribe hotel4-carrusel.jpg" alt="Hospedajes en el Caribe">
+        <div class="hero__shade"></div>
+        <div class="hero__logo">WORLD TRAVEL</div>
+        <div class="hero__badge">-15%</div>
+        <div class="hero__txt">
+          <span class="hero__tag">Caribe · Hospedajes</span>
+          <h2>Tu escapada soñada</h2>
+          <p>Hoteles frente al mar, reserva sin pagar ahora</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 74</b>por noche</div><a class="hero__btn" href="#">Ver hospedajes</a></div>
+        </div>
+      </div>
+
+    </div></div>
+
+    <button class="arrow arrow--l" data-dir="-1" aria-label="Anterior"><svg class="i"><use href="#i-left"/></svg></button>
+    <button class="arrow arrow--r" data-dir="1" aria-label="Siguiente"><svg class="i"><use href="#i-right"/></svg></button>
+  </div>
+  <div class="hero__dots"></div>
+</section>
 
   <!-- partial: ofertas (las tarjetas se generan desde js/main.js; reemplazar por un loop EJS/PHP) -->
   <section class="wrap offers">
