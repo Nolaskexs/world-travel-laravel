@@ -20,6 +20,7 @@ export default defineConfig({
                 'resources/js/searchmain.js',
                 'resources/css/autos.css',
                 'resources/js/autos.js',
+                'resources/css/catalogo-viajes.css',
             ],
             refresh: true,
             fonts: [

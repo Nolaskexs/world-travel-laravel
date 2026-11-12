@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CatalogoViajesController;
+use App\Http\Controllers\ItinerarioController;
 
 // 1. Ruta raíz limpia y con nombre
 Route::view('/', 'inicio')->name('inicio');
@@ -28,3 +30,40 @@ Route::view('/reservas/confirmar', 'confirmar-reserva')
 
 // 7. Autos (alquiler de autos)
 Route::view('/autos', 'autos')->name('autos');
+
+// Paquetes turísticos y ofertas
+Route::get('/paquetes', [CatalogoViajesController::class, 'paquetes'])
+    ->name('paquetes');
+
+Route::get('/paquetes/{paquete}', [CatalogoViajesController::class, 'detalle'])
+    ->name('paquetes.detalle');
+
+Route::get('/ofertas', [CatalogoViajesController::class, 'ofertas'])
+    ->name('ofertas');
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/itinerarios', [ItinerarioController::class, 'index'])
+        ->name('itinerarios.index');
+
+    Route::post('/itinerarios', [ItinerarioController::class, 'store'])
+        ->name('itinerarios.store');
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Vista previa de Itinerarios - Solo desarrollo local
+|--------------------------------------------------------------------------
+| Permite probar el diseño sin iniciar sesión.
+| No muestra datos reales ni permite guardar itinerarios.
+*/
+
+if (app()->environment('local')) {
+    Route::get('/vista-previa-itinerarios', function () {
+        return view('itinerarios', [
+            'itinerarios' => collect(),
+        ]);
+    })->name('itinerarios.preview');
+}
