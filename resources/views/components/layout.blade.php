@@ -127,6 +127,7 @@
   </main>
 
   <!-- partial: footer -->
+  <!-- footer -->
   <footer class="ftr">
     <div class="wrap">
       <div class="ftr__bar"></div>
