@@ -12,16 +12,16 @@
     ['Vuelo a Roma','RM','1.230',11, 'icons/roma.jpg', 'icons/aireuropa.png'],
     ['Vuelo a Tokio','TKY','2.890',9, 'icons/tokio.jpg', 'icons/japanairlines.png'],
     ['India','GAR','2.890',5, 'icons/india.jpg', 'icons/airindia.png'],
-    ['Vuelo a París','PAR','1.540',8, 'icons/paris.jpg', 'icons/airefrance.png'] // <- Agrega más tarjetas aquí
+    ['Vuelo a París','PAR','1.540',8, 'icons/Paris - paquete turitico.jpg', 'icons/LATAM-Logo.png'] // <- Agrega más tarjetas aquí
   ];
   // ... asegúrate de hacerlo para todos
   const HOTELS = [
     ['The Ritz-Carlton, Tokyo','4.3',4,'Deluxe Room, 2 Queen Beds','18 noches, 2 personas','20.032','19.957',[['Reserva sin pagar ahora','b']],'icons/hotel1.jpg'],
     ['Oz Hotel Luxury','4.8',5,'Classic Room','1 noche, 2 personas','104','74',[['Desayuno','t']],'icons/hotel3.jpg'],
     ['Hotel Riu Plaza España','4.9',5,'Habitación Doble de Lujo','1 noche, 2 personas','414','268',[['Desayuno','t'],['Elegido por parejas','b']],'icons/hotel2.jpg'],
-    ['Belmond Monasterio, Cusco','4.7',5,'Habitación Superior','2 noches, 2 personas','620','540',[['Desayuno','t']],'icons/hotel4.jpg'],
-    ['Hotel Arts Barcelona','4.6',5,'Deluxe Vista al Mar','3 noches, 2 personas','1.150','990',[['Reserva sin pagar ahora','b']],'icons/hotel5.jpg'],
-    ['Miraflores Park, Lima','4.8',5,'Junior Suite','1 noche, 2 personas','330','265',[['Desayuno','t']],'icons/hotel6.jpg'],
+    ['Belmond Monasterio, Cusco','4.7',5,'Habitación Superior','2 noches, 2 personas','620','540',[['Desayuno','t']],'icons/belmond-hotel-monasterio.jpg'],
+    ['Hotel Arts Barcelona','4.6',5,'Deluxe Vista al Mar','3 noches, 2 personas','1.150','990',[['Reserva sin pagar ahora','b']],'icons/HotelArtsBarcelona.jpg'],
+    ['Miraflores Park, Lima','4.8',5,'Junior Suite','1 noche, 2 personas','330','265',[['Desayuno','t']],'icons/MirafloresParkLimaJuniorSuite.jpg'],
   ];
 
   const packCard = ([t, code, price, off, image, logoAerolinea]) => `
