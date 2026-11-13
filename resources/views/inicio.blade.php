@@ -51,54 +51,54 @@
     <div class="hero__view"><div class="hero__track">
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/Roma1-Carrusel.jpg" alt="Vuelo a Roma">
+        <img class="hero__bg" src="/icons/MachuPicchu1-Carrusel.jpg" alt="Vuelo a Roma">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
-        <div class="hero__badge">-11%</div>
+        <div class="hero__badge">-12%</div>
         <div class="hero__txt">
-          <span class="hero__tag">Italia · Europa</span>
-          <h2>Roma te espera</h2>
-          <p>Vuelo + hotel · Stock limitado</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 1,230</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+          <span class="hero__tag">Perú · Sudamérica</span>
+          <h2>Machu Picchu te llama</h2>
+          <p>Cusco, Valle Sagrado y tren incluido</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 420</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
         </div>
       </div>
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/Tokio2-carrusel.jpg" alt="Vuelo a Tokio">
+        <img class="hero__bg" src="/icons/Cancun2-Carrusel.jpg" alt="Vuelo a Tokio">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
-        <div class="hero__badge">-9%</div>
+        <div class="hero__badge">-10%</div>
         <div class="hero__txt">
-          <span class="hero__tag">Japón · Asia</span>
-          <h2>Descubre Tokio</h2>
-          <p>Cultura, templos y primavera</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 2,890</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+          <span class="hero__tag">México · Caribe</span>
+          <h2>Cancún todo incluido</h2>
+          <p>Playas de arena blanca y mar turquesa</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 980</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
         </div>
       </div>
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/India3-carrusel.jpg" alt="India">
+        <img class="hero__bg" src="/icons/NuevaYork3-Carrusel.jpg" alt="India">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
-        <div class="hero__badge">-5%</div>
+        <div class="hero__badge">-8%</div>
         <div class="hero__txt">
-          <span class="hero__tag">India · Asia</span>
-          <h2>El encanto de la India</h2>
-          <p>Taj Mahal y Nueva Delhi</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 2,890</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+          <span class="hero__tag">Estados Unidos · Norteamérica</span>
+          <h2>Nueva York te espera</h2>
+          <p>Times Square, Central Park y compras</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 920</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
         </div>
       </div>
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/caribe hotel4-carrusel.jpg" alt="Hospedajes en el Caribe">
+        <img class="hero__bg" src="/icons/Buenos Aires4-Carrusel.jpeg" alt="Hospedajes en el Caribe">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
-        <div class="hero__badge">-15%</div>
+        <div class="hero__badge">-10%</div>
         <div class="hero__txt">
-          <span class="hero__tag">Caribe · Hospedajes</span>
-          <h2>Tu escapada soñada</h2>
-          <p>Hoteles frente al mar, reserva sin pagar ahora</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 74</b>por noche</div><a class="hero__btn" href="#">Ver hospedajes</a></div>
+          <span class="hero__tag">Argentina · Sudamérica</span>
+          <h2>Buenos Aires te enamora</h2>
+          <p>Tango, gastronomía y cultura en 4 días</p>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 520</b>por noche</div><a class="hero__btn" href="#">Ver vuelo</a></div>
         </div>
       </div>
 

@@ -23,14 +23,14 @@
 
   // Fotos en public/icons/autos/. Si falta alguna se muestra un marcador con el icono de auto.
   const CARS = [
-    { cat: 'Autos Medianos', city: 'Lima', country: 'Perú', place: 'Aeropuerto Internacional Jorge Chávez', company: 'AutoAndes', price: 138, old: null, img: 'mediano-plata.jpg', seats: 5, bags: 2, gear: 'Automático' },
-    { cat: 'Autos Medianos', city: 'Cusco', country: 'Perú', place: 'Aeropuerto Internacional Alejandro Velasco Astete', company: 'Ruta Sur', price: 198, old: null, img: 'mediano-blanco.jpg', seats: 5, bags: 2, gear: 'Manual' },
-    { cat: 'Autos Chicos', city: 'Arequipa', country: 'Perú', place: 'Aeropuerto Internacional Rodríguez Ballón', company: 'Costa Rent', price: 158, old: 228, img: 'chico-negro.jpg', seats: 4, bags: 1, gear: 'Manual' },
-    { cat: 'Autos Medianos', city: 'Cancún', country: 'México', place: 'Aeropuerto Internacional de Cancún', company: 'Vía Móvil', price: 184, old: null, img: 'mediano-plata.jpg', seats: 5, bags: 2, gear: 'Automático' },
-    { cat: 'Autos Chicos', city: 'Bogotá', country: 'Colombia', place: 'Aeropuerto Internacional El Dorado', company: 'Pacífico Cars', price: 161, old: null, img: 'chico-negro.jpg', seats: 4, bags: 1, gear: 'Manual' },
-    { cat: 'Autos Medianos', city: 'Buenos Aires', country: 'Argentina', place: 'Aeropuerto Internacional Ministro Pistarini', company: 'Andina Rent', price: 176, old: 205, img: 'mediano-blanco.jpg', seats: 5, bags: 2, gear: 'Automático' },
-    { cat: 'Autos Chicos', city: 'Madrid', country: 'España', place: 'Aeropuerto Adolfo Suárez Madrid-Barajas', company: 'Costa Rent', price: 149, old: null, img: 'chico-negro.jpg', seats: 4, bags: 1, gear: 'Manual' },
-    { cat: 'Autos Medianos', city: 'Nueva York', country: 'Estados Unidos', place: 'Aeropuerto Internacional John F. Kennedy', company: 'AutoAndes', price: 215, old: null, img: 'mediano-plata.jpg', seats: 5, bags: 2, gear: 'Automático' },
+    { cat: 'Autos Medianos', city: 'Lima', country: 'Perú', place: 'Aeropuerto Internacional Jorge Chávez', company: 'AutoAndes', price: 138, old: null, img: "Auto Mediano1.jpg", seats: 5, bags: 2, gear: 'Automático' },
+    { cat: 'Autos Medianos', city: 'Cusco', country: 'Perú', place: 'Aeropuerto Internacional Alejandro Velasco Astete', company: 'Ruta Sur', price: 198, old: null, img: 'Auto Mediano2.jpg', seats: 5, bags: 2, gear: 'Manual' },
+    { cat: 'Autos Chicos', city: 'Arequipa', country: 'Perú', place: 'Aeropuerto Internacional Rodríguez Ballón', company: 'Costa Rent', price: 158, old: 228, img: 'Auto chico3.jpeg', seats: 4, bags: 1, gear: 'Manual' },
+    { cat: 'Autos Medianos', city: 'Cancún', country: 'México', place: 'Aeropuerto Internacional de Cancún', company: 'Vía Móvil', price: 184, old: null, img: 'Auto Mediano4.jpeg', seats: 5, bags: 2, gear: 'Automático' },
+    { cat: 'Autos Chicos', city: 'Bogotá', country: 'Colombia', place: 'Aeropuerto Internacional El Dorado', company: 'Pacífico Cars', price: 161, old: null, img: 'Auto chico5.png', seats: 4, bags: 1, gear: 'Manual' },
+    { cat: 'Autos Medianos', city: 'Buenos Aires', country: 'Argentina', place: 'Aeropuerto Internacional Ministro Pistarini', company: 'Andina Rent', price: 176, old: 205, img: 'Auto mediano6.jpg', seats: 5, bags: 2, gear: 'Automático' },
+    { cat: 'Autos Chicos', city: 'Madrid', country: 'España', place: 'Aeropuerto Adolfo Suárez Madrid-Barajas', company: 'Costa Rent', price: 149, old: null, img: 'Auto chico7.jpg', seats: 4, bags: 1, gear: 'Manual' },
+    { cat: 'Autos Medianos', city: 'Nueva York', country: 'Estados Unidos', place: 'Aeropuerto Internacional John F. Kennedy', company: 'AutoAndes', price: 215, old: null, img: 'Auto mediano8.jpg', seats: 5, bags: 2, gear: 'Automático' },
   ];
   const IMG_BASE = (($('#auOffers') && $('#auOffers').dataset.imgBase) || 'icons/autos').replace(/\/$/, '');
 
