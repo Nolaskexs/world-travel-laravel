@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ $titulo ?? 'World Travel' }}</title>
-  <link rel="icon" type="image/png" href="{{ asset('icons/logo-cut.png') }}">
+  <link rel="icon" type="image/png" media="(prefers-color-scheme: light)" href="{{ asset('icons/logo-cut-dark.png') }}">
+  <link rel="icon" type="image/png" media="(prefers-color-scheme: dark)" href="{{ asset('icons/logo-cut-light.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('icons/logo-cut-light.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -49,7 +51,11 @@
   <!-- partial: header -->
   <header class="hdr">
     <div class="wrap hdr__top">
-      <img class="logo ph" href="{{ route('inicio') }}" src="{{ asset('icons/logo-cut.png') }}" alt="">
+      <picture class="logo-ph">
+        <source media="(prefers-color-scheme: dark)" srcset="{{ asset('icons/logo-cut-dark.png') }}">
+        <source media="(prefers-color-scheme: light)" srcset="{{ asset('icons/logo-cut-light.png') }}">
+        <a href="{{ route('inicio') }}"><img class="logo ph" src="{{ asset('icons/logo-cut-light.png') }}" alt="World Travel"></a>
+      </picture>
       <div class="util">
         <a class="btn-sales" href="tel:0001010001">Para ventas 000-1010001</a>
         <a href="#">Mis viajes</a>

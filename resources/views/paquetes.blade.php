@@ -5,8 +5,8 @@
         <style>
             .wt-catalog .wt-page-nav { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; }
             .wt-catalog .wt-page-link { display:inline-flex; justify-content:center; align-items:center; min-width:42px; min-height:42px; padding:9px 13px; border:1px solid #dbe5ee; border-radius:9px; background:#fff; color:#13354b; font-size:13px; font-weight:600; line-height:1.2; text-decoration:none; }
-            .wt-catalog a.wt-page-link:hover { border-color:#0875e9; background:#eaf4ff; color:#0875e9; }
-            .wt-catalog .wt-page-active { background:#0875e9; border-color:#0875e9; color:#fff; }
+            .wt-catalog a.wt-page-link:hover { border-color:var(--ink); background:#eaf4ff; color:var(--ink); }
+            .wt-catalog .wt-page-active { background:var(--ink); border-color:var(--ink); color:#fff; }
             .wt-catalog .wt-page-disabled { opacity:.48; cursor:not-allowed; }
             .wt-catalog .wt-page-summary { margin:15px 0 0; color:#748899; font-size:12px; text-align:center; }
             @media (max-width:520px) { .wt-catalog .wt-page-link { min-height:36px; min-width:36px; padding:8px; font-size:12px; } }

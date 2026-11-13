@@ -28,7 +28,7 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
 .forgot{display:block;margin:-.3rem 0 1.25rem;text-align:right;font-size:.9rem;color:var(--link)}.forgot:hover,.signup a:hover{text-decoration:underline}
 .btn{display:flex;align-items:center;justify-content:center;gap:.75rem;width:100%;height:52px;border-radius:12px;font-weight:600;transition:background .2s,transform .1s}
 .btn:active{transform:translateY(1px)}
-.btn--primary{background:var(--sky);color:var(--ink)}.btn--primary:hover{background:#93CBE9}
+.btn--primary{background:var(--ink);color:#fff}.btn--primary:hover{background:#0a1520}
 .btn--soc{margin-bottom:.75rem;background:var(--field)}.btn--soc:hover{background:#d3d3d3}
 .logo-s{width:22px;height:22px;flex:none}
 .btn:focus-visible,.eye:focus-visible,a:focus-visible{outline:3px solid rgba(12,27,38,.35);outline-offset:2px}
@@ -72,7 +72,7 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
 
     .wt-login__eyebrow {
         display: inline-block;
-        color: #0875e9;
+        color: var(--ink);
         font-size: 11px;
         font-weight: 800;
         letter-spacing: 2px;
@@ -125,8 +125,8 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
     .wt-login .inp:focus {
         outline: none;
         background: white;
-        border-color: #0875e9;
-        box-shadow: 0 0 0 3px rgba(8, 117, 233, 0.12);
+        border-color: var(--ink);
+        box-shadow: 0 0 0 3px rgba(12, 27, 38, 0.12);
     }
 
 
@@ -144,12 +144,12 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
     }
 
     .wt-login .eye:hover {
-        color: #0875e9;
+        color: var(--ink);
     }
 
 
     .wt-login .forgot {
-        color: #0875e9;
+        color: var(--ink);
         font-size: 13px;
         font-weight: 600;
         margin: -7px 0 20px;
@@ -162,7 +162,7 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
     }
 
     .wt-login .signup a {
-        color: #0875e9;
+        color: var(--ink);
         font-weight: 700;
     }
 
@@ -171,7 +171,7 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
     .wt-login .btn--primary {
         width: 100%;
         min-height: 51px;
-        background: #0875e9;
+        background: var(--ink);
         color: #ffffff;
         border: none;
         border-radius: 10px;
@@ -181,7 +181,7 @@ h1{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1.15}
     }
 
     .wt-login .btn--primary:hover {
-        background: #075ec0;
+        background: #0a1520;
         transform: translateY(-1px);
     }
 

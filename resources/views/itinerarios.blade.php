@@ -3,7 +3,7 @@
 
     <x-slot:recursos>
         <style>
-            .wt-itin { --wt-navy:#102b43; --wt-blue:#0875e9; --wt-line:#dce6f0; --wt-muted:#687d90; background:#f4f8fc; padding:38px 16px 76px; color:var(--wt-navy); }
+            .wt-itin { --wt-navy:#102b43; --wt-blue:var(--ink); --wt-line:#dce6f0; --wt-muted:#687d90; background:#f4f8fc; padding:38px 16px 76px; color:var(--wt-navy); }
             .wt-itin, .wt-itin * { box-sizing:border-box; }
             .wt-itin__wrap { max-width:1180px; margin:0 auto; }
             .wt-itin__hero { position:relative; padding:42px 48px; margin-bottom:26px; border-radius:24px; color:#fff; overflow:hidden; background:linear-gradient(115deg,rgba(8,31,55,.96),rgba(10,74,130,.88)),url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1600&q=85') center/cover; }

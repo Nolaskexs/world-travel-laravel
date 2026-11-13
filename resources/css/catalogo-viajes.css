@@ -1,5 +1,5 @@
 /* World Travel: estilos independientes para Paquetes, Ofertas y Detalle */
-.wt-catalog{--wt-navy:#09283e;--wt-blue:#1677e9;--wt-ink:#132f42;--wt-gray:#677b8a;--wt-line:#e1eaf1;--wt-paper:#f5f8fb;color:var(--wt-ink);font-family:Inter,system-ui,sans-serif;padding-bottom:48px}
+.wt-catalog{--wt-navy:#09283e;--wt-blue:var(--ink);--wt-ink:#132f42;--wt-gray:#677b8a;--wt-line:#e1eaf1;--wt-paper:#f5f8fb;color:var(--wt-ink);font-family:Inter,system-ui,sans-serif;padding-bottom:48px}
 .wt-catalog *{box-sizing:border-box}
 .wt-catalog h1,.wt-catalog h2,.wt-catalog h3,.wt-catalog p{margin:0}
 .wt-catalog a{text-decoration:none}
@@ -20,8 +20,8 @@
 .wt-catalog .wt-button:hover{transform:translateY(-2px)}
 .wt-catalog .wt-button--white{background:#fff;color:var(--wt-navy)}
 .wt-catalog .wt-button--white:hover{background:#e5f2ff}
-.wt-catalog .wt-button--blue{background:var(--wt-blue);color:#fff}
-.wt-catalog .wt-button--blue:hover{background:#0963c9}
+.wt-catalog .wt-button--blue{background:var(--ink);color:#fff}
+.wt-catalog .wt-button--blue:hover{background:#0a1520}
 .wt-catalog .wt-hero__quiet{font-size:13px;font-weight:700;color:#fff}
 .wt-catalog .wt-hero__quiet:hover{text-decoration:underline}
 .wt-catalog .wt-hero__trust{font-size:12px;color:#d8e9f8;display:flex;align-items:center;gap:8px;margin-top:26px}
@@ -64,8 +64,8 @@
 .wt-catalog .wt-price-label{font-size:11px;color:#7e8d98;display:block;line-height:1.4;margin-bottom:6px}
 .wt-catalog .wt-price{font-size:23px;font-weight:800;letter-spacing:-.8px;color:#0f3248;white-space:nowrap}
 .wt-catalog .wt-price--offer{color:#1175d4}
-.wt-catalog .wt-button--small{background:#eaf4ff;color:#1269ac;border:1px solid #d9ebff;white-space:nowrap;padding:11px 11px;font-size:11px}
-.wt-catalog .wt-button--small:hover{background:#d7ebff}
+.wt-catalog .wt-button--small{background:var(--ink);color:#fff;border:1px solid var(--ink);white-space:nowrap;padding:11px 11px;font-size:11px}
+.wt-catalog .wt-button--small:hover{background:#0a1520}
 .wt-catalog .wt-card--offer .wt-card__desc{min-height:66px}
 .wt-catalog .wt-offer-expiry{display:inline-flex;margin:16px 0 19px;align-self:flex-start;padding:8px 10px;background:#fff5ed;border-radius:8px;color:#ad5726;font-size:11px;font-weight:700}
 .wt-catalog .wt-card__bottom small{display:block;color:#8a97a0;font-size:10px;margin-top:5px}
@@ -167,14 +167,14 @@
 .wt-catalog a.wt-pagination__btn:hover,
 .wt-catalog a.wt-pagination__number:hover {
     background: #eaf4ff;
-    color: #0875e9;
-    border-color: #0875e9;
+    color: var(--ink);
+    border-color: var(--ink);
 }
 
 .wt-catalog .wt-pagination__number.active {
-    background: #0875e9;
+    background: var(--ink);
     color: #ffffff;
-    border-color: #0875e9;
+    border-color: var(--ink);
 }
 
 .wt-catalog .wt-pagination__btn.disabled {
