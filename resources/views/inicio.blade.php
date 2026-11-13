@@ -59,7 +59,7 @@
           <span class="hero__tag">Perú · Sudamérica</span>
           <h2>Machu Picchu te llama</h2>
           <p>Cusco, Valle Sagrado y tren incluido</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 420</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 420</b></div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
         </div>
       </div>
 
@@ -72,7 +72,7 @@
           <span class="hero__tag">México · Caribe</span>
           <h2>Cancún todo incluido</h2>
           <p>Playas de arena blanca y mar turquesa</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 980</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 980</b></div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
         </div>
       </div>
 
@@ -85,7 +85,7 @@
           <span class="hero__tag">Estados Unidos · Norteamérica</span>
           <h2>Nueva York te espera</h2>
           <p>Times Square, Central Park y compras</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 920</b></div><a class="hero__btn" href="#">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 920</b></div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
         </div>
       </div>
 
@@ -98,7 +98,7 @@
           <span class="hero__tag">Argentina · Sudamérica</span>
           <h2>Buenos Aires te enamora</h2>
           <p>Tango, gastronomía y cultura en 4 días</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 520</b>por noche</div><a class="hero__btn" href="#">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 520</b>por noche</div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
         </div>
       </div>
 

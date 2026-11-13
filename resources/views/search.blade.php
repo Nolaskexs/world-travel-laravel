@@ -118,14 +118,14 @@
     </section>
 
 <!-- Filtros de búsqueda y resultados -->
-    <div class="wrap layout">
       <button class="fbtn" id="openFilters" type="button" aria-controls="filters">
         <svg class="i"><use href="#i-filter"/></svg>Filtros
       </button>
       
       <div class="scrim" id="scrim"></div>
       
-      <aside class="filters" id="filters" aria-label="Filtros de búsqueda">
+      <div class="layout">
+        <aside class="filters" id="filters" aria-label="Filtros de búsqueda">
         <div class="fhead">
           <h2>Filtros</h2>
           <button class="ico-btn" id="closeFilters" type="button" aria-label="Cerrar filtros">
@@ -212,7 +212,7 @@
         <p class="nores" id="empty" hidden>No hay vuelos con esos filtros. Prueba ampliando los rangos o quitando alguna opción.</p>
         <button type="button" class="btn-more" id="moreBtn">Mostrar más resultados</button>
       </section>
-    </div>
+      </div>
 
     <div class="modal" id="modal" aria-hidden="true">
       <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
