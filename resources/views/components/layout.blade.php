@@ -60,7 +60,7 @@
         <a class="btn-sales" href="tel:0001010001">Para ventas 000-1010001</a>
         <a href="#">Mis viajes</a>
         <span class="sep"></span>
-        <a href="#">Ayuda</a>
+        <a href="{{ route('ayuda') }}">Ayuda</a> <!-- -------------------------------------------------------------------------------S -->
         <span class="sep"></span>
         <button class="ico" type="button" aria-label="Soporte">
           <svg class="i"><use href="#i-headset"/></svg>

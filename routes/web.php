@@ -12,6 +12,7 @@ Route::view('/', 'inicio')->name('inicio');
 Route::view('/login', 'login')->name('login');
 Route::view('/registro', 'register')->name('register');
 Route::view('/buscar', 'search')->name('search');
+Route::view('/ayuda', 'ayuda')->name('ayuda');
 
 // 3. Vistas con controladores
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
