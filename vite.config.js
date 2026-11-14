@@ -23,6 +23,7 @@ export default defineConfig({
                 'resources/css/ayuda.css',
                 'resources/js/ayuda.js',
                 'resources/css/reclamaciones.css',
+                'resources/css/nosotros.css',
                 'resources/css/catalogo-viajes.css',
                 'resources/css/admin.css',
                 'resources/js/admin.js',

@@ -1,0 +1,189 @@
+.about-page {
+    max-width: 960px;
+    margin: 3.5rem auto 5rem;
+    display: grid;
+    gap: 3.5rem;
+}
+
+/* Sección principal estilo referencia */
+.about-hero {
+    padding: 1rem 0.5rem;
+}
+
+.about-title {
+    text-align: center;
+    font-size: clamp(2.2rem, 4vw, 3.1rem);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--ink, #0C1B26);
+    margin-bottom: 2.5rem;
+}
+
+.about-narrative {
+    display: grid;
+    gap: 1.5rem;
+    font-size: 1.12rem;
+    line-height: 1.75;
+    color: var(--ink, #0C1B26);
+}
+
+.about-lead strong {
+    font-weight: 700;
+    font-size: 1.18rem;
+}
+
+/* Tarjetas de métricas */
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid var(--line, #D6D9DC);
+    border-radius: 14px;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(12, 27, 38, 0.04);
+}
+
+.stat-num {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--ink, #0C1B26);
+    margin-bottom: 0.4rem;
+}
+
+.stat-label {
+    font-size: 0.92rem;
+    color: var(--mut, #5B6670);
+    line-height: 1.45;
+}
+
+/* Pilares del proyecto */
+.about-pillars h2 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--ink, #0C1B26);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.pillar-card {
+    background: #ffffff;
+    border: 1px solid var(--line, #D6D9DC);
+    border-radius: 14px;
+    padding: 1.85rem;
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+}
+
+.pillar-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--ink, #0C1B26);
+    color: #ffffff;
+    display: grid;
+    place-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.pillar-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.pillar-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink, #0C1B26);
+}
+
+.pillar-card p {
+    font-size: 0.94rem;
+    color: var(--mut, #5B6670);
+    line-height: 1.6;
+}
+
+/* Banner inferior con el azul oscuro de World Travel */
+.about-cta {
+    background: var(--ink, #0C1B26);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 2.25rem 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.about-cta h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.about-cta p {
+    color: #CBD5E1;
+    font-size: 0.95rem;
+}
+
+.about-cta__btns {
+    display: flex;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary-wt {
+    background: #ffffff;
+    color: var(--ink, #0C1B26);
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-outline-wt {
+    border: 1.5px solid #ffffff;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-primary-wt:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+
+.btn-outline-wt:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 640px) {
+    .about-page {
+        margin: 2rem auto 3.5rem;
+        gap: 2.5rem;
+    }
+    .about-cta {
+        padding: 1.75rem;
+        text-align: center;
+        justify-content: center;
+    }
+}

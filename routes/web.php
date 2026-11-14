@@ -31,6 +31,8 @@ Route::get('/buscar', [BuscadorController::class, 'index'])->name('search');
 
 Route::view('/ayuda', 'ayuda')->name('ayuda');
 
+Route::view('/nosotros', 'nosotros')->name('nosotros');
+
 Route::get('/libro-de-reclamaciones', function () {
     return view('reclamaciones');
 })->name('reclamaciones');

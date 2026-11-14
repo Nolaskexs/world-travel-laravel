@@ -68,7 +68,13 @@
         <button class="ico" type="button" aria-label="Notificaciones">
           <svg class="i"><use href="#i-bell"/></svg>
         </button>
-        <a class="btn-login" href="{{ route('login') }}">Iniciar sesión</a>
+        @auth
+          <a class="btn-login" href="{{ auth()->user()->esAdmin() ? route('admin.dashboard') : route('dashboard') }}">
+            {{ Str::limit(auth()->user()->name, 15) }}
+          </a>
+        @else
+          <a class="btn-login" href="{{ route('login') }}">Iniciar sesión</a>
+        @endauth
       </div>
     </div>
     <nav class="wrap tabs" role="tablist" aria-label="Servicios">
@@ -145,7 +151,7 @@
         <div>
           <h4>Acerca de World Travel</h4>
           <ul>
-            <li><a href="{{ route('ayuda') }}">Acerca de World Travel</a></li>
+            <li><a href="{{ route('nosotros') }}">Nosotros</a></li>
             <li><a href="{{ route('ayuda') }}">Centro de noticias</a></li>
             <li><a href="{{ route('ayuda') }}">Políticas e información legal</a></li>
             <li><a href="{{ route('ayuda') }}">Accesibilidad del sitio web</a></li>
