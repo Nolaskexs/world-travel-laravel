@@ -1,16 +1,15 @@
+@extends('admin')
 
-<x-layout>
-    <x-slot:titulo>
-        World Travel | Nuevo paquete
-    </x-slot:titulo>
+@section('title', 'Nuevo paquete turístico')
+@section('active', 'paquetes')
 
-    <x-slot:recursos>
-        <style>
+@push('styles')
+<style>
             .wt-form-page {
-                max-width: 1000px;
+                max-width: 1100px;
                 margin: 0 auto;
-                padding: 45px 22px 80px;
-                color: #17354a;
+                padding: 35px 25px 70px;
+                color: var(--ink, #17354a);
             }
 
             .wt-form-back {
@@ -27,12 +26,12 @@
             }
 
             .wt-form-intro {
-                color: #697d8d;
+                color: var(--slate, #697d8d);
                 margin-bottom: 30px;
             }
 
             .wt-form-card {
-                background: #fff;
+                background: var(--surface, #fff);
                 padding: 30px;
                 border: 1px solid #e1eaf0;
                 border-radius: 16px;
@@ -67,8 +66,8 @@
                 padding: 13px;
                 border: 1px solid #cbdbe6;
                 border-radius: 9px;
-                background: #fff;
-                color: #17354a;
+                background: var(--surface, #fff);
+                color: var(--ink, #17354a);
                 font: inherit;
                 box-sizing: border-box;
             }
@@ -87,7 +86,7 @@
 
             .wt-help {
                 font-size: 12px;
-                color: #758a99;
+                color: var(--slate, #758a99);
             }
 
             .wt-error {
@@ -145,33 +144,33 @@
                 color: #a52218;
                 border-radius: 10px;
             }
-
             @media (max-width: 650px) {
                 .wt-form-grid {
                     grid-template-columns: 1fr;
                 }
-
                 .wt-form-card {
                     padding: 20px;
                 }
             }
-        </style>
-    </x-slot:recursos>
+.wt-options input[type="checkbox"] {
+    width: auto;
+    flex: 0 0 auto;
+    accent-color: #106d9f;
+}
+</style>
+@endpush
 
-    <main class="wt-form-page">
-
+@section('content')
+<main class="wt-form-page">
         <a href="{{ route('admin.paquetes.index') }}"
            class="wt-form-back">
             ← Volver a paquetes
         </a>
-
         <h1>Registrar paquete turístico</h1>
-
         <p class="wt-form-intro">
             Completa la información del nuevo paquete
             que se ofrecerá en World Travel.
         </p>
-
         @if ($errors->any())
             <div class="wt-validation" role="alert">
                 <strong>Revisa los datos ingresados.</strong>
@@ -182,15 +181,11 @@
                 </ul>
             </div>
         @endif
-
         <form method="POST"
               action="{{ route('admin.paquetes.store') }}"
               class="wt-form-card">
-
             @csrf
-
             <div class="wt-form-grid">
-
                 <!-- Nombre del paquete -->
                 <div class="wt-field full">
                     <label for="titulo">Nombre del paquete *</label>
@@ -207,7 +202,6 @@
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- Ciudad -->
                 <div class="wt-field">
                     <label for="destino">Ciudad o destino *</label>
@@ -224,7 +218,6 @@
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- País -->
                 <div class="wt-field">
                     <label for="pais">País *</label>
@@ -241,7 +234,6 @@
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- Continente -->
                 <div class="wt-field">
                     <label for="continente">Continente *</label>
@@ -249,7 +241,6 @@
                             name="continente"
                             required>
                         <option value="">Selecciona un continente</option>
-
                         @foreach ([
                             'America' => 'América',
                             'Europa' => 'Europa',
@@ -257,20 +248,16 @@
                             'Africa' => 'África',
                             'Oceania' => 'Oceanía'
                         ] as $valor => $nombre)
-
                             <option value="{{ $valor }}"
                                 @selected(old('continente') === $valor)>
                                 {{ $nombre }}
                             </option>
-
                         @endforeach
                     </select>
-
                     @error('continente')
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- Duración -->
                 <div class="wt-field">
                     <label for="duracion_dias">Duración (días) *</label>
@@ -288,7 +275,6 @@
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- Precio -->
                 <div class="wt-field">
                     <label for="precio">Precio en USD *</label>
@@ -310,7 +296,6 @@
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- Imagen -->
                 <div class="wt-field">
                     <label for="imagen_url">URL de la imagen</label>
@@ -326,7 +311,6 @@
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- Descripción -->
                 <div class="wt-field full">
                     <label for="descripcion">Descripción *</label>
@@ -337,18 +321,14 @@
                         placeholder="Describe los atractivos del paquete..."
                         required
                     >{{ old('descripcion') }}</textarea>
-
                     @error('descripcion')
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-
                 <!-- Servicios incluidos -->
                 <div class="wt-field full">
                     <label>Servicios y características</label>
-
                     <div class="wt-options">
-
                         <label>
                             <input type="checkbox"
                                    name="incluye_vuelo"
@@ -356,7 +336,6 @@
                                    @checked(old('incluye_vuelo', false))>
                             Incluye vuelo
                         </label>
-
                         <label>
                             <input type="checkbox"
                                    name="incluye_hotel"
@@ -364,7 +343,6 @@
                                    @checked(old('incluye_hotel', true))>
                             Incluye hotel
                         </label>
-
                         <label>
                             <input type="checkbox"
                                    name="incluye_tour"
@@ -372,7 +350,6 @@
                                    @checked(old('incluye_tour', true))>
                             Incluye tours
                         </label>
-
                         <label>
                             <input type="checkbox"
                                    name="destacado"
@@ -380,7 +357,6 @@
                                    @checked(old('destacado', false))>
                             Paquete destacado
                         </label>
-
                         <label>
                             <input type="checkbox"
                                    name="activo"
@@ -388,29 +364,23 @@
                                    @checked(old('activo', true))>
                             Paquete activo
                         </label>
-
                     </div>
-
                     <span class="wt-help">
                         Los paquetes inactivos no deberían mostrarse
                         en el catálogo público.
                     </span>
                 </div>
-
             </div>
-
             <div class="wt-actions">
                 <a href="{{ route('admin.paquetes.index') }}"
                    class="wt-btn wt-btn-secondary">
                     Cancelar
                 </a>
-
                 <button type="submit"
                         class="wt-btn wt-btn-primary">
                     Guardar paquete
                 </button>
             </div>
-
         </form>
     </main>
-</x-layout>
+@endsection

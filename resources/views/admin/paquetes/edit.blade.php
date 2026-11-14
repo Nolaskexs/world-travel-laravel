@@ -1,16 +1,15 @@
+@extends('admin')
 
-<x-layout>
-    <x-slot:titulo>
-        World Travel | Editar paquete
-    </x-slot:titulo>
+@section('title', 'Editar paquete turístico')
+@section('active', 'paquetes')
 
-    <x-slot:recursos>
-        <style>
+@push('styles')
+<style>
             .wt-edit-page {
-                max-width: 1000px;
+                max-width: 1100px;
                 margin: 0 auto;
-                padding: 45px 22px 80px;
-                color: #17354a;
+                padding: 35px 25px 70px;
+                color: var(--ink, #17354a);
             }
 
             .wt-edit-back {
@@ -27,12 +26,12 @@
             }
 
             .wt-edit-intro {
-                color: #697d8d;
+                color: var(--slate, #697d8d);
                 margin-bottom: 30px;
             }
 
             .wt-edit-card {
-                background: #fff;
+                background: var(--surface, #fff);
                 padding: 30px;
                 border: 1px solid #e1eaf0;
                 border-radius: 16px;
@@ -68,8 +67,8 @@
                 padding: 13px;
                 border: 1px solid #cbdbe6;
                 border-radius: 9px;
-                background: #fff;
-                color: #17354a;
+                background: var(--surface, #fff);
+                color: var(--ink, #17354a);
                 font: inherit;
             }
 
@@ -151,40 +150,37 @@
 
             .wt-edit-help {
                 font-size: 12px;
-                color: #758a99;
+                color: var(--slate, #758a99);
             }
-
             @media (max-width: 650px) {
                 .wt-edit-grid {
                     grid-template-columns: 1fr;
                 }
-
                 .wt-edit-card {
                     padding: 20px;
                 }
             }
-        </style>
-    </x-slot:recursos>
+.wt-edit-options input[type="checkbox"] {
+    accent-color: #106d9f;
+}
+</style>
+@endpush
 
-    <main class="wt-edit-page">
-
+@section('content')
+<main class="wt-edit-page">
         <a href="{{ route('admin.paquetes.index') }}"
            class="wt-edit-back">
             ← Volver al listado
         </a>
-
         <h1>Editar paquete turístico</h1>
-
         <p class="wt-edit-intro">
             Actualiza la información de
             <strong>{{ $paquete->titulo }}</strong>.
             Los cambios se guardarán en MySQL.
         </p>
-
         @if ($errors->any())
             <div class="wt-edit-alert" role="alert">
                 <strong>Corrige los siguientes errores:</strong>
-
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -192,7 +188,6 @@
                 </ul>
             </div>
         @endif
-
         <form
             action="{{ route('admin.paquetes.update', $paquete) }}"
             method="POST"
@@ -200,15 +195,12 @@
         >
             @csrf
             @method('PUT')
-
             <div class="wt-edit-grid">
-
                 <!-- Nombre del paquete -->
                 <div class="wt-edit-field full">
                     <label for="titulo">
                         Nombre del paquete *
                     </label>
-
                     <input
                         type="text"
                         id="titulo"
@@ -217,20 +209,17 @@
                         value="{{ old('titulo', $paquete->titulo) }}"
                         required
                     >
-
                     @error('titulo')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- Destino -->
                 <div class="wt-edit-field">
                     <label for="destino">
                         Ciudad o destino *
                     </label>
-
                     <input
                         type="text"
                         id="destino"
@@ -239,20 +228,17 @@
                         value="{{ old('destino', $paquete->destino) }}"
                         required
                     >
-
                     @error('destino')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- País -->
                 <div class="wt-edit-field">
                     <label for="pais">
                         País *
                     </label>
-
                     <input
                         type="text"
                         id="pais"
@@ -261,20 +247,17 @@
                         value="{{ old('pais', $paquete->pais) }}"
                         required
                     >
-
                     @error('pais')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- Continente -->
                 <div class="wt-edit-field">
                     <label for="continente">
                         Continente *
                     </label>
-
                     <select
                         id="continente"
                         name="continente"
@@ -287,7 +270,6 @@
                             'Africa' => 'África',
                             'Oceania' => 'Oceanía'
                         ] as $valor => $nombre)
-
                             <option
                                 value="{{ $valor }}"
                                 @selected(
@@ -297,23 +279,19 @@
                             >
                                 {{ $nombre }}
                             </option>
-
                         @endforeach
                     </select>
-
                     @error('continente')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- Duración -->
                 <div class="wt-edit-field">
                     <label for="duracion_dias">
                         Duración en días *
                     </label>
-
                     <input
                         type="number"
                         id="duracion_dias"
@@ -323,20 +301,17 @@
                         value="{{ old('duracion_dias', $paquete->duracion_dias) }}"
                         required
                     >
-
                     @error('duracion_dias')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- Precio -->
                 <div class="wt-edit-field">
                     <label for="precio">
                         Precio en USD *
                     </label>
-
                     <input
                         type="number"
                         id="precio"
@@ -347,24 +322,20 @@
                         value="{{ old('precio', $paquete->precio) }}"
                         required
                     >
-
                     <span class="wt-edit-help">
                         La moneda utilizada es USD.
                     </span>
-
                     @error('precio')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- Imagen -->
                 <div class="wt-edit-field">
                     <label for="imagen_url">
                         URL de imagen
                     </label>
-
                     <input
                         type="url"
                         id="imagen_url"
@@ -373,40 +344,33 @@
                         value="{{ old('imagen_url', $paquete->imagen_url) }}"
                         placeholder="https://ejemplo.com/destino.jpg"
                     >
-
                     @error('imagen_url')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- Descripción -->
                 <div class="wt-edit-field full">
                     <label for="descripcion">
                         Descripción del paquete *
                     </label>
-
                     <textarea
                         id="descripcion"
                         name="descripcion"
                         maxlength="5000"
                         required
                     >{{ old('descripcion', $paquete->descripcion) }}</textarea>
-
                     @error('descripcion')
                         <span class="wt-edit-error">
                             {{ $message }}
                         </span>
                     @enderror
                 </div>
-
                 <!-- Servicios y características -->
                 <div class="wt-edit-field full">
                     <label>Servicios incluidos</label>
-
                     <div class="wt-edit-options">
-
                         <label>
                             <input type="hidden" name="incluye_vuelo" value="0">
                             <input
@@ -417,7 +381,6 @@
                             >
                             Incluye vuelo
                         </label>
-
                         <label>
                             <input type="hidden" name="incluye_hotel" value="0">
                             <input
@@ -428,7 +391,6 @@
                             >
                             Incluye hotel
                         </label>
-
                         <label>
                             <input type="hidden" name="incluye_tour" value="0">
                             <input
@@ -439,7 +401,6 @@
                             >
                             Incluye tours
                         </label>
-
                         <label>
                             <input type="hidden" name="destacado" value="0">
                             <input
@@ -450,7 +411,6 @@
                             >
                             Destacado
                         </label>
-
                         <label>
                             <input type="hidden" name="activo" value="0">
                             <input
@@ -461,17 +421,13 @@
                             >
                             Paquete activo
                         </label>
-
                     </div>
-
                     <span class="wt-edit-help">
                         Desmarca «Paquete activo» si deseas
                         ocultarlo del catálogo público.
                     </span>
                 </div>
-
             </div>
-
             <div class="wt-edit-actions">
                 <a
                     href="{{ route('admin.paquetes.index') }}"
@@ -479,7 +435,6 @@
                 >
                     Cancelar
                 </a>
-
                 <button
                     type="submit"
                     class="wt-edit-btn wt-edit-btn-primary"
@@ -487,8 +442,6 @@
                     Guardar cambios
                 </button>
             </div>
-
         </form>
-
     </main>
-</x-layout>
+@endsection

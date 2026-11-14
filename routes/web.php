@@ -210,3 +210,74 @@ if (app()->environment('local')) {
     })->name('itinerarios.preview');
 
 }
+
+/*
+|--------------------------------------------------------------------------
+| Secciones adicionales del panel administrativo
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'can:administrar'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+       
+// RESERVAS: Mostrar listado, búsqueda y filtros.
+Route::get(
+    '/reservas',
+    [\App\Http\Controllers\Admin\ReservaController::class, 'index']
+)->name('reservas.index');
+
+// RESERVAS: Mostrar detalles de una reserva.
+Route::get(
+    '/reservas/{reserva}',
+    [\App\Http\Controllers\Admin\ReservaController::class, 'show']
+)->name('reservas.show');
+
+// RESERVAS: Actualizar el estado.
+Route::patch(
+    '/reservas/{reserva}/estado',
+    [\App\Http\Controllers\Admin\ReservaController::class, 'update']
+)->name('reservas.update');
+
+
+
+        // CLIENTES: Listar y buscar.
+        Route::get(
+            '/clientes',
+            [\App\Http\Controllers\Admin\ClienteController::class, 'index']
+        )->name('clientes.index');
+
+        // CLIENTES: Ver detalles.
+        Route::get(
+            '/clientes/{cliente}',
+            [\App\Http\Controllers\Admin\ClienteController::class, 'show']
+        )->name('clientes.show');
+
+
+        Route::get('/destinos', function () {
+            return view('admin.seccion', [
+                'clave' => 'destinos',
+                'titulo' => 'Gestión de destinos',
+                'descripcion' => 'Administra los destinos turísticos disponibles.'
+            ]);
+        })->name('destinos.index');
+
+        Route::get('/facturacion', function () {
+            return view('admin.seccion', [
+                'clave' => 'facturacion',
+                'titulo' => 'Facturación',
+                'descripcion' => 'Consulta pagos y comprobantes de las reservas.'
+            ]);
+        })->name('facturacion.index');
+
+        Route::get('/ajustes', function () {
+            return view('admin.seccion', [
+                'clave' => 'ajustes',
+                'titulo' => 'Ajustes del sistema',
+                'descripcion' => 'Configura las opciones de administración de World Travel.'
+            ]);
+        })->name('ajustes.index');
+
+    });
