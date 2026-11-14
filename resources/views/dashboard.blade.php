@@ -83,6 +83,13 @@
 
         {{-- ===================== CONTENIDO CENTRAL ===================== --}}
         <main class="main" id="contenido">
+            @if (session('success'))
+                <div style="background: #e8f5e9; border: 1px solid #81c784; color: #1b5e20; padding: 14px 20px; border-radius: 12px; margin-bottom: 24px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(46,125,50,0.1);">
+                    <svg class="icon icon--sm" style="fill: #2e7d32; width: 22px; height: 22px; flex-shrink: 0;" aria-hidden="true"><use href="#i-check"/></svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+            @endif
+
             <section class="promo" aria-labelledby="promo-title">
                 <p class="promo__eyebrow">¡Explora nuevos destinos!</p>
                 <h1 class="promo__title" id="promo-title">Consigue hasta 30% de descuento en tu próximo viaje a Cusco o Cancún</h1>

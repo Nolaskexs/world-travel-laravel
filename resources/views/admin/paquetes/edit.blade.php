@@ -215,19 +215,29 @@
                         </span>
                     @enderror
                 </div>
-                <!-- Destino -->
+                <!-- Destino (Regla 4.5: Llave foránea en desplegable con nombres) -->
                 <div class="wt-edit-field">
                     <label for="destino">
-                        Ciudad o destino *
+                        Ciudad o destino turístico *
                     </label>
-                    <input
-                        type="text"
-                        id="destino"
-                        name="destino"
-                        maxlength="100"
-                        value="{{ old('destino', $paquete->destino) }}"
-                        required
-                    >
+                    @if (isset($destinos) && $destinos->isNotEmpty())
+                        <select id="destino" name="destino" required onchange="const p = this.options[this.selectedIndex].dataset.pais; if (p) document.getElementById('pais').value = p;">
+                            @foreach ($destinos as $dest)
+                                <option value="{{ $dest->nombre }}" data-pais="{{ $dest->pais }}" {{ old('destino', $paquete->destino) === $dest->nombre ? 'selected' : '' }}>
+                                    {{ $dest->nombre }} ({{ $dest->pais }})
+                                </option>
+                            @endforeach
+                        </select>
+                    @else
+                        <input
+                            type="text"
+                            id="destino"
+                            name="destino"
+                            maxlength="100"
+                            value="{{ old('destino', $paquete->destino) }}"
+                            required
+                        >
+                    @endif
                     @error('destino')
                         <span class="wt-edit-error">
                             {{ $message }}

@@ -224,7 +224,9 @@
         <div class="wt-alert wt-alert--success">{{ session('success') }}</div>
     @endif
     @if (session('error'))
-        <div class="wt-alert wt-alert--error">{{ session('error') }}</div>
+        <div class="wt-alert wt-alert--error">
+            <strong>Protección de Integridad Referencial:</strong> {{ session('error') }}
+        </div>
     @endif
 
     <section class="wt-stats-grid">

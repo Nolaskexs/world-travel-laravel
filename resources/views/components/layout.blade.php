@@ -58,9 +58,9 @@
       </picture>
       <div class="util">
         <a class="btn-sales" href="tel:0001010001">Para ventas 000-1010001</a>
-        <a href="#">Mis viajes</a>
+        <a href="{{ route('dashboard') }}">Mis viajes</a>
         <span class="sep"></span>
-        <a href="{{ route('ayuda') }}">Ayuda</a> <!-- -------------------------------------------------------------------------------S -->
+        <a href="{{ route('ayuda') }}">Ayuda</a>
         <span class="sep"></span>
         <button class="ico" type="button" aria-label="Soporte">
           <svg class="i"><use href="#i-headset"/></svg>
@@ -135,27 +135,31 @@
         <div>
           <h4>Ayuda</h4>
           <ul>
-            <li><a href="#">Contáctenos</a></li>
-            <li><a href="#">Recibos y reembolsos</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-            <li><a href="#">Planes de servicio al cliente</a></li>
-            <li><a href="#">Condiciones de transporte</a></li>
+            <li><a href="{{ route('ayuda') }}">Contáctenos</a></li>
+            <li><a href="{{ route('ayuda') }}">Recibos y reembolsos</a></li>
+            <li><a href="{{ route('ayuda') }}">Preguntas frecuentes</a></li>
+            <li><a href="{{ route('ayuda') }}">Planes de servicio al cliente</a></li>
+            <li><a href="{{ route('ayuda') }}">Condiciones de transporte</a></li>
           </ul>
         </div>
         <div>
           <h4>Acerca de World Travel</h4>
           <ul>
-            <li><a href="#">Acerca de World Travel</a></li>
-            <li><a href="#">Centro de noticias</a></li>
-            <li><a href="#">Políticas e información legal</a></li>
-            <li><a href="#">Accesibilidad del sitio web</a></li>
-            <li><a href="#">Compatibilidad del navegador</a></li>
+            <li><a href="{{ route('ayuda') }}">Acerca de World Travel</a></li>
+            <li><a href="{{ route('ayuda') }}">Centro de noticias</a></li>
+            <li><a href="{{ route('ayuda') }}">Políticas e información legal</a></li>
+            <li><a href="{{ route('ayuda') }}">Accesibilidad del sitio web</a></li>
+            <li><a href="{{ route('ayuda') }}">Compatibilidad del navegador</a></li>
           </ul>
         </div>
         <div>
           <h4>Adicionales</h4>
-          <a href="#">Libro de reclamaciones</a>
-          <br><img src="{{ asset('icons/libro-de-reclamaciones.jpg') }}" class="ph libro"><br>
+          <a href="{{ route('reclamaciones') }}">Libro de reclamaciones</a>
+          <br>
+          <a href="{{ route('reclamaciones') }}">
+              <img class="libro" src="{{ asset('icons/libro-reclamaciones.png') }}" alt="Libro de Reclamaciones">
+          </a>
+          <br>
         </div>
       </div>
     </div>

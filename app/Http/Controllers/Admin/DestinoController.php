@@ -100,18 +100,37 @@ class DestinoController extends Controller
 
     /**
      * Eliminar un destino turístico.
+     * Respeta la integridad referencial (Regla 4.3 de Tecsup).
      */
-    public function destroy(Destino $destino): RedirectResponse
+    public function destroy(Request $request, Destino $destino): RedirectResponse
     {
-        // Verificar si existen paquetes asociados al nombre de este destino
-        $paquetesAsociados = Paquete::where('destino', $destino->nombre)->count();
+        // Verificar si existen paquetes asociados al nombre o ID de este destino
+        $paquetesQuery = Paquete::where('destino', $destino->nombre)
+            ->orWhere('destino_id', $destino->id);
+        $paquetesAsociados = $paquetesQuery->count();
 
         if ($paquetesAsociados > 0) {
+            // Si el administrador solicita forzar la desvinculación
+            if ($request->boolean('forzar')) {
+                Paquete::where('destino', $destino->nombre)
+                    ->orWhere('destino_id', $destino->id)
+                    ->update([
+                        'destino_id' => null,
+                        'destino'    => 'Destino por definir',
+                    ]);
+
+                $destino->delete();
+
+                return redirect()
+                    ->route('admin.destinos.index')
+                    ->with('success', "Destino '{$destino->nombre}' eliminado. Se desvincularon {$paquetesAsociados} paquetes turísticos para proteger la integridad de los datos.");
+            }
+
             return redirect()
                 ->route('admin.destinos.index')
                 ->with(
                     'error',
-                    "No se puede eliminar {$destino->nombre} porque tiene {$paquetesAsociados} paquetes turísticos asociados."
+                    "No se puede eliminar {$destino->nombre} porque tiene {$paquetesAsociados} paquete(s) turístico(s) asociado(s). Esto protege la integridad referencial de la BD. Para eliminarlo, puedes desvincular primero los paquetes o probar eliminando un destino sin paquetes como Bali o Bangkok."
                 );
         }
 

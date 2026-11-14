@@ -2,10 +2,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CatalogoViajesController;
 use App\Http\Controllers\ItinerarioController;
 use App\Http\Controllers\BuscadorController;
+use App\Http\Controllers\ReservaClienteController;
 use App\Http\Controllers\Admin\PaqueteController;
 use App\Http\Controllers\Admin\DestinoController;
 use App\Http\Controllers\Admin\FacturacionController;
@@ -28,6 +30,14 @@ Route::view('/', 'inicio')->name('inicio');
 Route::get('/buscar', [BuscadorController::class, 'index'])->name('search');
 
 Route::view('/ayuda', 'ayuda')->name('ayuda');
+
+Route::get('/libro-de-reclamaciones', function () {
+    return view('reclamaciones');
+})->name('reclamaciones');
+
+Route::post('/libro-de-reclamaciones', function (Request $request) {
+    return back()->with('success', 'Tu hoja de reclamación ha sido registrada correctamente.');
+})->name('reclamaciones.store');
 
 // IMPORTANTE:
 // No agregamos rutas de login, logout o registro.
@@ -140,12 +150,15 @@ Route::get('/alojamientos/{codigo}', function (string $codigo) {
 
 /*
 |--------------------------------------------------------------------------
-| 7. Confirmación de reserva de alojamiento
+| 7. Proceso principal: Confirmación y registro de reserva en la BD
 |--------------------------------------------------------------------------
 */
 
-Route::view('/reservas/confirmar', 'confirmar-reserva')
+Route::get('/reservas/confirmar', [ReservaClienteController::class, 'create'])
     ->name('reservas.confirmar');
+
+Route::post('/reservas', [ReservaClienteController::class, 'store'])
+    ->name('reservas.store');
 
 /*
 |--------------------------------------------------------------------------

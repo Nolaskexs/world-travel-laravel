@@ -202,18 +202,29 @@
                         <span class="wt-error">{{ $message }}</span>
                     @enderror
                 </div>
-                <!-- Ciudad -->
+                <!-- Ciudad / Destino (Regla 4.5: Llave foránea con lista desplegable) -->
                 <div class="wt-field">
-                    <label for="destino">Ciudad o destino *</label>
-                    <input
-                        id="destino"
-                        type="text"
-                        name="destino"
-                        maxlength="100"
-                        value="{{ old('destino') }}"
-                        placeholder="Ejemplo: París"
-                        required
-                    >
+                    <label for="destino">Ciudad o destino turístico *</label>
+                    @if (isset($destinos) && $destinos->isNotEmpty())
+                        <select id="destino" name="destino" required onchange="const p = this.options[this.selectedIndex].dataset.pais; if (p) document.getElementById('pais').value = p;">
+                            <option value="">-- Selecciona un destino registrado --</option>
+                            @foreach ($destinos as $dest)
+                                <option value="{{ $dest->nombre }}" data-pais="{{ $dest->pais }}" {{ old('destino') === $dest->nombre ? 'selected' : '' }}>
+                                    {{ $dest->nombre }} ({{ $dest->pais }})
+                                </option>
+                            @endforeach
+                        </select>
+                    @else
+                        <input
+                            id="destino"
+                            type="text"
+                            name="destino"
+                            maxlength="100"
+                            value="{{ old('destino') }}"
+                            placeholder="Ejemplo: París"
+                            required
+                        >
+                    @endif
                     @error('destino')
                         <span class="wt-error">{{ $message }}</span>
                     @enderror

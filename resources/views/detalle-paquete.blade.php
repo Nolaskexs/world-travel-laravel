@@ -47,8 +47,8 @@
                 <div class="wt-booking-card__line"><span>Alojamiento</span><strong>{{ $paquete->incluye_hotel ? 'Incluido' : 'No incluido' }}</strong></div>
                 <div class="wt-booking-card__line"><span>Vuelo</span><strong>{{ $paquete->incluye_vuelo ? 'Incluido' : 'No incluido' }}</strong></div>
                 <div class="wt-booking-card__line"><span>Actividades</span><strong>{{ $paquete->incluye_tour ? 'Incluidas' : 'No incluidas' }}</strong></div>
-                <button class="wt-button wt-button--blue wt-booking-card__disabled" type="button" disabled>Reservar próximamente</button>
-                <p class="wt-booking-card__disclaimer">Todavía no se realizan reservas ni pagos desde esta sección.</p>
+                <a href="{{ route('reservas.confirmar', ['paquete_id' => $paquete->id]) }}" class="wt-button wt-button--blue" style="display: block; text-align: center; text-decoration: none; font-weight: 700; padding: 14px;">Reservar este paquete</a>
+                <p class="wt-booking-card__disclaimer">Confirmación inmediata · Registro directo en base de datos.</p>
                 <a class="wt-booking-card__link" href="{{ route('ofertas') }}">Descubrir otras ofertas →</a>
             </aside>
         </section>

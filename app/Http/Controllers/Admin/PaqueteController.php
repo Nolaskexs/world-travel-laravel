@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Destino;
 use App\Models\Paquete;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +27,8 @@ class PaqueteController extends Controller
     // CREATE: Mostrar el formulario
     public function create(): View
     {
-        return view('admin.paquetes.create');
+        $destinos = Destino::orderBy('nombre')->get();
+        return view('admin.paquetes.create', compact('destinos'));
     }
 
     // CREATE: Guardar el paquete en MySQL
@@ -44,7 +46,8 @@ class PaqueteController extends Controller
     // UPDATE: Mostrar formulario de edición
     public function edit(Paquete $paquete): View
     {
-        return view('admin.paquetes.edit', compact('paquete'));
+        $destinos = Destino::orderBy('nombre')->get();
+        return view('admin.paquetes.edit', compact('paquete', 'destinos'));
     }
 
     // UPDATE: Guardar las modificaciones
@@ -116,6 +119,12 @@ class PaqueteController extends Controller
 
         // World Travel utiliza USD para todos los paquetes.
         $datos['moneda'] = 'USD';
+
+        // Asociar la llave foránea destino_id si existe el destino registrado (Regla 4.5)
+        $destinoObj = Destino::where('nombre', $datos['destino'])->first();
+        if ($destinoObj) {
+            $datos['destino_id'] = $destinoObj->id;
+        }
 
         // Casillas de verificación del formulario.
         $datos['incluye_vuelo'] = $request->boolean('incluye_vuelo');

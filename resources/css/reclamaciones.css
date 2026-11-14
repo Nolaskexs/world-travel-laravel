@@ -1,0 +1,232 @@
+/* Contenedor principal centrado */
+.claim-container {
+    max-width: 780px;
+    margin: 2.5rem auto 4rem;
+}
+
+.claim-form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Alerta de confirmación */
+.claim-alert {
+    background: #DCFCE7;
+    color: #166534;
+    border: 1px solid #86EFAC;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+/* Tarjetas blancas estilo Despegar adaptadas a World Travel */
+.claim-card {
+    background: #ffffff;
+    border: 1px solid var(--line, #D6D9DC);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(12, 27, 38, 0.04);
+}
+
+/* Encabezado de Hoja de Reclamación */
+.claim-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.claim-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink, #0C1B26);
+    display: grid;
+    place-items: center;
+    color: var(--ink, #0C1B26);
+    flex-shrink: 0;
+}
+
+.claim-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.claim-header h1 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--ink, #0C1B26);
+}
+
+.claim-legal {
+    font-size: 0.85rem;
+    color: var(--mut, #5B6670);
+    line-height: 1.6;
+    display: grid;
+    gap: 0.2rem;
+}
+
+.claim-note {
+    margin-top: 0.25rem;
+}
+
+/* Títulos de sección */
+.claim-card h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink, #0C1B26);
+    margin-bottom: 0.35rem;
+}
+
+.claim-subtitle {
+    font-size: 0.92rem;
+    color: var(--mut, #5B6670);
+    margin-bottom: 1.5rem;
+}
+
+/* Campos del formulario */
+.claim-group {
+    margin-top: 1.4rem;
+}
+
+.claim-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink, #0C1B26);
+    margin-bottom: 0.55rem;
+    text-transform: uppercase;
+}
+
+.claim-input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid #9AA2A9;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--ink, #0C1B26);
+    background: #ffffff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.claim-input::placeholder {
+    color: #7B858E;
+    font-style: italic;
+}
+
+.claim-input:focus {
+    outline: none;
+    border-color: var(--ink, #0C1B26);
+    box-shadow: 0 0 0 2px rgba(12, 27, 38, 0.15);
+}
+
+.claim-textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* Selector desplegable */
+.claim-select-wrap {
+    position: relative;
+}
+
+.claim-select {
+    appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.claim-select-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--ink, #0C1B26);
+    pointer-events: none;
+}
+
+/* Radio buttons con el azul oscuro de World Travel */
+.claim-radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    margin-top: 0.4rem;
+}
+
+.claim-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.95rem;
+    color: var(--ink, #0C1B26);
+    cursor: pointer;
+}
+
+.claim-radio input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #7B858E;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.claim-radio input[type="radio"]::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ink, #0C1B26);
+    transform: scale(0);
+    transition: transform 0.18s ease-in-out;
+}
+
+.claim-radio input[type="radio"]:checked {
+    border-color: var(--ink, #0C1B26);
+}
+
+.claim-radio input[type="radio"]:checked::after {
+    transform: scale(1);
+}
+
+/* Botón final píldora en azul oscuro (#0C1B26) */
+.claim-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.claim-submit {
+    background: var(--ink, #0C1B26);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.85rem 2.2rem;
+    border-radius: 999px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.claim-submit:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+    .claim-card {
+        padding: 1.35rem;
+    }
+    .claim-actions {
+        justify-content: stretch;
+    }
+    .claim-submit {
+        width: 100%;
+    }
+}

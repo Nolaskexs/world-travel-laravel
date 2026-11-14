@@ -235,7 +235,7 @@
           <span>Precio final</span>
           <span>${money(total(f) * paxCount)}</span>
         </p>
-        <a class="btn-dark" href="#">Agregar al carrito</a>
+        <a class="btn-dark" href="/reservas/confirmar?num_pasajeros=${paxCount}&fecha_viaje=${encodeURIComponent(window.__SEARCH_PARAMS__?.start || '')}">Reservar vuelo</a>
       </div>
     </article>`;
 
