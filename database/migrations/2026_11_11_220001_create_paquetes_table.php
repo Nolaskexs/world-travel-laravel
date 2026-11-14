@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('paquetes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('destino_id')->nullable()->constrained('destinos')->nullOnDelete();
             $table->string('titulo', 150);
             $table->string('destino', 100);
             $table->string('pais', 100)->default('Perú');

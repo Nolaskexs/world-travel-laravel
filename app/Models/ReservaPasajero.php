@@ -3,8 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ReservaPasajero extends Model
 {
-    //
+    protected $fillable = [
+        'reserva_id',
+        'nombre',
+        'documento',
+    ];
+
+    /**
+     * Reserva a la que pertenece el pasajero.
+     */
+    public function reserva(): BelongsTo
+    {
+        return $this->belongsTo(Reserva::class);
+    }
 }

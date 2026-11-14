@@ -8,24 +8,39 @@
   const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
   /* ---------- Datos (reemplazar por datos del backend / loops EJS-PHP) ---------- */
-  const CITIES = [
+  const DEFAULT_CITIES = [
     ["Lima", "LIM", "Perú"],
     ["Cusco", "CUZ", "Perú"],
     ["Arequipa", "AQP", "Perú"],
-    ["Roma", "FCO", "Italia"],
-    ["Tokio", "HND", "Japón"],
-    ["Nagoya", "NGO", "Japón"],
-    ["Osaka", "KIX", "Japón"],
+    ["Tarapoto", "TPP", "Perú"],
+    ["Máncora", "TYL", "Perú"],
+    ["Puno", "JUL", "Perú"],
+    ["Ica", "ICG", "Perú"],
     ["Fukuoka", "FUK", "Japón"],
-    ["Hiroshima", "HIJ", "Japón"],
-    ["Nueva Delhi", "DEL", "India"],
+    ["Tokio", "HND", "Japón"],
+    ["Bali", "DPS", "Indonesia"],
+    ["Bangkok", "BKK", "Tailandia"],
+    ["Cancún", "CUN", "México"],
+    ["Ciudad de México", "MEX", "México"],
+    ["Cartagena", "CTG", "Colombia"],
+    ["Buenos Aires", "EZE", "Argentina"],
+    ["Río de Janeiro", "GIG", "Brasil"],
+    ["Santiago", "SCL", "Chile"],
+    ["Miami", "MIA", "Estados Unidos"],
+    ["Nueva York", "JFK", "Estados Unidos"],
     ["Madrid", "MAD", "España"],
     ["París", "CDG", "Francia"],
-    ["Nueva York", "JFK", "Estados Unidos"],
-    ["Cancún", "CUN", "México"],
-    ["Buenos Aires", "EZE", "Argentina"],
-    ["Bogotá", "BOG", "Colombia"],
+    ["Roma", "FCO", "Italia"],
+    ["Londres", "LHR", "Reino Unido"],
+    ["Santorini", "JTR", "Grecia"],
+    ["Dubái", "DXB", "Emiratos Árabes Unidos"],
+    ["El Cairo", "CAI", "Egipto"],
+    ["Marrakech", "RAK", "Marruecos"],
+    ["Sídney", "SYD", "Australia"],
   ];
+  const CITIES = (window.__DESTINOS_DB__ && window.__DESTINOS_DB__.length)
+    ? window.__DESTINOS_DB__
+    : DEFAULT_CITIES;
   
   const PACKAGES = [
     ["Vuelo a Roma", "RM", "1.230", 11],
@@ -246,6 +261,8 @@
       $(".cal__prev", p).classList.toggle("is-hidden", st.view <= firstOfMonth);
       startL.textContent = st.start ? fmt(st.start) : "Salida";
       endL.textContent = st.end ? fmt(st.end) : "Retorno";
+      if ($("#inputStart")) $("#inputStart").value = st.start ? st.start.toISOString().split("T")[0] : "";
+      if ($("#inputEnd")) $("#inputEnd").value = st.end ? st.end.toISOString().split("T")[0] : "";
     };
 
     const shift = (n) => {
@@ -301,7 +318,10 @@
       label = $("#paxLabel"),
       MAX = 9;
       
-    let applied = { adults: 1, kids: 0, infants: 0 },
+    const initAdults = Number($("#inputAdults")?.value) || 1;
+    const initKids = Number($("#inputKids")?.value) || 0;
+    const initInfants = Number($("#inputInfants")?.value) || 0;
+    let applied = { adults: initAdults, kids: initKids, infants: initInfants },
       draft = { ...applied };
       
     const total = (o) => o.adults + o.kids + o.infants;
@@ -336,6 +356,9 @@
         applied = { ...draft };
         const n = total(applied);
         label.textContent = `${n} pasajero${n > 1 ? "s" : ""}`;
+        if ($("#inputAdults")) $("#inputAdults").value = applied.adults;
+        if ($("#inputKids")) $("#inputKids").value = applied.kids;
+        if ($("#inputInfants")) $("#inputInfants").value = applied.infants;
       }
       closeDD("pax");
     });
@@ -420,10 +443,12 @@
 
   /* ---------- Formularios ---------- */
   function initForms() {
-    $("#searchForm").addEventListener("submit", (e) => {
-      e.preventDefault(); // home: va a resultados; en search.html (existe #list) se queda y re-consulta
-      if (!$("#list")) location.href = "search.html";
-    });
+    const sForm = $("#searchForm");
+    if (sForm) {
+      sForm.addEventListener("submit", (e) => {
+        // Permitir que el formulario envíe los parámetros GET de búsqueda
+      });
+    }
     
     const f = $("#newsletter"),
       msg = $("#nlMsg");

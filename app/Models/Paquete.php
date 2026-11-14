@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Paquete extends Model
 {
     protected $fillable = [
-        'titulo', 'destino', 'pais', 'continente', 'descripcion', 'duracion_dias',
+        'destino_id', 'titulo', 'destino', 'pais', 'continente', 'descripcion', 'duracion_dias',
         'precio', 'moneda', 'imagen_url', 'incluye_vuelo', 'incluye_hotel',
         'incluye_tour', 'destacado', 'activo',
     ];
@@ -26,8 +27,18 @@ class Paquete extends Model
         ];
     }
 
+    public function destinoRel(): BelongsTo
+    {
+        return $this->belongsTo(Destino::class, 'destino_id');
+    }
+
     public function ofertas(): HasMany
     {
         return $this->hasMany(Oferta::class);
+    }
+
+    public function reservas(): HasMany
+    {
+        return $this->hasMany(Reserva::class);
     }
 }

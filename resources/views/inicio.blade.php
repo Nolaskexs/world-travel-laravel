@@ -3,11 +3,19 @@
     
     <x-slot:recursos>
         @vite(['resources/css/styles.css', 'resources/js/main.js'])
+        <script>
+            window.__DESTINOS_DB__ = @json($destinosCatalogo ?? []);
+        </script>
     </x-slot:recursos>
 
   <!-- partial: buscador -->
   <section class="wrap" aria-label="Buscador de vuelos">
     <form class="sf" id="searchForm" method="GET" action="{{ route('search') }}" autocomplete="off">
+      <input type="hidden" name="start" id="inputStart" value="">
+      <input type="hidden" name="end" id="inputEnd" value="">
+      <input type="hidden" name="adults" id="inputAdults" value="1">
+      <input type="hidden" name="kids" id="inputKids" value="0">
+      <input type="hidden" name="infants" id="inputInfants" value="0">
       <div class="sf__top">
         <fieldset class="trip"><legend class="sr">Tipo de viaje</legend>
           <label class="radio"><input type="radio" name="trip" value="round" checked>Ida y vuelta</label>

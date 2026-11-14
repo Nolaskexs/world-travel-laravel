@@ -13,17 +13,6 @@ return new class extends Migration
     {
         Schema::create('itinerarios', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::create('itinerarios', function (Blueprint $table) {
-            $table->id();
 
             $table->foreignId('user_id')
                 ->constrained('users')
@@ -41,5 +30,13 @@ return new class extends Migration
 
             $table->timestamps();
         });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('itinerarios');
     }
 };

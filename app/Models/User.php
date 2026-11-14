@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+#[Fillable(['name', 'email', 'password', 'rol'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -28,5 +30,29 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Verificar si el usuario tiene rol de administrador.
+     */
+    public function esAdmin(): bool
+    {
+        return $this->rol === 'admin';
+    }
+
+    /**
+     * Reservas realizadas por el usuario.
+     */
+    public function reservas(): HasMany
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
+    /**
+     * Itinerarios creados por el usuario.
+     */
+    public function itinerarios(): HasMany
+    {
+        return $this->hasMany(Itinerario::class);
     }
 }

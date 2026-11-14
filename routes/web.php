@@ -5,7 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CatalogoViajesController;
 use App\Http\Controllers\ItinerarioController;
+use App\Http\Controllers\BuscadorController;
 use App\Http\Controllers\Admin\PaqueteController;
+use App\Http\Controllers\Admin\DestinoController;
+use App\Http\Controllers\Admin\FacturacionController;
+use App\Http\Controllers\Admin\AjustesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +25,7 @@ Route::view('/', 'inicio')->name('inicio');
 |--------------------------------------------------------------------------
 */
 
-Route::view('/buscar', 'search')->name('search');
+Route::get('/buscar', [BuscadorController::class, 'index'])->name('search');
 
 Route::view('/ayuda', 'ayuda')->name('ayuda');
 
@@ -52,7 +56,7 @@ Route::get('/dashboard', [
 Route::get('/admin', function () {
 
     // Los clientes no pueden ingresar al panel.
-    if (auth()->user()->rol !== 'admin') {
+    if (!auth()->user()->esAdmin()) {
         return redirect()->route('dashboard');
     }
 
@@ -256,28 +260,19 @@ Route::patch(
         )->name('clientes.show');
 
 
-        Route::get('/destinos', function () {
-            return view('admin.seccion', [
-                'clave' => 'destinos',
-                'titulo' => 'Gestión de destinos',
-                'descripcion' => 'Administra los destinos turísticos disponibles.'
-            ]);
-        })->name('destinos.index');
+        // DESTINOS: CRUD completo
+        Route::get('/destinos', [DestinoController::class, 'index'])->name('destinos.index');
+        Route::get('/destinos/crear', [DestinoController::class, 'create'])->name('destinos.create');
+        Route::post('/destinos', [DestinoController::class, 'store'])->name('destinos.store');
+        Route::get('/destinos/{destino}/editar', [DestinoController::class, 'edit'])->name('destinos.edit');
+        Route::put('/destinos/{destino}', [DestinoController::class, 'update'])->name('destinos.update');
+        Route::delete('/destinos/{destino}', [DestinoController::class, 'destroy'])->name('destinos.destroy');
 
-        Route::get('/facturacion', function () {
-            return view('admin.seccion', [
-                'clave' => 'facturacion',
-                'titulo' => 'Facturación',
-                'descripcion' => 'Consulta pagos y comprobantes de las reservas.'
-            ]);
-        })->name('facturacion.index');
+        // FACTURACIÓN: Listado y balance financiero
+        Route::get('/facturacion', [FacturacionController::class, 'index'])->name('facturacion.index');
 
-        Route::get('/ajustes', function () {
-            return view('admin.seccion', [
-                'clave' => 'ajustes',
-                'titulo' => 'Ajustes del sistema',
-                'descripcion' => 'Configura las opciones de administración de World Travel.'
-            ]);
-        })->name('ajustes.index');
+        // AJUSTES: Configuración del sistema y de la agencia
+        Route::get('/ajustes', [AjustesController::class, 'index'])->name('ajustes.index');
+        Route::put('/ajustes', [AjustesController::class, 'update'])->name('ajustes.update');
 
     });

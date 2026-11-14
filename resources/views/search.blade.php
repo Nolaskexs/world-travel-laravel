@@ -3,28 +3,39 @@
     
     <x-slot:recursos>
         @vite(['resources/css/styles.css', 'resources/css/search.css', 'resources/js/searchmain.js', 'resources/js/search.js'])
+        <script>
+            window.__DESTINOS_DB__ = @json($destinosData ?? $destinosCatalogo ?? []);
+            window.__VUELOS_DB__ = @json($vuelosData ?? []);
+            window.__SEARCH_PARAMS__ = @json($searchParams ?? []);
+        </script>
     </x-slot:recursos>
 
     <!-- partial: buscador compacto -->
-    <section class="wrap" aria-label="Buscador de vuelos">
-      <form class="sf sf--bar" id="searchForm" autocomplete="off">
+    <section class="wrap wrap--search" aria-label="Buscador de vuelos">
+      <form class="sf sf--bar" id="searchForm" method="GET" action="{{ route('search') }}" autocomplete="off">
+        <input type="hidden" name="start" id="inputStart" value="{{ $start ?? '2026-11-13' }}">
+        <input type="hidden" name="end" id="inputEnd" value="{{ $end ?? '2026-11-20' }}">
+        <input type="hidden" name="adults" id="inputAdults" value="{{ $adults ?? 3 }}">
+        <input type="hidden" name="kids" id="inputKids" value="{{ $kids ?? 0 }}">
+        <input type="hidden" name="infants" id="inputInfants" value="{{ $infants ?? 0 }}">
+
         <div class="sf__top">
           <fieldset class="trip">
             <legend class="sr">Tipo de viaje</legend>
             <label class="radio">
-              <input type="radio" name="trip" value="round" checked>Ida y vuelta
+              <input type="radio" name="trip" value="round" {{ ($trip ?? 'round') === 'round' ? 'checked' : '' }}>Ida y vuelta
             </label>
             <label class="radio">
-              <input type="radio" name="trip" value="one">Solo ida
+              <input type="radio" name="trip" value="one" {{ ($trip ?? '') === 'one' ? 'checked' : '' }}>Solo ida
             </label>
             <label class="radio">
-              <input type="radio" name="trip" value="multi">Multidestino
+              <input type="radio" name="trip" value="multi" {{ ($trip ?? '') === 'multi' ? 'checked' : '' }}>Multidestino
             </label>
           </fieldset>
           <div class="dd-wrap">
             <button type="button" class="chip" data-dd="pax" aria-expanded="false">
               <svg class="i"><use href="#i-user"/></svg>
-              <span id="paxLabel">1 pasajero</span>
+              <span id="paxLabel">{{ $totalPax ?? (($adults ?? 1) + ($kids ?? 0) + ($infants ?? 0)) }} {{ ($totalPax ?? (($adults ?? 1) + ($kids ?? 0) + ($infants ?? 0))) > 1 ? 'pasajeros' : 'pasajero' }}</span>
             </button>
             <div class="dd dd--pax" id="dd-pax" hidden>
               <div class="prow" data-pax="adults">
@@ -33,7 +44,7 @@
                 </div>
                 <div class="cnt">
                   <button type="button" data-step="-1" aria-label="Quitar adulto"><svg class="i"><use href="#i-minus"/></svg></button>
-                  <output>1</output>
+                  <output>{{ $adults ?? 1 }}</output>
                   <button type="button" data-step="1" aria-label="Agregar adulto"><svg class="i"><use href="#i-plus"/></svg></button>
                 </div>
               </div>
@@ -43,7 +54,7 @@
                 </div>
                 <div class="cnt">
                   <button type="button" data-step="-1" aria-label="Quitar menor"><svg class="i"><use href="#i-minus"/></svg></button>
-                  <output>0</output>
+                  <output>{{ $kids ?? 0 }}</output>
                   <button type="button" data-step="1" aria-label="Agregar menor"><svg class="i"><use href="#i-plus"/></svg></button>
                 </div>
               </div>
@@ -53,7 +64,7 @@
                 </div>
                 <div class="cnt">
                   <button type="button" data-step="-1" aria-label="Quitar infante"><svg class="i"><use href="#i-minus"/></svg></button>
-                  <output>0</output>
+                  <output>{{ $infants ?? 0 }}</output>
                   <button type="button" data-step="1" aria-label="Agregar infante"><svg class="i"><use href="#i-plus"/></svg></button>
                 </div>
               </div>
@@ -69,7 +80,7 @@
           <div class="dd-wrap">
             <label class="field">
               <svg class="i"><use href="#i-pin"/></svg>
-              <input id="origin" name="origin" value="Fukuoka" placeholder="Origen" aria-label="Origen" data-dd="origin">
+              <input id="origin" name="origin" value="{{ $origin ?? '' }}" placeholder="Origen" aria-label="Origen" data-dd="origin">
             </label>
             <div class="dd dd--list" id="dd-origin" hidden></div>
           </div>
@@ -81,19 +92,19 @@
           <div class="dd-wrap">
             <label class="field">
               <svg class="i"><use href="#i-pin"/></svg>
-              <input id="destination" name="destination" value="Lima" placeholder="Destino" aria-label="Destino" data-dd="destination">
+              <input id="destination" name="destination" value="{{ $destination ?? '' }}" placeholder="Destino" aria-label="Destino" data-dd="destination">
             </label>
             <div class="dd dd--list" id="dd-destination" hidden></div>
           </div>
           
           <div class="dates dd-wrap">
-            <button type="button" class="field" id="startBtn" data-date="2026-11-15" data-dd="cal" data-field="start" aria-expanded="false">
+            <button type="button" class="field" id="startBtn" data-date="{{ $start ?? '2026-11-13' }}" data-dd="cal" data-field="start" aria-expanded="false">
               <svg class="i"><use href="#i-cal"/></svg>
-              <span id="startLabel">15 nov</span>
+              <span id="startLabel">{{ $start ? \Carbon\Carbon::parse($start)->translatedFormat('d M') : '13 nov' }}</span>
             </button>
-            <button type="button" class="field" id="endBtn" data-date="2026-11-18" data-dd="cal" data-field="end" aria-expanded="false">
+            <button type="button" class="field" id="endBtn" data-date="{{ $end ?? '2026-11-20' }}" data-dd="cal" data-field="end" aria-expanded="false">
               <svg class="i"><use href="#i-cal"/></svg>
-              <span id="endLabel">18 nov</span>
+              <span id="endLabel">{{ $end ? \Carbon\Carbon::parse($end)->translatedFormat('d M') : '20 nov' }}</span>
             </button>
             
             <div class="dd dd--cal" id="dd-cal" data-field="start" hidden>
@@ -117,11 +128,8 @@
       </form>
     </section>
 
-<!-- Filtros de búsqueda y resultados -->
-      <button class="fbtn" id="openFilters" type="button" aria-controls="filters">
-        <svg class="i"><use href="#i-filter"/></svg>Filtros
-      </button>
-      
+    <!-- Filtros de búsqueda y resultados -->
+    <div class="wrap wrap--search">
       <div class="scrim" id="scrim"></div>
       
       <div class="layout">
@@ -213,6 +221,7 @@
         <button type="button" class="btn-more" id="moreBtn">Mostrar más resultados</button>
       </section>
       </div>
+    </div>
 
     <div class="modal" id="modal" aria-hidden="true">
       <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="mTitle">

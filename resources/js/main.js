@@ -7,7 +7,39 @@
   const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
   /* ---------- Datos (reemplazar por datos del backend / loops EJS-PHP) ---------- */
-  const CITIES = [['Lima','LIM','Perú'],['Cusco','CUZ','Perú'],['Arequipa','AQP','Perú'],['Roma','FCO','Italia'],['Tokio','HND','Japón'],['Nagoya','NGO','Japón'],['Osaka','KIX','Japón'],['Fukuoka','FUK','Japón'],['Hiroshima','HIJ','Japón'],['Nueva Delhi','DEL','India'],['Madrid','MAD','España'],['París','CDG','Francia'],['Nueva York','JFK','Estados Unidos'],['Cancún','CUN','México'],['Buenos Aires','EZE','Argentina'],['Bogotá','BOG','Colombia']];
+  const DEFAULT_CITIES = [
+    ["Lima", "LIM", "Perú"],
+    ["Cusco", "CUZ", "Perú"],
+    ["Arequipa", "AQP", "Perú"],
+    ["Tarapoto", "TPP", "Perú"],
+    ["Máncora", "TYL", "Perú"],
+    ["Puno", "JUL", "Perú"],
+    ["Ica", "ICG", "Perú"],
+    ["Fukuoka", "FUK", "Japón"],
+    ["Tokio", "HND", "Japón"],
+    ["Bali", "DPS", "Indonesia"],
+    ["Bangkok", "BKK", "Tailandia"],
+    ["Cancún", "CUN", "México"],
+    ["Ciudad de México", "MEX", "México"],
+    ["Cartagena", "CTG", "Colombia"],
+    ["Buenos Aires", "EZE", "Argentina"],
+    ["Río de Janeiro", "GIG", "Brasil"],
+    ["Santiago", "SCL", "Chile"],
+    ["Miami", "MIA", "Estados Unidos"],
+    ["Nueva York", "JFK", "Estados Unidos"],
+    ["Madrid", "MAD", "España"],
+    ["París", "CDG", "Francia"],
+    ["Roma", "FCO", "Italia"],
+    ["Londres", "LHR", "Reino Unido"],
+    ["Santorini", "JTR", "Grecia"],
+    ["Dubái", "DXB", "Emiratos Árabes Unidos"],
+    ["El Cairo", "CAI", "Egipto"],
+    ["Marrakech", "RAK", "Marruecos"],
+    ["Sídney", "SYD", "Australia"],
+  ];
+  const CITIES = (window.__DESTINOS_DB__ && window.__DESTINOS_DB__.length)
+    ? window.__DESTINOS_DB__
+    : DEFAULT_CITIES;
   const PACKAGES = [
     ['Vuelo a Roma','RM','1.230',11, 'icons/roma.jpg', 'icons/aireuropa.png'],
     ['Vuelo a Tokio','TKY','2.890',9, 'icons/tokio.jpg', 'icons/japanairlines.png'],
@@ -119,7 +151,7 @@
   function initCities() {
     const render = (p, q = '') => {
       const n = norm(q.trim());
-      const items = CITIES.filter((c) => !n || norm(c.join(' ')).includes(n));
+      const items = CITIES.filter((c) => !n || norm(c.slice(0, 3).join(' ')).includes(n));
       p.innerHTML = items.length
         ? items.map(([c, k, co]) => `<button type="button" class="opt" data-city="${c}">${ICON('plane')}<span>${c}<small>${k} - ${co}</small></span></button>`).join('')
         : '<p class="empty">Sin resultados</p>';
@@ -171,6 +203,8 @@
       $('.cal__prev', p).classList.toggle('is-hidden', st.view <= firstOfMonth);
       startL.textContent = st.start ? fmt(st.start) : 'Salida';
       endL.textContent = st.end ? fmt(st.end) : 'Retorno';
+      if ($('#inputStart')) $('#inputStart').value = st.start ? st.start.toISOString().split('T')[0] : '';
+      if ($('#inputEnd')) $('#inputEnd').value = st.end ? st.end.toISOString().split('T')[0] : '';
     };
     const shift = (n) => { st.view = new Date(st.view.getFullYear(), st.view.getMonth() + n, 1); render(); };
     $('.cal__prev', p).addEventListener('click', () => shift(-1));
@@ -201,7 +235,10 @@
   /* ---------- Pasajeros ---------- */
   function initPassengers() {
     const p = $('#dd-pax'), label = $('#paxLabel'), MAX = 9;
-    let applied = { adults: 1, kids: 0, infants: 0 }, draft = { ...applied };
+    const initAdults = Number($('#inputAdults')?.value) || 1;
+    const initKids = Number($('#inputKids')?.value) || 0;
+    const initInfants = Number($('#inputInfants')?.value) || 0;
+    let applied = { adults: initAdults, kids: initKids, infants: initInfants }, draft = { ...applied };
     const total = (o) => o.adults + o.kids + o.infants;
     const paint = () => $$('[data-pax]', p).forEach((row) => {
       const k = row.dataset.pax, [dec, inc] = $$('button', row);
@@ -218,6 +255,9 @@
         applied = { ...draft };
         const n = total(applied);
         label.textContent = `${n} pasajero${n > 1 ? 's' : ''}`;
+        if ($('#inputAdults')) $('#inputAdults').value = applied.adults;
+        if ($('#inputKids')) $('#inputKids').value = applied.kids;
+        if ($('#inputInfants')) $('#inputInfants').value = applied.infants;
       }
       closeDD('pax');
     });

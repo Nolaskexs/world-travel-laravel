@@ -3,8 +3,24 @@
 (() => {
   const { $, $$, ICON, closeDD } = window.WT; // utilidades expuestas por main.js (que se carga antes)
   const RATE = 3.51,
-    PAGE = 5,
-    BASE = new Date(2026, 10, 15);
+    PAGE = 5;
+
+  const params = window.__SEARCH_PARAMS__ || {};
+  const origIata = params.originIata || (window.__VUELOS_DB__?.[0]?.origen?.codigo_iata) || "DPS";
+  const destIata = params.destinationIata || (window.__VUELOS_DB__?.[0]?.destino?.codigo_iata) || "BKK";
+  const origName = params.originName || params.origin || (window.__VUELOS_DB__?.[0]?.origen?.nombre) || "Bali";
+  const destName = params.destinationName || params.destination || (window.__VUELOS_DB__?.[0]?.destino?.nombre) || "Bangkok";
+  const paxCount = params.totalPax || ((params.adults || 1) + (params.kids || 0) + (params.infants || 0));
+  const paxText = paxCount > 1 ? `${paxCount} pasajeros` : "1 Adulto";
+  const isOneWay = params.trip === "one";
+
+  const startDateStr = params.start || "2026-11-13";
+  const [sY, sM, sD] = startDateStr.split("-").map(Number);
+  const BASE = new Date(sY || 2026, (sM || 11) - 1, sD || 13);
+
+  const endDateStr = params.end || "2026-11-20";
+  const [eY, eM, eD] = endDateStr.split("-").map(Number);
+  const RET_BASE = new Date(eY || 2026, (eM || 11) - 1, eD || 20);
   const AIR = [
     "Air France",
     "All Nippon Airways",
@@ -22,6 +38,20 @@
     CDG: ["París - Charles De Gaulle", "PARÍS - CHARLES DE GAULLE (CDG)"],
     LIM: ["Lima", "LIMA (LIM)"],
   };
+
+  if (window.__DESTINOS_DB__) {
+    window.__DESTINOS_DB__.forEach(([nom, iata, pais, aero]) => {
+      if (iata) NAMES[iata] = [nom, `${nom.toUpperCase()} (${iata})`];
+    });
+  }
+
+  const hasDB = Array.isArray(window.__VUELOS_DB__) && window.__VUELOS_DB__.length > 0;
+
+  if (hasDB) {
+    window.__VUELOS_DB__.forEach((v) => {
+      if (!AIR.includes(v.aerolinea)) AIR.push(v.aerolinea);
+    });
+  }
 
   // [aerolínea, precio, tasas, escalas, salida ida (min), duración ida (min), salida vuelta, duración vuelta, mano, bodega]
   const DATA = [
@@ -51,6 +81,7 @@
     const d = new Date(BASE.getFullYear(), BASE.getMonth(), BASE.getDate() + n);
     return `${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`;
   };
+  const retDateLabel = `${DOW[RET_BASE.getDay()]} ${RET_BASE.getDate()} ${MON[RET_BASE.getMonth()]}`;
   
   const mids = (s) => ["HND", "CDG"].slice(2 - s);
   
@@ -69,17 +100,48 @@
     }),
   });
 
-  const FL = DATA.map(([a, price, tax, stops, od, odur, bd, bdur, carry, hold], id) => ({
-    id,
-    air: AIR[a],
-    price,
-    tax,
-    stops,
-    carry,
-    hold,
-    out: mkLeg(od, odur, -1, ["FUK", ...mids(stops), "LIM"]),
-    back: mkLeg(bd, bdur, 1, ["LIM", ...mids(stops).reverse(), "FUK"]),
-  }));
+  const FL = hasDB
+    ? window.__VUELOS_DB__.map((v, id) => {
+        let od = 1425;
+        if (v.fecha_salida && v.fecha_salida.includes(" ")) {
+          const [h, m] = v.fecha_salida.split(" ")[1].split(":").map(Number);
+          od = h * 60 + m;
+        }
+        const fOrigIata = (v.origen && v.origen.codigo_iata) ? v.origen.codigo_iata : origIata;
+        const fDestIata = (v.destino && v.destino.codigo_iata) ? v.destino.codigo_iata : destIata;
+        const escIatas = (v.escalas || []).map((e) => e.llegada_iata).filter((i) => i && i !== fDestIata);
+        const routeOut = [fOrigIata, ...escIatas, fDestIata];
+        const routeBack = [fDestIata, ...escIatas.slice().reverse(), fOrigIata];
+
+        return {
+          id,
+          air: v.aerolinea,
+          price: Math.round(v.precio_adulto),
+          tax: Math.round(v.impuestos_tasas),
+          stops: v.cantidad_escalas,
+          carry: v.incluye_equipaje_mano ? 1 : 0,
+          hold: v.incluye_equipaje_bodega ? 1 : 0,
+          personal: v.incluye_articulo_personal ? 1 : 0,
+          origen: v.origen,
+          destino: v.destino,
+          escalas: v.escalas,
+          duracion_formateada: v.duracion_formateada,
+          etiqueta: v.etiqueta,
+          out: mkLeg(od, v.duracion_minutos, -1, routeOut),
+          back: mkLeg(1000, 3300, 1, routeBack),
+        };
+      })
+    : DATA.map(([a, price, tax, stops, od, odur, bd, bdur, carry, hold], id) => ({
+        id,
+        air: AIR[a],
+        price,
+        tax,
+        stops,
+        carry,
+        hold,
+        out: mkLeg(od, odur, -1, [origIata, ...mids(stops), destIata]),
+        back: mkLeg(bd, bdur, 1, [destIata, ...mids(stops).reverse(), origIata]),
+      }));
 
   const total = (f) => f.price + f.tax;
   const tdur = (f) => f.out.opts[0].d + f.back.opts[0].d;
@@ -91,10 +153,10 @@
   const hi = (i) => Math.ceil(Math.max(...DATA.map((r) => r[i])) / 60);
   
   const RG = [
-    { key: "depOut", city: "Lima", tag: "Ida", min: 0, max: 24, txt: (v) => `Salida hasta ${pad(v)}:00`, edge: (v) => `${pad(v)}:00` },
-    { key: "depBack", city: "Fukuoka", tag: "Vuelta", min: 0, max: 24, txt: (v) => `Salida hasta ${pad(v)}:00`, edge: (v) => `${pad(v)}:00` },
-    { key: "durOut", city: "Lima", tag: "Ida", min: lo(5), max: hi(5), txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
-    { key: "durBack", city: "Fukuoka", tag: "Vuelta", min: lo(7), max: hi(7), txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
+    { key: "depOut", city: destName, tag: "Ida", min: 0, max: 24, txt: (v) => `Salida hasta ${pad(v)}:00`, edge: (v) => `${pad(v)}:00` },
+    { key: "depBack", city: origName, tag: "Vuelta", min: 0, max: 24, txt: (v) => `Salida hasta ${pad(v)}:00`, edge: (v) => `${pad(v)}:00` },
+    { key: "durOut", city: destName, tag: "Ida", min: lo(5), max: hi(5), txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
+    { key: "durBack", city: origName, tag: "Vuelta", min: lo(7), max: hi(7), txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
   ];
   
   const R = Object.fromEntries(RG.map((r) => [r.key, r.max]));
@@ -115,7 +177,10 @@
 
   const legHTML = (f, k) => {
     const L = f[k],
-      [a, b] = k === "out" ? ["FUK", "LIM"] : ["LIM", "FUK"];
+      fOrig = (f.origen && f.origen.codigo_iata) ? f.origen.codigo_iata : origIata,
+      fDest = (f.destino && f.destino.codigo_iata) ? f.destino.codigo_iata : destIata,
+      [a, b] = k === "out" ? [fOrig, fDest] : [fDest, fOrig];
+    const dateText = k === "out" ? dayLabel(0) : retDateLabel;
       
     return `
       <div class="leg" data-leg="${k}">
@@ -124,7 +189,7 @@
           <h3>${a} ${ICON("arrow")} ${b}</h3>
           ${k === "out" ? `<button type="button" class="detail" data-detail>Ver detalle ${ICON("info")}</button>` : ""}
         </div>
-        <p class="date">${dayLabel(k === "out" ? 0 : 3)}</p>
+        <p class="date">${dateText}</p>
         <div class="col leg__main">
           <div>
             <div class="row" data-main>${rowInner(L.opts[L.sel], f)}</div>
@@ -151,7 +216,7 @@
       <div>
         ${tags.length ? `<div class="badges">${tags.map(([t, c]) => `<span class="bdg${c}">${t}</span>`).join("")}</div>` : ""}
         ${legHTML(f, "out")}
-        ${legHTML(f, "back")}
+        ${isOneWay ? "" : legHTML(f, "back")}
       </div>
       <div class="buy">
         <p class="buy__l buy__l--big">
@@ -159,16 +224,16 @@
           <span>${money(f.price)}</span>
         </p>
         <p class="buy__l">
-          <span>1 Adulto</span>
-          <span>${money(f.price)}</span>
+          <span>${paxText}</span>
+          <span>${money(f.price * paxCount)}</span>
         </p>
         <p class="buy__l">
           <span>Impuestos, tasas y cargos</span>
-          <span>${money(f.tax)}</span>
+          <span>${money(f.tax * paxCount)}</span>
         </p>
         <p class="buy__l buy__l--tot">
           <span>Precio final</span>
-          <span>${money(total(f))}</span>
+          <span>${money(total(f) * paxCount)}</span>
         </p>
         <a class="btn-dark" href="#">Agregar al carrito</a>
       </div>
@@ -293,7 +358,7 @@
     
     $$(".sort button").forEach((b) => {
       const t = top(b.dataset.sort);
-      $("small", b).textContent = t ? `${sym()} ${fmtN(total(t))} · ${dur(tdur(t))}` : "—";
+      $("small", b).textContent = t ? `${sym()} ${fmtN(total(t) * paxCount)} · ${dur(tdur(t))}` : "—";
     });
     
     const cheap = top("price");
@@ -371,9 +436,9 @@
     document.body.classList.toggle("lock", open);
   };
 
-  $("#openFilters").addEventListener("click", () => drawer(true));
-  $("#closeFilters").addEventListener("click", () => drawer(false));
-  $("#scrim").addEventListener("click", () => drawer(false));
+  $("#openFilters")?.addEventListener("click", () => drawer(true));
+  $("#closeFilters")?.addEventListener("click", () => drawer(false));
+  $("#scrim")?.addEventListener("click", () => drawer(false));
   matchMedia("(min-width:992px)").addEventListener("change", () => drawer(false));
 
   /* ---------- Orden y paginación ---------- */
@@ -424,25 +489,73 @@
   let lastFocus = null;
 
   function legDetail(f, k) {
+    if (f.escalas && f.escalas.length > 0 && k === "out") {
+      const destNom = (f.destino && f.destino.nombre) ? f.destino.nombre : destName;
+      let h = `
+        <div class="dhead">
+          <b>Salida a ${destNom} <span>· ${dayLabel(0)}</span></b>
+          <span>Duración total: <b>${f.duracion_formateada || dur(f.out.opts[f.out.sel].d)}</b></span>
+        </div>`;
+
+      f.escalas.forEach((esc, idx) => {
+        const depTime = esc.hora_salida ? esc.hora_salida.split(" ")[1] : "11:45";
+        const arrTime = esc.hora_llegada ? esc.hora_llegada.split(" ")[1] : "14:00";
+        h += `
+          <p class="op">
+            <span class="ph"></span>${esc.numero_vuelo} · Operado por ${esc.aerolinea_operadora}
+          </p>
+          <ol class="tl">
+            <li>
+              <time>${depTime}</time>
+              <i class="dot"></i>
+              <div>
+                <b>${esc.origen}</b><small>${esc.origen_iata}</small>
+              </div>
+            </li>
+            <li class="tl__fly">
+              <span>${dur(esc.duracion_tramo_minutos)}</span>${ICON("plane")}
+            </li>
+            <li>
+              <time>${arrTime}</time>
+              <i class="dot dot--end"></i>
+              <div>
+                <b>${esc.llegada}</b><small>${esc.llegada_iata}</small>
+                <em>Llega el ${dayLabel(idx + 1)}</em>
+              </div>
+            </li>
+          </ol>`;
+
+        if (esc.cambio_avion || esc.tiempo_espera_minutos) {
+          h += `
+            <div class="lay">
+              ${ICON("clock")}
+              <span>${dur(esc.tiempo_espera_minutos || 270)}</span>Cambio de avión en <b>${esc.llegada}</b>
+            </div>`;
+        }
+      });
+      return h;
+    }
+
     const L = f[k],
       o = L.opts[L.sel],
       r = L.route,
       stops = r.length - 2,
       fl = Math.round((o.d - stops * 270) / (r.length - 1));
       
-    let u = (k === "out" ? 0 : 3) * 1440 + o.dep - TZ[r[0]] * 60; // minutos UTC desde el día base
+    const getTz = (code) => TZ[code] !== undefined ? TZ[code] : 0;
+    let u = (k === "out" ? 0 : 3) * 1440 + o.dep - getTz(r[0]) * 60; // minutos UTC desde el día base
     
     let h = `
       <div class="dhead">
-        <b>${k === "out" ? "Salida a Lima" : "Vuelta a Fukuoka"} <span>· ${dayLabel(k === "out" ? 0 : 3)}</span></b>
+        <b>${k === "out" ? `Salida a ${destName}` : `Vuelta a ${origName}`} <span>· ${k === "out" ? dayLabel(0) : retDateLabel}</span></b>
         <span>Duración total: <b>${dur(o.d)}</b></span>
       </div>`;
       
     for (let i = 0; i < r.length - 1; i++) {
       const a = r[i],
         b = r[i + 1],
-        dl = u + TZ[a] * 60,
-        al = u + fl + TZ[b] * 60,
+        dl = u + getTz(a) * 60,
+        al = u + fl + getTz(b) * 60,
         next = Math.floor(al / 1440) !== Math.floor(dl / 1440);
         
       h += `
@@ -454,7 +567,7 @@
             <time>${t12(dl)}</time>
             <i class="dot"></i>
             <div>
-              <b>${NAMES[a][0]}</b><small>${NAMES[a][1]}</small>
+              <b>${NAMES[a] ? NAMES[a][0] : a}</b><small>${NAMES[a] ? NAMES[a][1] : a}</small>
             </div>
           </li>
           <li class="tl__fly">
@@ -464,7 +577,7 @@
             <time>${t12(al)}</time>
             <i class="dot dot--end"></i>
             <div>
-              <b>${NAMES[b][0]}</b><small>${NAMES[b][1]}</small>
+              <b>${NAMES[b] ? NAMES[b][0] : b}</b><small>${NAMES[b] ? NAMES[b][1] : b}</small>
               ${next ? `<em>Llega el ${dayLabel(Math.floor(al / 1440))}</em>` : ""}
             </div>
           </li>
@@ -474,7 +587,7 @@
         h += `
           <div class="lay">
             ${ICON("clock")}
-            <span>${dur(270)}</span>Cambio de avión en <b>${NAMES[b][0]}</b>
+            <span>${dur(270)}</span>Cambio de avión en <b>${NAMES[b] ? NAMES[b][0] : b}</b>
           </div>`;
       }
       u += fl + 270;
@@ -484,9 +597,9 @@
 
   function openModal(f) {
     $("#mBody").innerHTML =
-      legDetail(f, "out") + legDetail(f, "back") + `<p class="inc">Equipaje incluido: ${bags(f)}</p>`;
+      legDetail(f, "out") + (isOneWay ? "" : legDetail(f, "back")) + `<p class="inc">Equipaje incluido: ${bags(f)}</p>`;
     $("#mBody").scrollTop = 0;
-    $("#mPrice").innerHTML = money(total(f));
+    $("#mPrice").innerHTML = money(total(f) * paxCount);
     lastFocus = document.activeElement;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");

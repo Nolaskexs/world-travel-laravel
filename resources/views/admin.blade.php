@@ -219,13 +219,11 @@
         <!-- LOGO -->
         <a class="brand" href="{{ route('admin.dashboard') }}">
 
-            <span class="img-wrap logo">
+            <span class="logo">
                 <img
-                    data-fallback
-                    src="{{ asset('images/logo.png') }}"
-                    alt=""
+                    src="{{ asset('icons/logo-cut-light.png') }}"
+                    alt="World Travel"
                 >
-                <span class="ph-text">Logo</span>
             </span>
 
             <span>World Travel</span>

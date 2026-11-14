@@ -43,12 +43,18 @@ body.lock {
   height: 36px;
 }
 
-/* Layout */
+/* Layout y Contenedor centrado */
+.wrap--search {
+  width: min(100% - 3rem, 1260px);
+  margin-inline: auto;
+}
+
 .layout {
   display: grid;
   gap: 2rem;
   margin-top: 2rem;
   margin-bottom: 4rem;
+  width: 100%;
 }
 
 .res {
@@ -138,8 +144,8 @@ body.lock {
 
 @media (min-width: 992px) {
   .layout {
-    grid-template-columns: 360px minmax(0, 1fr);
-    gap: 2.5rem;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 2rem;
     align-items: start;
   }
   .fbtn,
