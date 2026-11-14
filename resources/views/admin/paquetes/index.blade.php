@@ -130,22 +130,67 @@
                 color: #697782;
             }
 
+            /* ACCIONES: EDITAR Y ELIMINAR */
+            .wt-admin__actions {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-wrap: nowrap;
+            }
+
             .wt-admin__edit {
+                display: inline-block;
                 color: #106d9f;
                 font-weight: 700;
                 text-decoration: none;
+                padding: 8px 4px;
             }
 
             .wt-admin__edit:hover {
                 text-decoration: underline;
             }
 
+            .wt-admin__delete-form {
+                margin: 0;
+            }
+
+            .wt-admin__delete {
+                background: #fff1f0;
+                color: #b42318;
+                border: 1px solid #f3c5c0;
+                border-radius: 8px;
+                padding: 9px 13px;
+                cursor: pointer;
+                font: inherit;
+                font-size: 13px;
+                font-weight: 700;
+                transition: background .2s ease;
+            }
+
+            .wt-admin__delete:hover {
+                background: #ffe0dc;
+            }
+
+            .wt-admin__delete:focus-visible {
+                outline: 2px solid #b42318;
+                outline-offset: 2px;
+            }
+
+            /* MENSAJE DE ÉXITO */
             .wt-admin__alert {
                 background: #e5f7ed;
                 color: #17683f;
                 padding: 15px;
                 border-radius: 10px;
                 margin-bottom: 20px;
+                border: 1px solid #b9e3c7;
+            }
+
+            /* MENSAJE DE ERROR */
+            .wt-admin__alert--error {
+                background: #fff1f0;
+                color: #b42318;
+                border: 1px solid #f3c5c0;
             }
 
             .wt-admin__empty {
@@ -176,6 +221,7 @@
 
     <section class="wt-admin">
 
+        <!-- CABECERA -->
         <div class="wt-admin__top">
             <div>
                 <div class="wt-admin__label">
@@ -190,19 +236,35 @@
                 </p>
             </div>
 
-            <a href="{{ route('admin.paquetes.create') }}"
-               class="wt-admin__button">
+            <!-- CREAR PAQUETE -->
+            <a
+                href="{{ route('admin.paquetes.create') }}"
+                class="wt-admin__button"
+            >
                 + Nuevo paquete
             </a>
         </div>
 
+        <!-- MENSAJE DE REGISTRO, EDICIÓN O ELIMINACIÓN -->
         @if (session('success'))
-            <div class="wt-admin__alert">
+            <div class="wt-admin__alert" role="status">
                 {{ session('success') }}
             </div>
         @endif
 
+        <!-- MENSAJE SI NO SE PUEDE ELIMINAR -->
+        @if (session('error'))
+            <div
+                class="wt-admin__alert wt-admin__alert--error"
+                role="alert"
+            >
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- TABLA DE PAQUETES -->
         <div class="wt-admin__card">
+
             <table class="wt-admin__table">
 
                 <thead>
@@ -216,8 +278,12 @@
                 </thead>
 
                 <tbody>
+
                     @forelse ($paquetes as $paquete)
+
                         <tr>
+
+                            <!-- PAQUETE E IMAGEN -->
                             <td>
                                 <div class="wt-admin__package">
 
@@ -230,6 +296,7 @@
                                     @endif
 
                                     <div>
+
                                         <div class="wt-admin__name">
                                             {{ $paquete->titulo }}
                                         </div>
@@ -238,14 +305,18 @@
                                             {{ $paquete->destino }},
                                             {{ $paquete->pais }}
                                         </div>
+
                                     </div>
+
                                 </div>
                             </td>
 
+                            <!-- DURACIÓN -->
                             <td>
                                 {{ $paquete->duracion_dias }} días
                             </td>
 
+                            <!-- PRECIO -->
                             <td class="wt-admin__price">
                                 US$ {{ number_format(
                                     (float) $paquete->precio,
@@ -255,50 +326,108 @@
                                 ) }}
                             </td>
 
+                            <!-- ESTADO -->
                             <td>
+
                                 @if ($paquete->activo)
-                                    <span class="wt-admin__status wt-admin__status--on">
+
+                                    <span
+                                        class="wt-admin__status
+                                               wt-admin__status--on"
+                                    >
                                         Activo
                                     </span>
+
                                 @else
-                                    <span class="wt-admin__status wt-admin__status--off">
+
+                                    <span
+                                        class="wt-admin__status
+                                               wt-admin__status--off"
+                                    >
                                         Inactivo
                                     </span>
+
                                 @endif
+
                             </td>
 
+                            <!-- BOTONES EDITAR Y ELIMINAR -->
                             <td>
-                                <a
-                                    class="wt-admin__edit"
-                                    href="{{ route('admin.paquetes.edit', $paquete) }}">
-                                    Editar
-                                </a>
+
+                                <div class="wt-admin__actions">
+
+                                    <!-- UPDATE -->
+                                    <a
+                                        class="wt-admin__edit"
+                                        href="{{ route('admin.paquetes.edit', $paquete) }}"
+                                    >
+                                        Editar
+                                    </a>
+
+                                    <!-- DELETE -->
+                                    <form
+                                        class="wt-admin__delete-form"
+                                        action="{{ route('admin.paquetes.destroy', $paquete) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('¿Estás seguro de eliminar el paquete «{{ $paquete->titulo }}»? Esta acción no se puede deshacer.');"
+                                    >
+
+                                        @csrf
+
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="wt-admin__delete"
+                                            aria-label="Eliminar paquete {{ $paquete->titulo }}"
+                                        >
+                                            Eliminar
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
                             </td>
+
                         </tr>
 
                     @empty
+
+                        <!-- CUANDO NO HAY PAQUETES -->
                         <tr>
                             <td colspan="5">
+
                                 <div class="wt-admin__empty">
                                     Todavía no hay paquetes registrados.
                                     Utiliza «Nuevo paquete» para empezar.
                                 </div>
+
                             </td>
                         </tr>
+
                     @endforelse
+
                 </tbody>
 
             </table>
+
         </div>
 
+        <!-- PAGINACIÓN -->
         @if ($paquetes->hasPages())
-            <nav class="wt-admin__pagination"
-                 aria-label="Paginación de paquetes">
+
+            <nav
+                class="wt-admin__pagination"
+                aria-label="Paginación de paquetes"
+            >
 
                 @if ($paquetes->previousPageUrl())
+
                     <a href="{{ $paquetes->previousPageUrl() }}">
                         Anterior
                     </a>
+
                 @endif
 
                 <span>
@@ -307,13 +436,17 @@
                 </span>
 
                 @if ($paquetes->nextPageUrl())
+
                     <a href="{{ $paquetes->nextPageUrl() }}">
                         Siguiente
                     </a>
+
                 @endif
 
             </nav>
+
         @endif
 
     </section>
+
 </x-layout>

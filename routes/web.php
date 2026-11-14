@@ -104,6 +104,13 @@ Route::prefix('admin')
             'update'
         ])->name('paquetes.update');
 
+
+        // DELETE: Eliminar paquete turístico
+        Route::delete('/paquetes/{paquete}', [
+            PaqueteController::class,
+            'destroy'
+        ])->name('paquetes.destroy');
+
     });
 
 /*

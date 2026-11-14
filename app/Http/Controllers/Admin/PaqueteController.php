@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\QueryException;
 
 class PaqueteController extends Controller
 {
@@ -123,4 +126,60 @@ class PaqueteController extends Controller
 
         return $datos;
     }
+
+
+/**
+ * DELETE: Eliminar un paquete turístico.
+ */
+    public function destroy(Paquete $paquete): RedirectResponse
+    {
+        // No eliminar paquetes que tengan ofertas relacionadas.
+        if ($paquete->ofertas()->exists()) {
+            return redirect()
+                ->route('admin.paquetes.index')
+                ->with(
+                    'error',
+                    'No se puede eliminar este paquete porque tiene ofertas asociadas.'
+                );
+        }
+
+        // No eliminar paquetes que tengan reservas relacionadas.
+        if (
+            Schema::hasTable('reservas') &&
+            Schema::hasColumn('reservas', 'paquete_id') &&
+            DB::table('reservas')
+                ->where('paquete_id', $paquete->id)
+                ->exists()
+        ) {
+            return redirect()
+                ->route('admin.paquetes.index')
+                ->with(
+                    'error',
+                    'No se puede eliminar este paquete porque tiene reservas registradas.'
+                );
+        }
+
+        try {
+            // Eliminar el paquete de MySQL.
+            $paquete->delete();
+        } catch (QueryException $e) {
+            report($e);
+
+            return redirect()
+                ->route('admin.paquetes.index')
+                ->with(
+                    'error',
+                    'No se puede eliminar el paquete porque está relacionado con otros registros.'
+                );
+        }
+
+        return redirect()
+            ->route('admin.paquetes.index')
+            ->with(
+                'success',
+                'Paquete turístico eliminado correctamente.'
+            );
+    }
+
+    
 }
