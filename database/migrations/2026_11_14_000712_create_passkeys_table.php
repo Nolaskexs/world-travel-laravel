@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -12,17 +13,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('passkeys', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Passkeys::userModel(), 'user_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->string('credential_id')->unique();
-            $table->json('credential');
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('passkeys')) {
+            Schema::create('passkeys', function (Blueprint $table) {
+                $table->id();
+                $table->foreignIdFor(Passkeys::userModel(), 'user_id')
+                    ->constrained()
+                    ->cascadeOnDelete();
 
-            $table->index('user_id');
-        });
+                $table->string('name');
+                $table->string('credential_id')->unique();
+                $table->json('credential');
+                $table->timestamp('last_used_at')->nullable();
+                $table->timestamps();
+
+                $table->index('user_id');
+            });
+        }
     }
 
     /**
@@ -30,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('passkeys');
+        // Keep the table to avoid deleting existing passkey data.
     }
 };
