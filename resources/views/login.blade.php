@@ -19,20 +19,24 @@
     </p>
  </div>
 
-        <form id="loginForm" action="{{ route('dashboard') }}" method="GET">
-          <div class="fld">
-            <label for="email">Email</label>
-            <input class="inp" id="email" name="email" type="email" placeholder="Example@gmail.com" autocomplete="email" required>
-          </div>
-          <div class="fld">
-            <label for="password">Password</label>
-            <div class="pw">
-              <input class="inp" id="password" name="password" type="password" placeholder="8 caracteres como mínimo" autocomplete="current-password" minlength="8" required>
-              <button class="eye" id="togglePw" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
-                <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m3 3 18 18"/></svg>
-              </button>
+        <form id="loginForm" action="{{ route('login') }}" method="POST">
+    @csrf
+    
+            <div class="fld">
+                <label for="email">Email</label>
+                <input class="inp" id="email" name="email" type="email" placeholder="Example@gmail.com" required>
             </div>
-          </div>
+            
+            <div class="fld">
+                <label for="password">Password</label>
+                <div class="pw">
+                  <input class="inp" id="password" name="password" type="password" placeholder="8 caracteres como mínimo" autocomplete="current-password" minlength="8" required>
+                  <button class="eye" id="togglePw" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+                    <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m3 3 18 18"/></svg>
+                  </button>
+                </div>
+            </div>
+
           <a class="forgot" href="#">¿Olvidaste tú contraseña?</a>
           <button class="btn btn--primary" type="submit">Iniciar sesión</button>
         </form>

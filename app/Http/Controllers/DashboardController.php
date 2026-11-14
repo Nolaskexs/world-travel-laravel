@@ -6,8 +6,16 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    // OJO: Ya no hay función __construct() aquí.
+
+    public function index()
     {
+        // 1. Si es admin, lo mandamos a su panel exclusivo y aquí termina la ejecución.
+        if (auth()->user()->rol === 'admin') {
+            return redirect('/admin');
+        }
+        
+        // 2. Si es cliente, primero preparamos toda su información (sin hacer "return" todavía)
         $usuario = [
             'nombre'        => 'Jair Rodrigo Nolasco Irazabal',
             'primer_nombre' => 'Jair',
@@ -89,6 +97,7 @@ class DashboardController extends Controller
             ['nombre' => 'Asistencia en Aeropuerto', 'iniciales' => 'AA', 'avatar' => 'img/avatars/piloto-2.jpg', 'rol' => 'Aeropuerto', 'accion' => 'Seguir'],
         ];
 
+        // 3. Ahora sí, al final, retornamos la vista inyectándole todos los datos que preparamos.
         return view('dashboard', compact(
             'usuario', 'metricas', 'viajes', 'historial', 'frecuentes', 'millas', 'tripulacion'
         ));
