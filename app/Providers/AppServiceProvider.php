@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Registrar servicios de Laravel.
      */
     public function register(): void
     {
@@ -15,10 +17,14 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Configurar permisos de World Travel.
      */
     public function boot(): void
     {
-        //
+        // Solo los usuarios con rol admin
+        // pueden acceder a los CRUD administrativos.
+        Gate::define('administrar', function (User $user) {
+            return $user->rol === 'admin';
+        });
     }
 }
