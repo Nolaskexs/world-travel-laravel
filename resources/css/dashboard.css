@@ -405,10 +405,10 @@ button { cursor: pointer; background: none; border: 0; padding: 0; }
 
 .cell-person { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .cell-stack  { display: flex; flex-direction: column; min-width: 0; }
-.cell-strong { font-weight: 600; color: #fff; }
-.cell-muted  { font-size: 12px; color: var(--text-muted); }
-.route { font-weight: 600; color: #fff; }
-.route .icon { color: var(--text-muted); margin: 0 2px; }
+.cell-strong { font-weight: 600; color: #0c1b26 !important; }
+.cell-muted  { font-size: 12px; color: #64748b !important; }
+.route { font-weight: 600; color: #0c1b26 !important; }
+.route .icon { color: #64748b !important; margin: 0 4px; }
 
 .empty-text { padding: 12px 0; color: var(--text-muted); font-size: 13px; }
 .table .empty-text { text-align: center; padding: 24px; }

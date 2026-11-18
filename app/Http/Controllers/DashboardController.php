@@ -88,6 +88,7 @@ class DashboardController extends Controller
             }
 
             return [
+                'id'           => $reserva->id,
                 'titulo'       => $paquete ? ($paquete->titulo ?? "Viaje a {$paquete->destino}") : "Reserva #{$reserva->id}",
                 'fecha'        => $reserva->fecha_viaje ? $reserva->fecha_viaje->translatedFormat('d M Y') : 'Fecha pendiente',
                 'estado'       => $estado,
@@ -95,6 +96,7 @@ class DashboardController extends Controller
                 'destacado'    => 'US$ ' . number_format($reserva->total, 2),
                 'nota'         => $reserva->num_pasajeros . ' ' . ($reserva->num_pasajeros === 1 ? 'pasajero' : 'pasajeros'),
                 'imagen'       => $img,
+                'checkin_url'  => route('asientos.checkin', $reserva->id),
             ];
         })->values()->all();
 
@@ -128,7 +130,9 @@ class DashboardController extends Controller
                     'origen_ciudad'  => 'Lima',
                     'destino'        => $destinoCode,
                     'destino_ciudad' => $destinoCiudad,
-                    'accion_label'   => $reserva->estado === 'confirmada' ? 'Ver boleto' : 'Detalles',
+                    'asiento'        => $p->asiento ?? null,
+                    'accion_label'   => $reserva->estado === 'confirmada' ? 'Check-in / Asientos' : 'Detalles',
+                    'accion_url'     => route('asientos.checkin', $reserva->id),
                 ];
             }
         }

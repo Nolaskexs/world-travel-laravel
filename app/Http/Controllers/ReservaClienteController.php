@@ -32,6 +32,7 @@ class ReservaClienteController extends Controller
 
         $fechaViaje = $request->query('fecha_viaje', $request->query('salida', now()->addDays(14)->format('Y-m-d')));
         $numPasajeros = max(1, (int) $request->query('num_pasajeros', $request->query('adults', 1)));
+        $asientos = (string) $request->query('asientos', '');
         $precioUnitario = (float) ($paqueteSeleccionado->precio ?? 350.00);
         $totalEstimado = $precioUnitario * $numPasajeros;
 
@@ -42,6 +43,7 @@ class ReservaClienteController extends Controller
             'paqueteSeleccionado',
             'fechaViaje',
             'numPasajeros',
+            'asientos',
             'totalEstimado',
             'user'
         ));
@@ -80,11 +82,19 @@ class ReservaClienteController extends Controller
             'estado'        => 'pendiente',
         ]);
 
+        // Procesar asientos si fueron seleccionados en el mapa del avión
+        $asientosInput = $request->input('asientos', '');
+        $asientosLista = [];
+        if (!empty($asientosInput)) {
+            $asientosLista = array_values(array_filter(array_map('trim', explode(',', (string) $asientosInput))));
+        }
+
         // 2. Guardar en la tabla reserva_pasajeros (Pasajero titular)
         ReservaPasajero::create([
             'reserva_id' => $reserva->id,
             'nombre'     => $validated['nombre'],
             'documento'  => $validated['documento'],
+            'asiento'    => $asientosLista[0] ?? null,
         ]);
 
         // Pasajeros acompañantes si num_pasajeros > 1
@@ -93,6 +103,7 @@ class ReservaClienteController extends Controller
                 'reserva_id' => $reserva->id,
                 'nombre'     => "Pasajero acompañante {$i} ({$validated['nombre']})",
                 'documento'  => 'DNI-' . rand(10000000, 99999999),
+                'asiento'    => $asientosLista[$i - 1] ?? null,
             ]);
         }
 

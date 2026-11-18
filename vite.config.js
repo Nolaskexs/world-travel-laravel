@@ -27,6 +27,8 @@ export default defineConfig({
                 'resources/css/catalogo-viajes.css',
                 'resources/css/admin.css',
                 'resources/js/admin.js',
+                'resources/css/asientos.css',
+                'resources/js/asientos.js',
             ],
             refresh: true,
             fonts: [

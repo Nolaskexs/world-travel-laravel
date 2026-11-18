@@ -283,5 +283,92 @@ class VueloSeeder extends Seeder
                 ]
             );
         }
+
+        $cun = Destino::where('codigo_iata', 'CUN')->orWhere('nombre', 'Cancún')->first();
+        $eze = Destino::where('codigo_iata', 'EZE')->orWhere('nombre', 'Buenos Aires')->first();
+
+        if ($lim && $hnd) {
+            Vuelo::updateOrCreate(
+                ['codigo_vuelo' => 'WT-8183'],
+                [
+                    'origen_id' => $lim->id,
+                    'destino_id' => $hnd->id,
+                    'aerolinea' => 'World Travel Airlines',
+                    'fecha_salida' => Carbon::create(2026, 11, 20, 10, 30, 0),
+                    'fecha_llegada' => Carbon::create(2026, 11, 21, 16, 45, 0),
+                    'duracion_minutos' => 1095,
+                    'dias_diferencia' => 1,
+                    'cantidad_escalas' => 1,
+                    'incluye_articulo_personal' => true,
+                    'incluye_equipaje_mano' => true,
+                    'incluye_equipaje_bodega' => true,
+                    'moneda' => 'USD',
+                    'precio_adulto' => 1250.00,
+                    'precio_menor' => 950.00,
+                    'precio_infante' => 150.00,
+                    'impuestos_tasas' => 280.00,
+                    'precio_final' => 1530.00,
+                    'asientos_disponibles' => 42,
+                    'etiqueta' => 'mejor_opcion',
+                    'activo' => true,
+                ]
+            );
+        }
+
+        if ($lim && $cun) {
+            Vuelo::updateOrCreate(
+                ['codigo_vuelo' => 'WT-420'],
+                [
+                    'origen_id' => $lim->id,
+                    'destino_id' => $cun->id,
+                    'aerolinea' => 'World Travel Airlines',
+                    'fecha_salida' => Carbon::create(2026, 11, 22, 8, 15, 0),
+                    'fecha_llegada' => Carbon::create(2026, 11, 22, 13, 30, 0),
+                    'duracion_minutos' => 315,
+                    'dias_diferencia' => 0,
+                    'cantidad_escalas' => 0,
+                    'incluye_articulo_personal' => true,
+                    'incluye_equipaje_mano' => true,
+                    'incluye_equipaje_bodega' => true,
+                    'moneda' => 'USD',
+                    'precio_adulto' => 420.00,
+                    'precio_menor' => 310.00,
+                    'precio_infante' => 50.00,
+                    'impuestos_tasas' => 95.00,
+                    'precio_final' => 515.00,
+                    'asientos_disponibles' => 48,
+                    'etiqueta' => 'el_mas_barato',
+                    'activo' => true,
+                ]
+            );
+        }
+
+        if ($lim && $eze) {
+            Vuelo::updateOrCreate(
+                ['codigo_vuelo' => 'WT-640'],
+                [
+                    'origen_id' => $lim->id,
+                    'destino_id' => $eze->id,
+                    'aerolinea' => 'World Travel Airlines',
+                    'fecha_salida' => Carbon::create(2026, 11, 23, 14, 0, 0),
+                    'fecha_llegada' => Carbon::create(2026, 11, 23, 18, 45, 0),
+                    'duracion_minutos' => 285,
+                    'dias_diferencia' => 0,
+                    'cantidad_escalas' => 0,
+                    'incluye_articulo_personal' => true,
+                    'incluye_equipaje_mano' => true,
+                    'incluye_equipaje_bodega' => true,
+                    'moneda' => 'USD',
+                    'precio_adulto' => 380.00,
+                    'precio_menor' => 290.00,
+                    'precio_infante' => 40.00,
+                    'impuestos_tasas' => 85.00,
+                    'precio_final' => 465.00,
+                    'asientos_disponibles' => 36,
+                    'etiqueta' => 'el_mas_barato',
+                    'activo' => true,
+                ]
+            );
+        }
     }
 }

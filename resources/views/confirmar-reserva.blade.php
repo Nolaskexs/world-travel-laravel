@@ -55,6 +55,7 @@
                         @csrf
                         <input type="hidden" name="paquete_id" id="inputPaqueteId" value="{{ $paqueteSeleccionado->id ?? ($paquetes->first()->id ?? 1) }}">
                         <input type="hidden" name="total" id="inputTotal" value="{{ $totalEstimado ?? 350 }}">
+                        <input type="hidden" name="asientos" id="inputAsientos" value="{{ old('asientos', $asientos ?? '') }}">
 
                         <div class="checkout-campo">
                             <label for="nombreViajero">Nombre completo *</label>
@@ -162,21 +163,40 @@
                         </div>
                     </div>
 
+                    @php
+                        $resolverImagen = function ($pkg) {
+                            $url = $pkg->imagen_url ?? null;
+                            if (!empty($url)) {
+                                if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+                                    return $url;
+                                }
+                                if (str_starts_with($url, 'icons/')) {
+                                    return asset($url);
+                                }
+                                return asset('icons/' . ltrim($url, '/'));
+                            }
+                            // Fallback local garantizado que existe en public/icons/
+                            if (isset($pkg->destino) && stripos($pkg->destino, 'cusco') !== false) {
+                                return asset('icons/MachuPicchu1-Carrusel.jpg');
+                            }
+                            return asset('icons/roma.jpg');
+                        };
+
+                        $imgPrincipal = $resolverImagen($paqueteSeleccionado);
+                    @endphp
+
                     <div class="checkout-campo" style="margin-bottom: 16px;">
                         <label for="selectPaquete" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #5b6e7f; font-weight: 700;">Paquete o tour</label>
                         <select id="selectPaquete" style="width: 100%; padding: 11px 12px; border: 1px solid #cbd6df; border-radius: 8px; font-weight: 600; font-size: 14px; color: #0b2535; background: #fff;">
                             @foreach ($paquetes as $pkg)
                                 @php
-                                    $imgUrl = $pkg->imagen_url ?: 'img/viajes/roma.jpg';
-                                    if (!str_starts_with($imgUrl, 'http') && !str_starts_with($imgUrl, 'img/')) {
-                                        $imgUrl = 'img/viajes/' . $imgUrl;
-                                    }
+                                    $imgUrl = $resolverImagen($pkg);
                                 @endphp
                                 <option value="{{ $pkg->id }}"
                                     data-precio="{{ $pkg->precio }}"
                                     data-destino="{{ $pkg->destino }}"
                                     data-dias="{{ $pkg->duracion_dias }}"
-                                    data-imagen="{{ asset($imgUrl) }}"
+                                    data-imagen="{{ $imgUrl }}"
                                     {{ ($paqueteSeleccionado->id ?? null) === $pkg->id ? 'selected' : '' }}>
                                     {{ $pkg->titulo }} · US$ {{ number_format($pkg->precio, 2) }}
                                 </option>
@@ -184,17 +204,11 @@
                         </select>
                     </div>
 
-                    @php
-                        $imgPrincipal = $paqueteSeleccionado->imagen_url ?? 'img/viajes/roma.jpg';
-                        if (!str_starts_with($imgPrincipal, 'http') && !str_starts_with($imgPrincipal, 'img/')) {
-                            $imgPrincipal = 'img/viajes/' . $imgPrincipal;
-                        }
-                    @endphp
-
                     <img id="imagenPaquete"
                          class="checkout-imagen"
-                         src="{{ asset($imgPrincipal) }}"
+                         src="{{ $imgPrincipal }}"
                          alt="{{ $paqueteSeleccionado->titulo ?? 'Paquete turístico' }}"
+                         onerror="this.onerror=null; this.src='{{ asset('icons/MachuPicchu1-Carrusel.jpg') }}';"
                          style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 14px; background: #e2e8f0;">
 
                     <h3 id="paqueteTitulo" style="margin: 0 0 6px; font-size: 19px; color: #0b2535; font-weight: 700;">
@@ -213,6 +227,20 @@
                         <span>Cantidad de viajeros</span>
                         <strong id="displayPasajeros">{{ $numPasajeros }}</strong>
                     </div>
+
+                    @if (!empty($asientos))
+                        <div class="checkout-fila" style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 9px 12px; border-radius: 8px; margin: 8px 0;">
+                            <span style="color: #1e40af; font-weight: 600;">Asientos asignados</span>
+                            <strong style="color: #1d4ed8; font-size: 14px;">{{ $asientos }}</strong>
+                        </div>
+                    @else
+                        <div style="margin: 8px 0; text-align: right;">
+                            <a href="{{ route('asientos.index', ['paquete_id' => $paqueteSeleccionado->id ?? 1, 'adultos' => $numPasajeros, 'fecha_viaje' => $fechaViaje]) }}"
+                               style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #2563eb; font-weight: 600; text-decoration: none;">
+                                ✈ Seleccionar asientos en el mapa &rarr;
+                            </a>
+                        </div>
+                    @endif
 
                     <div class="checkout-fila">
                         <span>Subtotal</span>
@@ -474,6 +502,7 @@
                 if (paqueteUbicacion) paqueteUbicacion.innerHTML = `Destino: <strong>${opt.dataset.destino || 'Varios'}</strong> (${opt.dataset.dias || 5} días)`;
                 if (imagenPaquete && opt.dataset.imagen) {
                     imagenPaquete.src = opt.dataset.imagen;
+                    imagenPaquete.alt = opt.textContent.split('·')[0].trim();
                 }
             }
 

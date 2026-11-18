@@ -11,6 +11,7 @@ class ReservaPasajero extends Model
         'reserva_id',
         'nombre',
         'documento',
+        'asiento',
     ];
 
     /**

@@ -143,10 +143,10 @@
                                             <span class="trip-card__note truncate">{{ $viaje['nota'] }}</span>
                                         @endif
                                     </div>
-                                    <button type="button" class="btn btn--accent btn--sm" data-action="viaje" data-label="{{ $viaje['titulo'] }}">
-                                        Acción
+                                    <a href="{{ $viaje['checkin_url'] ?? '#' }}" class="btn btn--accent btn--sm" style="text-decoration: none;">
+                                        {{ $viaje['estado'] === 'checkin' ? 'Check-in' : 'Asientos' }}
                                         <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </li>
@@ -197,9 +197,14 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn--outline btn--xs" data-action="tramo" data-label="{{ $tramo['accion_label'] }} · {{ $tramo['origen'] }} → {{ $tramo['destino'] }}">
+                                        @if (!empty($tramo['asiento']))
+                                            <span style="display: block; font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 700; width: fit-content; margin-bottom: 5px;">
+                                                Asiento {{ $tramo['asiento'] }}
+                                            </span>
+                                        @endif
+                                        <a href="{{ $tramo['accion_url'] ?? '#' }}" class="btn btn--outline btn--xs" style="text-decoration: none;">
                                             {{ $tramo['accion_label'] }}
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\DestinoController;
 use App\Http\Controllers\Admin\FacturacionController;
 use App\Http\Controllers\Admin\AjustesController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\AsientoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,7 +145,19 @@ Route::get('/alojamientos/{codigo}', function (string $codigo) {
 
 /*
 |--------------------------------------------------------------------------
-| 7. Proceso principal: Confirmación y registro de reserva en la BD
+| 7. Selección de Asientos y Check-in
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/asientos', [AsientoController::class, 'index'])->name('asientos.index');
+Route::post('/asientos', [AsientoController::class, 'guardar'])->name('asientos.guardar');
+Route::get('/checkin/{reserva}', function ($reserva) {
+    return redirect()->route('asientos.index', ['reserva_id' => $reserva]);
+})->middleware('auth')->name('asientos.checkin');
+
+/*
+|--------------------------------------------------------------------------
+| 8. Proceso principal: Confirmación y registro de reserva en la BD
 |--------------------------------------------------------------------------
 */
 

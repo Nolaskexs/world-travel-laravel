@@ -235,7 +235,7 @@
           <span>Precio final</span>
           <span>${money(total(f) * paxCount)}</span>
         </p>
-        <a class="btn-dark" href="/reservas/confirmar?num_pasajeros=${paxCount}&fecha_viaje=${encodeURIComponent(window.__SEARCH_PARAMS__?.start || '')}">Reservar vuelo</a>
+        <a class="btn-dark" href="/asientos?vuelo_id=${f.id || ''}&origin=${encodeURIComponent(origName || 'Lima')}&destination=${encodeURIComponent(destName || 'Tokio')}&origin_iata=${encodeURIComponent(origIata || 'LIM')}&destination_iata=${encodeURIComponent(destIata || 'HND')}&codigo_vuelo=${encodeURIComponent(f.code || (f.out && f.out.num) || 'WT-8183')}&precio=${encodeURIComponent(f.price || 0)}&adultos=${encodeURIComponent(params.adults || 1)}&menores=${encodeURIComponent(params.kids || 0)}&fecha_viaje=${encodeURIComponent(params.start || startDateStr || '')}">Reservar vuelo y elegir asientos</a>
       </div>
     </article>`;
 
