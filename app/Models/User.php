@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'email', 'password', 'rol'])]
+#[Fillable(['name', 'email', 'password', 'rol', 'dni', 'telefono'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {

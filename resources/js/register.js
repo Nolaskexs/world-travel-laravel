@@ -40,17 +40,34 @@
   };
 
   form.addEventListener('submit', (e) => {
-    e.preventDefault(); // un solo punto de entrada: botón "Siguiente", "Registrarse" o Enter
-    if (!validate(cur)) return;
-    if (cur === 0) return go(1);
-    // Conectar aquí con el backend; el evento lleva todos los datos del formulario.
-    document.dispatchEvent(new CustomEvent('register:submit', { detail: Object.fromEntries(new FormData(form)) }));
-    status.textContent = 'Datos validados correctamente.';
+    if (!validate(cur)) {
+      e.preventDefault();
+      return;
+    }
+    if (cur === 0) {
+      e.preventDefault();
+      return go(1);
+    }
+
+    // Sincronizar campo de confirmación para Laravel Fortify
+    const pwConf = document.getElementById('password_confirmation');
+    if (pwConf && f.confirm) {
+      pwConf.value = f.confirm.value;
+    }
+
+    status.textContent = 'Registrando usuario en World Travel...';
+    // Permitir el submit nativo al backend en el paso final
   });
   document.getElementById('back').addEventListener('click', () => { status.textContent = ''; go(0); });
 
   // Confirmación de contraseña
-  const match = () => f.confirm.setCustomValidity(f.confirm.value && f.confirm.value !== f.password.value ? 'Las contraseñas no coinciden' : '');
+  const match = () => {
+    f.confirm.setCustomValidity(f.confirm.value && f.confirm.value !== f.password.value ? 'Las contraseñas no coinciden' : '');
+    const pwConf = document.getElementById('password_confirmation');
+    if (pwConf && f.confirm) {
+      pwConf.value = f.confirm.value;
+    }
+  };
   f.password.addEventListener('input', match);
   f.confirm.addEventListener('input', match);
 

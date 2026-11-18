@@ -71,14 +71,16 @@
     <div>
         <h2 id="geo-t">Destinos más populares</h2>
         <ul class="dests">
-            @foreach ($destinos as $d)
+            @forelse ($destinos as $d)
                 <li class="dest" style="--dot: {{ $d['color'] }}">
                     <span class="dest__dot" aria-hidden="true"></span>
                     <span class="trunc" title="{{ $d['nombre'] }}">{{ $d['nombre'] }}</span>
                     <span class="dest__n">{{ number_format($d['reservas']) }} reservas</span>
                     <span class="dest__pct"><svg class="i"><use href="#i-{{ $d['up'] ? 'up' : 'down' }}"/></svg>{{ $d['pct'] }}%</span>
                 </li>
-            @endforeach
+            @empty
+                <li class="dest" style="color: var(--mut); padding: 1rem 0;">No hay destinos con reservas registradas aún.</li>
+            @endforelse
         </ul>
     </div>
 </section>

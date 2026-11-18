@@ -13,16 +13,27 @@
         <p class="lead">Regístrate para empezar a guardar tus itinerarios y planificar tu próximo viaje.</p>
       </div>
 
-      <form id="regForm" action="#" method="post" novalidate>
+      @if ($errors->any())
+        <div class="alert alert--danger" style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem;">
+          <ul style="margin: 0; padding-left: 1.25rem;">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
+
+      <form id="regForm" action="{{ route('register') }}" method="POST" novalidate>
+        @csrf
         <!-- Paso 1 -->
         <fieldset class="step" id="step1" aria-labelledby="s1">
           <h2 class="sub" id="s1">Datos básicos</h2>
-          <div class="fld"><label class="sr" for="firstName">Nombres</label><input class="inp" id="firstName" name="firstName" type="text" placeholder="Nombres" autocomplete="given-name" required></div>
-          <div class="fld"><label class="sr" for="lastName">Apellidos</label><input class="inp" id="lastName" name="lastName" type="text" placeholder="Apellidos" autocomplete="family-name" required></div>
-          <div class="fld"><label class="sr" for="email">Email</label><input class="inp" id="email" name="email" type="email" placeholder="Email" autocomplete="email" required></div>
+          <div class="fld"><label class="sr" for="firstName">Nombres</label><input class="inp" id="firstName" name="firstName" type="text" placeholder="Nombres" autocomplete="given-name" value="{{ old('firstName') }}" required></div>
+          <div class="fld"><label class="sr" for="lastName">Apellidos</label><input class="inp" id="lastName" name="lastName" type="text" placeholder="Apellidos" autocomplete="family-name" value="{{ old('lastName') }}" required></div>
+          <div class="fld"><label class="sr" for="email">Email</label><input class="inp" id="email" name="email" type="email" placeholder="Email" autocomplete="email" value="{{ old('email') }}" required></div>
           <div class="row">
-            <div class="fld"><label class="sr" for="dial">Código de país</label><input class="inp" id="dial" name="dial" type="tel" inputmode="tel" placeholder="+51" pattern="\+[0-9]{1,3}" title="Ejemplo: +51" autocomplete="tel-country-code" required></div>
-            <div class="fld"><label class="sr" for="phone">Teléfono</label><input class="inp" id="phone" name="phone" type="tel" inputmode="tel" placeholder="Teléfono" pattern="[0-9 ]{6,15}" title="Solo números, entre 6 y 15 dígitos" autocomplete="tel-national" required></div>
+            <div class="fld"><label class="sr" for="dial">Código de país</label><input class="inp" id="dial" name="dial" type="tel" inputmode="tel" placeholder="+51" pattern="\+[0-9]{1,3}" title="Ejemplo: +51" autocomplete="tel-country-code" value="{{ old('dial', '+51') }}" required></div>
+            <div class="fld"><label class="sr" for="phone">Teléfono</label><input class="inp" id="phone" name="phone" type="tel" inputmode="tel" placeholder="Teléfono" pattern="[0-9 ]{6,15}" title="Solo números, entre 6 y 15 dígitos" autocomplete="tel-national" value="{{ old('phone') }}" required></div>
           </div>
           <p class="have">¿Ya tienes cuenta? <a href="{{ route('login') }}">Inicia sesión</a></p>
           <div class="actions"><button class="btn btn--primary btn--next" type="submit">Siguiente</button></div>
@@ -34,7 +45,8 @@
           <h2 class="sub" id="s2">Seguridad y Viajero</h2>
           <div class="fld"><label class="sr" for="password">Contraseña</label><div class="pw"><input class="inp" id="password" name="password" type="password" placeholder="Contraseña" minlength="8" autocomplete="new-password" required><button class="eye" type="button" data-toggle="password" aria-controls="password" aria-label="Mostrar contraseña" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m3 3 18 18"/></svg></button></div></div>
           <div class="fld"><label class="sr" for="confirm">Confirmar contraseña</label><div class="pw"><input class="inp" id="confirm" name="confirm" type="password" placeholder="Confirmar contraseña" autocomplete="new-password" required><button class="eye" type="button" data-toggle="confirm" aria-controls="confirm" aria-label="Mostrar contraseña" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="m3 3 18 18"/></svg></button></div></div>
-          <div class="fld"><label class="sr" for="docId">DNI o Pasaporte</label><input class="inp" id="docId" name="docId" type="text" placeholder="DNI o Pasaporte" pattern="[A-Za-z0-9]{{6,12}}" title="Entre 6 y 12 letras o números" autocapitalize="characters" required></div>
+          <input type="hidden" id="password_confirmation" name="password_confirmation" value="">
+          <div class="fld"><label class="sr" for="docId">DNI o Pasaporte</label><input class="inp" id="docId" name="docId" type="text" placeholder="DNI o Pasaporte" pattern="[A-Za-z0-9]{6,12}" title="Entre 6 y 12 caracteres (letras o números)" autocapitalize="characters" value="{{ old('docId') }}" required></div>
           <div class="fld"><label class="sr" for="birth">Fecha de nacimiento</label><input class="inp" id="birth" name="birth" type="date" autocomplete="bday" required></div>
           <div class="fld"><label class="sr" for="emergency">Contacto de emergencia</label><input class="inp" id="emergency" name="emergency" type="text" placeholder="Contacto de emergencia" autocomplete="off" required></div>
           <label class="terms"><input type="checkbox" name="terms" required><span>Acepto los <a href="#" target="_blank" rel="noopener">Términos y Políticas de Privacidad</a></span></label>

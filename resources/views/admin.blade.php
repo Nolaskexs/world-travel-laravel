@@ -53,6 +53,8 @@
     | @section('active', 'paquetes')
     */
 
+    $badgeReservas = \App\Models\Reserva::where('estado', 'pendiente')->count();
+
     $menu = [
         'Principal' => [
             [
@@ -66,7 +68,7 @@
                 'label' => 'Reservas',
                 'icon' => 'cal-check',
                 'href' => url('/admin/reservas'),
-                'badge' => 12
+                'badge' => $badgeReservas > 0 ? $badgeReservas : null
             ],
             [
                 'key' => 'clientes',

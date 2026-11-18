@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PaqueteController;
 use App\Http\Controllers\Admin\DestinoController;
 use App\Http\Controllers\Admin\FacturacionController;
 use App\Http\Controllers\Admin\AjustesController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,17 +66,8 @@ Route::get('/dashboard', [
 | Conservamos el comportamiento que implementó Jair.
 */
 
-Route::get('/admin', function () {
-
-    // Los clientes no pueden ingresar al panel.
-    if (!auth()->user()->esAdmin()) {
-        return redirect()->route('dashboard');
-    }
-
-    return view('dashboard-admin');
-
-})
-    ->middleware('auth')
+Route::get('/admin', [AdminDashboardController::class, 'index'])
+    ->middleware(['auth', 'can:administrar'])
     ->name('admin.dashboard');
 
 /*

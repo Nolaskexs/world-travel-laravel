@@ -48,6 +48,55 @@
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
   </svg>
 
+  @auth
+    @if(auth()->user()->esAdmin())
+      <!-- Barra Administrativa Superior (Admin Bar) -->
+      <aside class="admin-topbar" aria-label="Herramientas de Administrador">
+        <div class="wrap admin-topbar__wrap">
+          <div class="admin-topbar__left">
+            <span class="admin-topbar__badge">
+              <svg class="admin-topbar__ico" viewBox="0 0 24 24"><path d="M12 2 4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/></svg>
+              Admin Mode
+            </span>
+            <a href="{{ route('admin.dashboard') }}" class="admin-topbar__link">
+              <svg class="admin-topbar__ico" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              Dashboard
+            </a>
+            <a href="{{ url('/admin/reservas') }}" class="admin-topbar__link">
+              <svg class="admin-topbar__ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Reservas
+              @php
+                $topbarPendientes = \App\Models\Reserva::where('estado', 'pendiente')->count();
+              @endphp
+              @if($topbarPendientes > 0)
+                <span class="admin-topbar__tag">{{ $topbarPendientes }}</span>
+              @endif
+            </a>
+            <a href="{{ route('admin.paquetes.create') }}" class="admin-topbar__link admin-topbar__link--btn">
+              + Nuevo Paquete
+            </a>
+            <a href="{{ route('admin.destinos.create') }}" class="admin-topbar__link admin-topbar__link--btn">
+              + Nuevo Destino
+            </a>
+          </div>
+
+          <div class="admin-topbar__right">
+            <span class="admin-topbar__user">
+              Admin: <strong>{{ Str::limit(auth()->user()->name, 18) }}</strong>
+            </span>
+            <form method="POST" action="{{ route('logout') }}" class="admin-topbar__logout">
+              @csrf
+              <button type="submit" class="admin-topbar__btn-exit" title="Cerrar sesión">
+                <svg class="admin-topbar__ico" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Cerrar sesión
+              </button>
+            </form>
+          </div>
+        </div>
+      </aside>
+    @endif
+  @endauth
+
   <!-- partial: header -->
   <header class="hdr">
     <div class="wrap hdr__top">
@@ -58,7 +107,15 @@
       </picture>
       <div class="util">
         <a class="btn-sales" href="tel:0001010001">Para ventas 000-1010001</a>
-        <a href="{{ route('dashboard') }}">Mis viajes</a>
+        @auth
+          @if(auth()->user()->esAdmin())
+            <a href="{{ route('admin.dashboard') }}" style="color: #64dfdf; font-weight: 700;">Panel Admin</a>
+          @else
+            <a href="{{ route('dashboard') }}">Mis viajes</a>
+          @endif
+        @else
+          <a href="{{ route('dashboard') }}">Mis viajes</a>
+        @endauth
         <span class="sep"></span>
         <a href="{{ route('ayuda') }}">Ayuda</a>
         <span class="sep"></span>
