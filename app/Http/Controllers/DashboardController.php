@@ -12,8 +12,8 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
-        // 1. Si es admin, lo mandamos a su panel exclusivo.
-        if ($user->esAdmin()) {
+        // 1. Si es admin, lo mandamos a su panel de administración /admin
+        if ($user && $user->esAdmin()) {
             return redirect('/admin');
         }
 

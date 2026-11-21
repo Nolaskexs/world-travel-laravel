@@ -7,8 +7,25 @@
 
     <div class="wrap claim-container">
         @if(session('success'))
-            <div class="claim-alert" role="alert">
-                {{ session('success') }}
+            <div class="claim-alert" role="alert" style="background:#dcfce7; border:1px solid #86efac; color:#166534; padding:1.25rem; border-radius:12px; margin-bottom:1.5rem;">
+                <div style="font-weight:700; font-size:1.1rem; margin-bottom:0.25rem;">✔ Reclamación Ingresada al Sistema</div>
+                <p style="margin:0;">{{ session('success') }}</p>
+                @if(session('codigo_registrado'))
+                    <div style="margin-top:0.6rem; padding:0.5rem 0.8rem; background:#ffffff; border-radius:8px; display:inline-block; font-weight:800; color:#0f172a; border:1px dashed #86efac;">
+                        Código de seguimiento: <span style="color:#0284c7;">{{ session('codigo_registrado') }}</span>
+                    </div>
+                @endif
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="claim-alert" role="alert" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:1.25rem; border-radius:12px; margin-bottom:1.5rem;">
+                <div style="font-weight:700; margin-bottom:0.4rem;">Por favor corrige los siguientes campos:</div>
+                <ul style="margin:0; padding-left:1.2rem; font-size:0.9rem;">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -46,34 +63,49 @@
                     <label class="claim-label">SELECCIONA EL TIPO DE PERSONA *</label>
                     <div class="claim-radios">
                         <label class="claim-radio">
-                            <input type="radio" name="tipo_persona" value="natural" checked required>
+                            <input type="radio" name="tipo_persona" value="natural" {{ old('tipo_persona', 'natural') === 'natural' ? 'checked' : '' }} required>
                             <span>Natural</span>
                         </label>
                         <label class="claim-radio">
-                            <input type="radio" name="tipo_persona" value="juridica">
+                            <input type="radio" name="tipo_persona" value="juridica" {{ old('tipo_persona') === 'juridica' ? 'checked' : '' }}>
                             <span>Jurídica</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="claim-group">
+                    <label class="claim-label" for="nombre">NOMBRES Y APELLIDOS / RAZÓN SOCIAL *</label>
+                    <input class="claim-input" type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez Quispe" value="{{ old('nombre', auth()->user()?->name) }}" required>
+                </div>
+
+                <div class="claim-group">
+                    <label class="claim-label" for="documento">NÚMERO DE DOCUMENTO (DNI / RUC) *</label>
+                    <input class="claim-input" type="text" id="documento" name="documento" placeholder="Ej. 74859612 o 20609876543" value="{{ old('documento', auth()->user()?->dni) }}" required>
+                </div>
+
+                <div class="claim-group">
+                    <label class="claim-label" for="email">CORREO ELECTRÓNICO *</label>
+                    <input class="claim-input" type="email" id="email" name="email" placeholder="correo@ejemplo.com" value="{{ old('email', auth()->user()?->email) }}" required>
+                </div>
+
+                <div class="claim-group">
                     <label class="claim-label" for="telefono">TELÉFONO CELULAR</label>
-                    <input class="claim-input" type="tel" id="telefono" name="telefono" placeholder="Escribe aquí">
+                    <input class="claim-input" type="tel" id="telefono" name="telefono" placeholder="Ej. 987654321" value="{{ old('telefono', auth()->user()?->telefono) }}">
                 </div>
 
                 <div class="claim-group">
                     <label class="claim-label" for="pais">PAÍS DE RESIDENCIA</label>
-                    <input class="claim-input" type="text" id="pais" name="pais" placeholder="Escribe aquí" value="Perú">
+                    <input class="claim-input" type="text" id="pais" name="pais" placeholder="Escribe aquí" value="{{ old('pais', 'Perú') }}">
                 </div>
 
                 <div class="claim-group">
                     <label class="claim-label" for="producto">PRODUCTO O SERVICIO CONTRATADO *</label>
-                    <input class="claim-input" type="text" id="producto" name="producto" placeholder="Escribe aquí" required>
+                    <input class="claim-input" type="text" id="producto" name="producto" placeholder="Ej. Vuelo Lima - Tokio o Paquete Machu Picchu" value="{{ old('producto') }}" required>
                 </div>
 
                 <div class="claim-group">
                     <label class="claim-label" for="reserva">NÚMERO DE LA RESERVA (SI APLICA)</label>
-                    <input class="claim-input" type="text" id="reserva" name="reserva" inputmode="numeric" pattern="[0-9]*" placeholder="Escribe aquí, sólo números">
+                    <input class="claim-input" type="text" id="reserva" name="reserva" inputmode="numeric" placeholder="Ej. 1024 (Opcional)" value="{{ old('reserva') }}">
                 </div>
             </section>
 
@@ -86,11 +118,11 @@
                     <label class="claim-label" for="motivo">SELECCIONA A QUÉ SE REFIERE TU RECLAMO *</label>
                     <div class="claim-select-wrap">
                         <select class="claim-input claim-select" id="motivo" name="motivo" required>
-                            <option value="" disabled selected>Elige</option>
-                            <option value="reclamo_vuelo">Reclamo (Disconformidad con el vuelo, paquete o servicio)</option>
-                            <option value="queja_atencion">Queja (Malestar en la atención al cliente)</option>
-                            <option value="facturacion_cobro">Problemas con facturación o cobros</option>
-                            <option value="reembolso_cancelacion">Reembolsos y cancelaciones</option>
+                            <option value="" disabled {{ old('motivo') ? '' : 'selected' }}>Elige una opción</option>
+                            <option value="reclamo_vuelo" {{ old('motivo') === 'reclamo_vuelo' ? 'selected' : '' }}>Reclamo (Disconformidad con el vuelo, paquete o servicio)</option>
+                            <option value="queja_atencion" {{ old('motivo') === 'queja_atencion' ? 'selected' : '' }}>Queja (Malestar en la atención al cliente)</option>
+                            <option value="facturacion_cobro" {{ old('motivo') === 'facturacion_cobro' ? 'selected' : '' }}>Problemas con facturación o cobros</option>
+                            <option value="reembolso_cancelacion" {{ old('motivo') === 'reembolso_cancelacion' ? 'selected' : '' }}>Reembolsos y cancelaciones</option>
                         </select>
                         <svg class="claim-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="6 9 12 15 18 9"></polyline>
@@ -100,23 +132,23 @@
 
                 <div class="claim-group">
                     <label class="claim-label" for="detalle">DETALLE DEL RECLAMO *</label>
-                    <textarea class="claim-input claim-textarea" id="detalle" name="detalle" rows="4" placeholder="Describe en algunas líneas el motivo de tu reclamo" required></textarea>
+                    <textarea class="claim-input claim-textarea" id="detalle" name="detalle" rows="4" placeholder="Describe en algunas líneas el motivo de tu reclamo" required>{{ old('detalle') }}</textarea>
                 </div>
 
                 <div class="claim-group">
                     <label class="claim-label" for="pedido">PEDIDO CONCRETO REFERENTE AL RECLAMO *</label>
-                    <textarea class="claim-input claim-textarea" id="pedido" name="pedido" rows="4" placeholder="Describe en pocas líneas tu requerimiento" required></textarea>
+                    <textarea class="claim-input claim-textarea" id="pedido" name="pedido" rows="4" placeholder="Describe en pocas líneas tu requerimiento" required>{{ old('pedido') }}</textarea>
                 </div>
 
                 <div class="claim-group">
                     <label class="claim-label">SELECCIONA LA MONEDA DEL RECLAMO</label>
                     <div class="claim-radios">
                         <label class="claim-radio">
-                            <input type="radio" name="moneda" value="PEN" checked>
+                            <input type="radio" name="moneda" value="PEN" {{ old('moneda', 'PEN') === 'PEN' ? 'checked' : '' }}>
                             <span>Soles peruanos (PEN)</span>
                         </label>
                         <label class="claim-radio">
-                            <input type="radio" name="moneda" value="USD">
+                            <input type="radio" name="moneda" value="USD" {{ old('moneda') === 'USD' ? 'checked' : '' }}>
                             <span>Dólares (USD)</span>
                         </label>
                     </div>
@@ -124,7 +156,7 @@
 
                 <div class="claim-group">
                     <label class="claim-label" for="monto">MONTO RECLAMADO</label>
-                    <input class="claim-input" type="number" step="0.01" min="0" id="monto" name="monto" placeholder="Ingrese solo números, decimales son permitidos">
+                    <input class="claim-input" type="number" step="0.01" min="0" id="monto" name="monto" placeholder="Ingrese solo números, decimales son permitidos" value="{{ old('monto') }}">
                 </div>
             </section>
 

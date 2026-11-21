@@ -96,7 +96,24 @@ class DashboardController extends Controller
 
         // 4. Destinos más populares (agrupando reservas a través de sus paquetes)
         $colores = ['#0C1B26', '#3E6E8E', '#6FA8C7', '#9BB8C9', '#5B6B78', '#2A4256'];
-        
+
+        $coordenadas = [
+            'Roma'          => [41.9028, 12.4964],
+            'Bali'          => [-8.4095, 115.1889],
+            'Cusco'         => [-13.5319, -71.9675],
+            'Buenos Aires'  => [-34.6037, -58.3816],
+            'Cancún'        => [21.1619, -86.8515],
+            'Tokio'         => [35.6762, 139.6503],
+            'París'         => [48.8566, 2.3522],
+            'Nueva York'    => [40.7128, -74.0060],
+            'Madrid'        => [40.4168, -3.7038],
+            'Lima'          => [-12.0464, -77.0428],
+            'Santiago'      => [-33.4489, -70.6693],
+            'Bogotá'        => [4.7110, -74.0721],
+            'Londres'       => [51.5074, -0.1278],
+            'Río de Janeiro'=> [-22.9068, -43.1729],
+        ];
+
         $destinosQuery = DB::table('destinos')
             ->leftJoin('paquetes', 'paquetes.destino_id', '=', 'destinos.id')
             ->leftJoin('reservas', 'reservas.paquete_id', '=', 'paquetes.id')
@@ -116,16 +133,31 @@ class DashboardController extends Controller
         foreach ($destinosQuery as $dest) {
             $count = (int) $dest->reservas_count;
             $pct = $reservasCount > 0 ? round(($count / $reservasCount) * 100) : 0;
+            $ciudad = $dest->nombre;
+            $coords = $coordenadas[$ciudad] ?? [0, 0];
 
             $destinos[] = [
-                'nombre'   => "{$dest->nombre}, {$dest->pais}",
+                'ciudad'   => $ciudad,
+                'pais'     => $dest->pais,
+                'nombre'   => "{$ciudad}, {$dest->pais}",
                 'reservas' => $count,
                 'pct'      => $pct,
                 'up'       => $count > 0,
                 'color'    => $colores[$colorIdx % count($colores)],
+                'coords'   => $coords,
             ];
             $colorIdx++;
         }
+
+        // Jerarquía de tamaño visual por volumen de reservas (%):
+        // El líder (ej. Roma con 38%) recibe radio 11px, mientras que destinos con menor volumen reciben 6.5px
+        $maxPct = count($destinos) > 0 ? max(array_column($destinos, 'pct')) : 1;
+        foreach ($destinos as &$d) {
+            $ratio = $maxPct > 0 ? ($d['pct'] / $maxPct) : 0;
+            $d['radius'] = round(6.0 + ($ratio * 5.0), 1);
+            $d['is_leader'] = ($d['pct'] === $maxPct && $d['pct'] > 0);
+        }
+        unset($d);
 
         return view('dashboard-admin', compact('stats', 'chart', 'destinos'));
     }

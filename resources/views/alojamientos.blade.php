@@ -69,13 +69,193 @@
             </div>
 
             <p id="hotelContador" class="hotel-contador">
-                3 alojamientos disponibles en esta demostración
+                9 alojamientos disponibles en esta demostración
             </p>
 
             <div class="hotel-grid" id="listaHoteles">
 
                 <article class="hotel-card"
-                         data-destino="cusco"
+                         data-destino="tokio japon japón tokyo"
+                         data-tipo="hotel">
+                    <img
+                        src="{{ asset('icons/hotel1.jpg') }}"
+                        alt="The Ritz-Carlton, Tokyo"
+                        loading="lazy">
+
+                    <div class="hotel-info">
+                        <span class="hotel-tipo">HOTEL DE LUJO</span>
+                        <h3>The Ritz-Carlton, Tokyo</h3>
+                        <p class="hotel-ubicacion">Tokio, Japón (Roppongi)</p>
+                        <p class="hotel-servicios">
+                            Wi-Fi · Spa Michelin · Piscina · Vista Mt. Fuji
+                        </p>
+
+                        <div class="hotel-footer">
+                            <div>
+                                <small>Precio referencial / noche</small>
+                                <strong>US$ 19,957</strong>
+                            </div>
+
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'tokio-ritz']) }}"
+                            class="hotel-ver">
+                                Ver detalles
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hotel-card"
+                         data-destino="cartagena colombia"
+                         data-tipo="hotel">
+                    <img
+                        src="{{ asset('icons/hotel3.jpg') }}"
+                        alt="Oz Hotel Luxury"
+                        loading="lazy">
+
+                    <div class="hotel-info">
+                        <span class="hotel-tipo">HOTEL BOUTIQUE</span>
+                        <h3>Oz Hotel Luxury</h3>
+                        <p class="hotel-ubicacion">Cartagena de Indias, Colombia</p>
+                        <p class="hotel-servicios">
+                            Desayuno buffet · Rooftop lounge · Wi-Fi
+                        </p>
+
+                        <div class="hotel-footer">
+                            <div>
+                                <small>Precio referencial / noche</small>
+                                <strong>US$ 74</strong>
+                            </div>
+
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'cartagena-oz']) }}"
+                            class="hotel-ver">
+                                Ver detalles
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hotel-card"
+                         data-destino="madrid espana españa"
+                         data-tipo="hotel">
+                    <img
+                        src="{{ asset('icons/hotel2.jpg') }}"
+                        alt="Hotel Riu Plaza España"
+                        loading="lazy">
+
+                    <div class="hotel-info">
+                        <span class="hotel-tipo">HOTEL</span>
+                        <h3>Hotel Riu Plaza España</h3>
+                        <p class="hotel-ubicacion">Madrid, España (Gran Vía)</p>
+                        <p class="hotel-servicios">
+                            Sky Bar 360° · Desayuno gourmet · Piscina
+                        </p>
+
+                        <div class="hotel-footer">
+                            <div>
+                                <small>Precio referencial / noche</small>
+                                <strong>US$ 268</strong>
+                            </div>
+
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'madrid-riu']) }}"
+                            class="hotel-ver">
+                                Ver detalles
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hotel-card"
+                         data-destino="cusco peru perú machu picchu"
+                         data-tipo="hotel">
+                    <img
+                        src="{{ asset('icons/belmond-hotel-monasterio.jpg') }}"
+                        alt="Belmond Monasterio, Cusco"
+                        loading="lazy">
+
+                    <div class="hotel-info">
+                        <span class="hotel-tipo">HOTEL HISTÓRICO</span>
+                        <h3>Belmond Monasterio, Cusco</h3>
+                        <p class="hotel-ubicacion">Cusco, Perú (Plazoleta Nazarenas)</p>
+                        <p class="hotel-servicios">
+                            Oxígeno enriquecido · Desayuno · Arte virreinal
+                        </p>
+
+                        <div class="hotel-footer">
+                            <div>
+                                <small>Precio referencial / noche</small>
+                                <strong>US$ 540</strong>
+                            </div>
+
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'cusco-monasterio']) }}"
+                            class="hotel-ver">
+                                Ver detalles
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hotel-card"
+                         data-destino="barcelona espana españa"
+                         data-tipo="resort">
+                    <img
+                        src="{{ asset('icons/HotelArtsBarcelona.jpg') }}"
+                        alt="Hotel Arts Barcelona"
+                        loading="lazy">
+
+                    <div class="hotel-info">
+                        <span class="hotel-tipo">RESORT URBANO</span>
+                        <h3>Hotel Arts Barcelona</h3>
+                        <p class="hotel-ubicacion">Barcelona, España (Port Olímpic)</p>
+                        <p class="hotel-servicios">
+                            2 estrellas Michelin · Spa panorámico · Playa
+                        </p>
+
+                        <div class="hotel-footer">
+                            <div>
+                                <small>Precio referencial / noche</small>
+                                <strong>US$ 990</strong>
+                            </div>
+
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'barcelona-arts']) }}"
+                            class="hotel-ver">
+                                Ver detalles
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hotel-card"
+                         data-destino="lima peru perú miraflores"
+                         data-tipo="hotel">
+                    <img
+                        src="{{ asset('icons/MirafloresParkLimaJuniorSuite.jpg') }}"
+                        alt="Miraflores Park, Lima"
+                        loading="lazy">
+
+                    <div class="hotel-info">
+                        <span class="hotel-tipo">HOTEL DE LUJO</span>
+                        <h3>Miraflores Park, Lima</h3>
+                        <p class="hotel-ubicacion">Lima, Perú (Malecón)</p>
+                        <p class="hotel-servicios">
+                            Piscina en azotea · Vista al mar · Tragaluz
+                        </p>
+
+                        <div class="hotel-footer">
+                            <div>
+                                <small>Precio referencial / noche</small>
+                                <strong>US$ 265</strong>
+                            </div>
+
+                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'lima-miraflores']) }}"
+                            class="hotel-ver">
+                                Ver detalles
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hotel-card"
+                         data-destino="cusco peru perú"
                          data-tipo="hotel">
                     <img
                         src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900"
@@ -105,7 +285,7 @@
                 </article>
 
                 <article class="hotel-card"
-                         data-destino="lima"
+                         data-destino="lima peru perú"
                          data-tipo="resort">
                     <img
                         src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900"
@@ -134,7 +314,7 @@
                 </article>
 
                 <article class="hotel-card"
-                         data-destino="arequipa"
+                         data-destino="arequipa peru perú"
                          data-tipo="hostal">
                     <img
                         src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900"

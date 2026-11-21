@@ -51,6 +51,16 @@
                         </div>
                     </div>
 
+                    @if(!empty($hotelNombre))
+                        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 20px;">🏨</span>
+                            <div>
+                                <strong style="display: block;">Alojamiento seleccionado: {{ $hotelNombre }}</strong>
+                                <small style="color: #15803d;">{{ $hotelUbicacion ?? '' }} {{ !empty($hotelNoches) ? '· ' . $hotelNoches . ' noches' : '' }}</small>
+                            </div>
+                        </div>
+                    @endif
+
                     <form id="formViajero" method="POST" action="{{ route('reservas.store') }}">
                         @csrf
                         <input type="hidden" name="paquete_id" id="inputPaqueteId" value="{{ $paqueteSeleccionado->id ?? ($paquetes->first()->id ?? 1) }}">

@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\DestinoController;
 use App\Http\Controllers\Admin\FacturacionController;
 use App\Http\Controllers\Admin\AjustesController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ReclamacionController as AdminReclamacionController;
+use App\Http\Controllers\ReclamacionController;
 use App\Http\Controllers\AsientoController;
 
 /*
@@ -35,13 +37,8 @@ Route::view('/ayuda', 'ayuda')->name('ayuda');
 
 Route::view('/nosotros', 'nosotros')->name('nosotros');
 
-Route::get('/libro-de-reclamaciones', function () {
-    return view('reclamaciones');
-})->name('reclamaciones');
-
-Route::post('/libro-de-reclamaciones', function (Request $request) {
-    return back()->with('success', 'Tu hoja de reclamación ha sido registrada correctamente.');
-})->name('reclamaciones.store');
+Route::get('/libro-de-reclamaciones', [ReclamacionController::class, 'create'])->name('reclamaciones');
+Route::post('/libro-de-reclamaciones', [ReclamacionController::class, 'store'])->name('reclamaciones.store');
 
 // IMPORTANTE:
 // No agregamos rutas de login, logout o registro.
@@ -136,11 +133,7 @@ Route::get('/alojamientos/{codigo}', function (string $codigo) {
     return view('detalle-alojamiento', compact('codigo'));
 
 })
-    ->whereIn('codigo', [
-        'cusco',
-        'lima',
-        'arequipa'
-    ])
+    ->where('codigo', '[a-zA-Z0-9\-_]+')
     ->name('alojamientos.detalle');
 
 /*
@@ -169,15 +162,7 @@ Route::post('/reservas', [ReservaClienteController::class, 'store'])
 
 /*
 |--------------------------------------------------------------------------
-| 8. Alquiler de autos
-|--------------------------------------------------------------------------
-*/
-
-Route::view('/autos', 'autos')->name('autos');
-
-/*
-|--------------------------------------------------------------------------
-| 9. Catálogo público de paquetes y ofertas
+| 8. Catálogo público de paquetes y ofertas
 |--------------------------------------------------------------------------
 */
 
@@ -290,6 +275,11 @@ Route::patch(
 
         // FACTURACIÓN: Listado y balance financiero
         Route::get('/facturacion', [FacturacionController::class, 'index'])->name('facturacion.index');
+
+        // RECLAMACIONES: Hoja de reclamaciones y atención al cliente
+        Route::get('/reclamaciones', [AdminReclamacionController::class, 'index'])->name('reclamaciones.index');
+        Route::get('/reclamaciones/{id}', [AdminReclamacionController::class, 'show'])->name('reclamaciones.show');
+        Route::put('/reclamaciones/{id}', [AdminReclamacionController::class, 'update'])->name('reclamaciones.update');
 
         // AJUSTES: Configuración del sistema y de la agencia
         Route::get('/ajustes', [AjustesController::class, 'index'])->name('ajustes.index');

@@ -21,6 +21,32 @@ class ReservaClienteController extends Controller
         $paqueteId = $request->query('paquete_id');
         $paqueteSeleccionado = null;
 
+        $hotelCode = $request->query('hotel');
+        $hotelNombre = $request->query('hotel_nombre');
+        $hotelUbicacion = $request->query('hotel_ubicacion');
+        $hotelNoches = (int) $request->query('noches', 0);
+
+        if ($hotelCode && !$paqueteId) {
+            $mapHotelDestino = [
+                'tokio-ritz' => 'Tokio',
+                'cartagena-oz' => 'Cartagena',
+                'madrid-riu' => 'Madrid',
+                'cusco-monasterio' => 'Cusco',
+                'barcelona-arts' => 'Madrid',
+                'lima-miraflores' => 'Ica',
+                'cusco' => 'Cusco',
+                'lima' => 'Ica',
+                'arequipa' => 'Arequipa',
+            ];
+            $destinoBuscado = $mapHotelDestino[$hotelCode] ?? null;
+            if ($destinoBuscado) {
+                $paqueteEncontrado = $paquetes->firstWhere('destino', $destinoBuscado);
+                if ($paqueteEncontrado) {
+                    $paqueteSeleccionado = $paqueteEncontrado;
+                }
+            }
+        }
+
         if ($paqueteId) {
             $paqueteSeleccionado = $paquetes->firstWhere('id', (int) $paqueteId);
         }
@@ -30,11 +56,11 @@ class ReservaClienteController extends Controller
             $paqueteSeleccionado = $paquetes->first();
         }
 
-        $fechaViaje = $request->query('fecha_viaje', $request->query('salida', now()->addDays(14)->format('Y-m-d')));
-        $numPasajeros = max(1, (int) $request->query('num_pasajeros', $request->query('adults', 1)));
+        $fechaViaje = $request->query('fecha_viaje', $request->query('entrada', $request->query('salida', now()->addDays(14)->format('Y-m-d'))));
+        $numPasajeros = max(1, (int) $request->query('num_pasajeros', $request->query('huespedes', $request->query('adults', 1))));
         $asientos = (string) $request->query('asientos', '');
         $precioUnitario = (float) ($paqueteSeleccionado->precio ?? 350.00);
-        $totalEstimado = $precioUnitario * $numPasajeros;
+        $totalEstimado = (float) $request->query('total', $precioUnitario * $numPasajeros);
 
         $user = Auth::user();
 
@@ -45,7 +71,10 @@ class ReservaClienteController extends Controller
             'numPasajeros',
             'asientos',
             'totalEstimado',
-            'user'
+            'user',
+            'hotelNombre',
+            'hotelUbicacion',
+            'hotelNoches'
         ));
     }
 

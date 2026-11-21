@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             DestinosSeeder::class, // siempre DESPUÉS de PaquetesOfertasSeeder
             ReservaSeeder::class,
             VueloSeeder::class,
+            ReclamacionSeeder::class,
         ]);
     }
 }

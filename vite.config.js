@@ -18,8 +18,6 @@ export default defineConfig({
                 'resources/js/register.js',
                 'resources/js/search.js',
                 'resources/js/searchmain.js',
-                'resources/css/autos.css',
-                'resources/js/autos.js',
                 'resources/css/ayuda.css',
                 'resources/js/ayuda.js',
                 'resources/css/reclamaciones.css',

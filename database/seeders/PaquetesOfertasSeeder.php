@@ -247,6 +247,15 @@ class PaquetesOfertasSeeder extends Seeder
                 'incluye_vuelo' => false, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
+            [
+                'titulo' => 'India milenaria y el Taj Mahal', 'destino' => 'India',
+                'pais' => 'India', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Descubre templos sagrados, fortalezas majestuosas y el legendario Taj Mahal en una travesía inolvidable por la India.',
+                'duracion_dias' => 9, 'precio' => 2890,
+                'imagen_url' => '/icons/india.jpg',
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
+                'incluye_tour' => true, 'destacado' => true,
+            ],
         ];
 
         $ids = [];

@@ -41,32 +41,32 @@
     ? window.__DESTINOS_DB__
     : DEFAULT_CITIES;
   const PACKAGES = [
-    ['Vuelo a Roma','RM','1.230',11, 'icons/roma.jpg', 'icons/aireuropa.png'],
-    ['Vuelo a Tokio','TKY','2.890',9, 'icons/tokio.jpg', 'icons/japanairlines.png'],
-    ['India','GAR','2.890',5, 'icons/india.jpg', 'icons/airindia.png'],
-    ['Vuelo a París','PAR','1.540',8, 'icons/Paris - paquete turitico.jpg', 'icons/LATAM-Logo.png'] // <- Agrega más tarjetas aquí
+    ['Vuelo a Roma','RM','1.230',11, 'icons/roma.jpg', 'icons/aireuropa.png', '/paquetes/17'],
+    ['Vuelo a Tokio','TKY','2.890',9, 'icons/tokio.jpg', 'icons/japanairlines.png', '/paquetes/20'],
+    ['India','GAR','2.890',5, 'icons/india.jpg', 'icons/airindia.png', '/paquetes/27'],
+    ['Vuelo a París','PAR','1.540',8, 'icons/Paris - paquete turitico.jpg', 'icons/LATAM-Logo.png', '/paquetes/16']
   ];
   // ... asegúrate de hacerlo para todos
   const HOTELS = [
-    ['The Ritz-Carlton, Tokyo','4.3',4,'Deluxe Room, 2 Queen Beds','18 noches, 2 personas','20.032','19.957',[['Reserva sin pagar ahora','b']],'icons/hotel1.jpg'],
-    ['Oz Hotel Luxury','4.8',5,'Classic Room','1 noche, 2 personas','104','74',[['Desayuno','t']],'icons/hotel3.jpg'],
-    ['Hotel Riu Plaza España','4.9',5,'Habitación Doble de Lujo','1 noche, 2 personas','414','268',[['Desayuno','t'],['Elegido por parejas','b']],'icons/hotel2.jpg'],
-    ['Belmond Monasterio, Cusco','4.7',5,'Habitación Superior','2 noches, 2 personas','620','540',[['Desayuno','t']],'icons/belmond-hotel-monasterio.jpg'],
-    ['Hotel Arts Barcelona','4.6',5,'Deluxe Vista al Mar','3 noches, 2 personas','1.150','990',[['Reserva sin pagar ahora','b']],'icons/HotelArtsBarcelona.jpg'],
-    ['Miraflores Park, Lima','4.8',5,'Junior Suite','1 noche, 2 personas','330','265',[['Desayuno','t']],'icons/MirafloresParkLimaJuniorSuite.jpg'],
+    ['The Ritz-Carlton, Tokyo','4.3',4,'Deluxe Room, 2 Queen Beds','18 noches, 2 personas','20.032','19.957',[['Reserva sin pagar ahora','b']],'icons/hotel1.jpg', '/alojamientos/tokio-ritz'],
+    ['Oz Hotel Luxury','4.8',5,'Classic Room','1 noche, 2 personas','104','74',[['Desayuno','t']],'icons/hotel3.jpg', '/alojamientos/cartagena-oz'],
+    ['Hotel Riu Plaza España','4.9',5,'Habitación Doble de Lujo','1 noche, 2 personas','414','268',[['Desayuno','t'],['Elegido por parejas','b']],'icons/hotel2.jpg', '/alojamientos/madrid-riu'],
+    ['Belmond Monasterio, Cusco','4.7',5,'Habitación Superior','2 noches, 2 personas','620','540',[['Desayuno','t']],'icons/belmond-hotel-monasterio.jpg', '/alojamientos/cusco-monasterio'],
+    ['Hotel Arts Barcelona','4.6',5,'Deluxe Vista al Mar','3 noches, 2 personas','1.150','990',[['Reserva sin pagar ahora','b']],'icons/HotelArtsBarcelona.jpg', '/alojamientos/barcelona-arts'],
+    ['Miraflores Park, Lima','4.8',5,'Junior Suite','1 noche, 2 personas','330','265',[['Desayuno','t']],'icons/MirafloresParkLimaJuniorSuite.jpg', '/alojamientos/lima-miraflores'],
   ];
 
-  const packCard = ([t, code, price, off, image, logoAerolinea]) => `
+  const packCard = ([t, code, price, off, image, logoAerolinea, link]) => `
   <article class="card hotel-card" data-destino="${code}" data-tipo="paquete">
     <div class="card__media">
-      <img src="${image}" alt="${t}" loading="lazy">
+      <a href="${link || '/paquetes'}"><img src="${image}" alt="${t}" loading="lazy"></a>
       <span class="badge">-${off}%</span>
     </div>
     <div class="card-info">
       <div class="card-header-row">
         <div>
           <span class="card-tipo">PAQUETE</span>
-          <h3>${t}</h3>
+          <h3><a href="${link || '/paquetes'}" style="color: inherit; text-decoration: none;">${t}</a></h3>
         </div>
         <div class="card-aerolinea">
           <img src="${logoAerolinea}" alt="Aerolínea" style="width: 90px; height: 28px; object-fit: contain;">
@@ -80,20 +80,20 @@
           <small>Precio referencial</small>
           <strong>US$ ${price}</strong>
         </div>
-        <a href="#" class="btn-ver-detalles">Ver detalles</a>
+        <a href="${link || '/paquetes'}" class="btn-ver-detalles">Ver detalles</a>
       </div>
     </div>
   </article>`;
 
-  const hotelCard = ([n, score, stars, room, stay, old, now, tags, image]) => `
+  const hotelCard = ([n, score, stars, room, stay, old, now, tags, image, link]) => `
     <article class="card hotel-card" data-destino="${n}" data-tipo="hotel">
       <div class="card__media">
-        <img src="${image}" alt="${n}" loading="lazy">
+        <a href="${link || '/alojamientos'}"><img src="${image}" alt="${n}" loading="lazy"></a>
         ${tags.map(([t, c]) => `<span class="badge badge--${c}">${t}</span>`).join('')}
       </div>
       <div class="card-info">
         <span class="card-tipo">HOTEL</span>
-        <h3>${n}</h3>
+        <h3><a href="${link || '/alojamientos'}" style="color: inherit; text-decoration: none;">${n}</a></h3>
         <p class="card-ubicacion">${room}</p>
         <p class="card-servicios">${stay}</p>
         <div class="card-footer">
@@ -102,7 +102,7 @@
             <small class="precio-anterior">US$ ${old}</small>
             <strong>US$ ${now}</strong>
           </div>
-          <a href="#" class="btn-ver-detalles">Ver detalles</a>
+          <a href="${link || '/alojamientos'}" class="btn-ver-detalles">Ver detalles</a>
         </div>
       </div>
     </article>`;
