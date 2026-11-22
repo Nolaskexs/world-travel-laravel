@@ -177,43 +177,7 @@
     {{ $slot }}
   </main>
 
-  <!-- partial: footer -->
-  <!-- footer -->
-  <footer class="ftr">
-    <div class="wrap">
-      <div class="ftr__bar"></div>
-      <div class="ftr__cols">
-        <div>
-          <h4>Ayuda</h4>
-          <ul>
-            <li><a href="{{ route('ayuda') }}">Contáctenos</a></li>
-            <li><a href="{{ route('ayuda') }}">Recibos y reembolsos</a></li>
-            <li><a href="{{ route('ayuda') }}">Preguntas frecuentes</a></li>
-            <li><a href="{{ route('ayuda') }}">Planes de servicio al cliente</a></li>
-            <li><a href="{{ route('ayuda') }}">Condiciones de transporte</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Acerca de World Travel</h4>
-          <ul>
-            <li><a href="{{ route('nosotros') }}">Nosotros</a></li>
-            <li><a href="{{ route('ayuda') }}">Centro de noticias</a></li>
-            <li><a href="{{ route('ayuda') }}">Políticas e información legal</a></li>
-            <li><a href="{{ route('ayuda') }}">Accesibilidad del sitio web</a></li>
-            <li><a href="{{ route('ayuda') }}">Compatibilidad del navegador</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Adicionales</h4>
-          <a href="{{ route('reclamaciones') }}">Libro de reclamaciones</a>
-          <br>
-          <a href="{{ route('reclamaciones') }}">
-              <img class="libro" src="{{ asset('icons/libro-reclamaciones.png') }}" alt="Libro de Reclamaciones">
-          </a>
-          <br>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <!-- Footer unificado: solo enlaces funcionales -->
+  <x-footer />
 </body>
 </html>

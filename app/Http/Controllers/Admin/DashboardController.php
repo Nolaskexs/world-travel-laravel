@@ -114,18 +114,27 @@ class DashboardController extends Controller
             'Río de Janeiro'=> [-22.9068, -43.1729],
         ];
 
-        $destinosQuery = DB::table('destinos')
-            ->leftJoin('paquetes', 'paquetes.destino_id', '=', 'destinos.id')
-            ->leftJoin('reservas', 'reservas.paquete_id', '=', 'paquetes.id')
+       
+        $destinosQuery = DB::table('paquetes')
+            ->leftJoin(
+                'reservas',
+                'reservas.paquete_id',
+                '=',
+                'paquetes.id'
+            )
             ->select(
-                'destinos.nombre',
-                'destinos.pais',
+                'paquetes.destino as nombre',
+                'paquetes.pais',
                 DB::raw('COUNT(reservas.id) as reservas_count')
             )
-            ->groupBy('destinos.id', 'destinos.nombre', 'destinos.pais')
+            ->groupBy(
+                'paquetes.destino',
+                'paquetes.pais'
+            )
             ->orderByDesc('reservas_count')
             ->take(6)
             ->get();
+
 
         $destinos = [];
         $colorIdx = 0;

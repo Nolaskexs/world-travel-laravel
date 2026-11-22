@@ -94,12 +94,30 @@ class ReservaClienteController extends Controller
             'total'         => 'required|numeric|min:0',
         ]);
 
-        // Determinar el cliente asociado: usuario autenticado o cliente demo
-        $userId = Auth::id();
-        if (!$userId) {
-            $clienteDemo = User::where('email', 'cliente@worldtravel.com')->first();
-            $userId = $clienteDemo ? $clienteDemo->id : (User::first()->id ?? 1);
+
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'Debes iniciar sesión para reservar.');
         }
+
+        if (Auth::user()->rol !== 'cliente') {
+            return back()
+                ->withErrors([
+                    'cuenta' => 'Debes utilizar una cuenta de cliente para reservar.'
+                ])
+                ->withInput();
+        }
+
+        $userId = Auth::id();
+
+        $paquete = Paquete::where('activo', true)
+            ->findOrFail($validated['paquete_id']);
+
+        $totalCalculado = (
+            (int) round(((float) $paquete->precio) * 100)
+            * (int) $validated['num_pasajeros']
+        ) / 100;
+
 
         // 1. Guardar en la tabla reservas
         $reserva = Reserva::create([
@@ -107,7 +125,7 @@ class ReservaClienteController extends Controller
             'paquete_id'    => $validated['paquete_id'],
             'fecha_viaje'   => $validated['fecha_viaje'],
             'num_pasajeros' => $validated['num_pasajeros'],
-            'total'         => $validated['total'],
+                    'total' => $totalCalculado,
             'estado'        => 'pendiente',
         ]);
 
@@ -136,16 +154,13 @@ class ReservaClienteController extends Controller
             ]);
         }
 
-        // Si el usuario no estaba autenticado, iniciar sesión automáticamente como cliente
-        if (!Auth::check()) {
-            $userToLogin = User::find($userId);
-            if ($userToLogin) {
-                Auth::login($userToLogin);
-            }
-        }
 
         return redirect()
-            ->route('dashboard')
-            ->with('success', "¡Tu reserva #{$reserva->id} ha sido registrada con éxito en la base de datos! Ya puedes visualizarla en tu panel.");
+            ->route('pagos.show', $reserva->id)
+            ->with(
+                'success',
+                'Reserva registrada correctamente. Continúa con el pago.'
+            );
+
     }
 }
