@@ -20,7 +20,6 @@
         <fieldset class="trip"><legend class="sr">Tipo de viaje</legend>
           <label class="radio"><input type="radio" name="trip" value="round" checked>Ida y vuelta</label>
           <label class="radio"><input type="radio" name="trip" value="one">Solo ida</label>
-          <label class="radio"><input type="radio" name="trip" value="multi">Multidestino</label>
         </fieldset>
         <div class="dd-wrap">
           <button type="button" class="chip" data-dd="pax" aria-expanded="false"><svg class="i"><use href="#i-user"/></svg><span id="paxLabel">1 pasajero</span></button>
@@ -34,9 +33,9 @@
       </div>
 
       <div class="sf__row">
-        <div class="dd-wrap"><label class="field"><svg class="i"><use href="#i-pin"/></svg><input id="origin" name="origin" value="Origen" placeholder="Origen" aria-label="Origen" data-dd="origin"></label><div class="dd dd--list" id="dd-origin" hidden></div></div>
+        <div class="dd-wrap"><label class="field"><svg class="i"><use href="#i-pin"/></svg><input id="origin" name="origin" value="" placeholder="Origen" aria-label="Origen" data-dd="origin" required autocomplete="off"></label><div class="dd dd--list" id="dd-origin" hidden></div></div>
         <button type="button" class="swap" aria-label="Intercambiar origen y destino"><svg class="i"><use href="#i-swap"/></svg></button>
-        <div class="dd-wrap"><label class="field"><svg class="i"><use href="#i-pin"/></svg><input id="destination" name="destination" placeholder="Destino" aria-label="Destino" data-dd="destination"></label><div class="dd dd--list" id="dd-destination" hidden></div></div>
+        <div class="dd-wrap"><label class="field"><svg class="i"><use href="#i-pin"/></svg><input id="destination" name="destination" value="" placeholder="Destino" aria-label="Destino" data-dd="destination" required autocomplete="off"></label><div class="dd dd--list" id="dd-destination" hidden></div></div>
         <div class="dates dd-wrap">
           <button type="button" class="field" id="startBtn" data-dd="cal" data-field="start" aria-expanded="false"><svg class="i"><use href="#i-cal"/></svg><span id="startLabel">Salida</span></button>
           <button type="button" class="field" id="endBtn" data-dd="cal" data-field="end" aria-expanded="false"><svg class="i"><use href="#i-cal"/></svg><span id="endLabel">Retorno</span></button>

@@ -20,9 +20,9 @@
                     <p>{{ $paquete->descripcion }}</p>
                     <h2>¿Qué incluye?</h2>
                     <div class="wt-included">
-                        <div><span aria-hidden="true">{{ $paquete->incluye_hotel ? '✓' : '—' }}</span> Alojamiento {{ $paquete->incluye_hotel ? 'incluido' : 'no incluido' }}</div>
-                        <div><span aria-hidden="true">{{ $paquete->incluye_vuelo ? '✓' : '—' }}</span> Vuelo {{ $paquete->incluye_vuelo ? 'incluido' : 'no incluido' }}</div>
-                        <div><span aria-hidden="true">{{ $paquete->incluye_tour ? '✓' : '—' }}</span> Actividades {{ $paquete->incluye_tour ? 'incluidas' : 'no incluidas' }}</div>
+                        <div>Alojamiento: <strong>{{ $paquete->incluye_hotel ? 'Incluido' : 'No incluido' }}</strong></div>
+                        <div>Vuelo: <strong>{{ $paquete->incluye_vuelo ? 'Incluido' : 'No incluido' }}</strong></div>
+                        <div>Actividades: <strong>{{ $paquete->incluye_tour ? 'Incluidas' : 'No incluidas' }}</strong></div>
                     </div>
                     <div class="wt-detail__note"><strong>Importante:</strong> estos precios están expresados en USD y son demostrativos. El itinerario, los cupos y las reservas reales se incorporarán cuando el equipo implemente su Backend correspondiente.</div>
                 </div>
@@ -48,6 +48,9 @@
                 <div class="wt-booking-card__line"><span>Vuelo</span><strong>{{ $paquete->incluye_vuelo ? 'Incluido' : 'No incluido' }}</strong></div>
                 <div class="wt-booking-card__line"><span>Actividades</span><strong>{{ $paquete->incluye_tour ? 'Incluidas' : 'No incluidas' }}</strong></div>
                 <a href="{{ route('reservas.confirmar', ['paquete_id' => $paquete->id]) }}" class="wt-button wt-button--blue" style="display: block; text-align: center; text-decoration: none; font-weight: 700; padding: 14px;">Reservar este paquete</a>
+                @guest
+                    <small style="display: block; text-align: center; color: #64748b; margin-top: 6px; font-size: 0.78rem;">Requiere iniciar sesión para reservar</small>
+                @endguest
                 <p class="wt-booking-card__disclaimer">Confirmación inmediata · Registro directo en base de datos.</p>
                 <a class="wt-booking-card__link" href="{{ route('ofertas') }}">Descubrir otras ofertas →</a>
             </aside>

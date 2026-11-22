@@ -28,16 +28,72 @@
     "LATAM Airlines",
     "United Airlines",
     "Iberia",
+    "Japan Airlines",
+    "American Airlines",
+    "Delta Air Lines",
+    "Sky Airline",
+    "JetSMART",
+    "Thai Airways",
+    "Singapore Airlines",
   ];
   const DOW = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
   const MON = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-  const TZ = { FUK: 9, HND: 9, CDG: 1, LIM: -5 }; // horas respecto a UTC
+  const TZ = {
+    FUK: 9, HND: 9, NRT: 9, TYO: 9,
+    CDG: 1, MAD: 1, FCO: 1, LHR: 0, AMS: 1,
+    LIM: -5, CUZ: -5, AQP: -5, TPP: -5, TYL: -5, JUL: -5, ICG: -5,
+    BOG: -5, UIO: -5, EZE: -3, GIG: -3, SCL: -4,
+    CUN: -5, MEX: -6, MIA: -5, JFK: -5, LAX: -8, DFW: -6, IAH: -6, ATL: -5,
+    DPS: 8, BKK: 7, SIN: 8, KUL: 8, CGK: 7, DXB: 4, DOH: 3,
+    SYD: 10, CAI: 2, RAK: 1,
+  };
   const NAMES = {
     FUK: ["Fukuoka", "FUKUOKA (FUK)"],
-    HND: ["Tokio - Haneda", "TOKIO - HANEDA (HND)"],
-    CDG: ["París - Charles De Gaulle", "PARÍS - CHARLES DE GAULLE (CDG)"],
+    HND: ["Tokio", "TOKIO (HND)"],
+    NRT: ["Tokio - Narita", "TOKIO - NARITA (NRT)"],
+    TYO: ["Tokio", "TOKIO (TYO)"],
+    CDG: ["París", "PARÍS (CDG)"],
+    MAD: ["Madrid", "MADRID (MAD)"],
+    FCO: ["Roma", "ROMA (FCO)"],
+    LHR: ["Londres", "LONDRES (LHR)"],
+    AMS: ["Ámsterdam", "ÁMSTERDAM (AMS)"],
     LIM: ["Lima", "LIMA (LIM)"],
+    CUZ: ["Cusco", "CUSCO (CUZ)"],
+    AQP: ["Arequipa", "AREQUIPA (AQP)"],
+    TPP: ["Tarapoto", "TARAPOTO (TPP)"],
+    TYL: ["Máncora", "MÁNCORA (TYL)"],
+    JUL: ["Puno", "PUNO (JUL)"],
+    ICG: ["Ica", "ICA (ICG)"],
+    BOG: ["Bogotá", "BOGOTÁ (BOG)"],
+    EZE: ["Buenos Aires", "BUENOS AIRES (EZE)"],
+    GIG: ["Río de Janeiro", "RÍO DE JANEIRO (GIG)"],
+    SCL: ["Santiago", "SANTIAGO (SCL)"],
+    CUN: ["Cancún", "CANCÚN (CUN)"],
+    MEX: ["Ciudad de México", "CIUDAD DE MÉXICO (MEX)"],
+    MIA: ["Miami", "MIAMI (MIA)"],
+    JFK: ["Nueva York", "NUEVA YORK (JFK)"],
+    LAX: ["Los Ángeles", "LOS ÁNGELES (LAX)"],
+    IAH: ["Houston", "HOUSTON (IAH)"],
+    DFW: ["Dallas", "DALLAS (DFW)"],
+    ATL: ["Atlanta", "ATLANTA (ATL)"],
+    DPS: ["Bali", "BALI (DPS)"],
+    BKK: ["Bangkok", "BANGKOK (BKK)"],
+    SIN: ["Singapur", "SINGAPUR (SIN)"],
+    KUL: ["Kuala Lumpur", "KUALA LUMPUR (KUL)"],
+    CGK: ["Yakarta", "YAKARTA (CGK)"],
+    DXB: ["Dubái", "DUBÁI (DXB)"],
+    DOH: ["Doha", "DOHA (DOH)"],
+    SYD: ["Sídney", "SÍDNEY (SYD)"],
+    CAI: ["El Cairo", "EL CAIRO (CAI)"],
+    RAK: ["Marrakech", "MARRAKECH (RAK)"],
   };
+
+  if (origIata && origName) {
+    NAMES[origIata] = [origName, `${origName.toUpperCase()} (${origIata})`];
+  }
+  if (destIata && destName) {
+    NAMES[destIata] = [destName, `${destName.toUpperCase()} (${destIata})`];
+  }
 
   if (window.__DESTINOS_DB__) {
     window.__DESTINOS_DB__.forEach(([nom, iata, pais, aero]) => {
@@ -83,24 +139,36 @@
   };
   const retDateLabel = `${DOW[RET_BASE.getDay()]} ${RET_BASE.getDate()} ${MON[RET_BASE.getMonth()]}`;
   
-  const mids = (s) => ["HND", "CDG"].slice(2 - s);
+  const getMidHubs = (s, from, to) => {
+    const list = ["LAX", "DFW", "IAH", "MIA", "LIM", "CDG", "MAD", "AMS"].filter((h) => h !== from && h !== to);
+    return list.slice(0, s);
+  };
   
-  // sign: FUK→LIM resta 14 h de huso; LIM→FUK las suma. Las alternativas añaden 4h35 / 5h50.
-  const mkLeg = (dep, d, sign, route) => ({
-    route,
-    sel: 0,
-    opts: [0, 275, 350].map((x) => {
-      const a = dep + d + x + sign * 840;
-      return {
-        dep,
-        d: d + x,
-        arr: ((a % 1440) + 1440) % 1440,
-        plus: Math.floor(a / 1440),
-      };
-    }),
-  });
+  const getTz = (code) => (TZ[code] !== undefined ? TZ[code] : 0);
 
-  const FL = hasDB
+  const mkLeg = (dep, d, fromIata, toIata, route) => {
+    const tzDiffMin = (getTz(toIata) - getTz(fromIata)) * 60;
+    return {
+      route,
+      sel: 0,
+      opts: [0, 180, 300].map((x) => {
+        const depMin = (dep + x) % 1440;
+        const totalArrivalMin = dep + d + x + tzDiffMin;
+        const arr = ((totalArrivalMin % 1440) + 1440) % 1440;
+        const plus = Math.floor(totalArrivalMin / 1440);
+        return {
+          dep: depMin,
+          d: d + x,
+          arr,
+          plus,
+        };
+      }),
+    };
+  };
+
+  const FL = params.busquedaIncompleta
+    ? []
+    : hasDB
     ? window.__VUELOS_DB__.map((v, id) => {
         let od = 1425;
         if (v.fecha_salida && v.fecha_salida.includes(" ")) {
@@ -112,6 +180,9 @@
         const escIatas = (v.escalas || []).map((e) => e.llegada_iata).filter((i) => i && i !== fDestIata);
         const routeOut = [fOrigIata, ...escIatas, fDestIata];
         const routeBack = [fDestIata, ...escIatas.slice().reverse(), fOrigIata];
+        const outDur = v.duracion_minutos || 265;
+        const backDur = outDur;
+        const retDepTime = ((od + 180) % 1440);
 
         return {
           id,
@@ -127,20 +198,20 @@
           escalas: v.escalas,
           duracion_formateada: v.duracion_formateada,
           etiqueta: v.etiqueta,
-          out: mkLeg(od, v.duracion_minutos, -1, routeOut),
-          back: mkLeg(1000, 3300, 1, routeBack),
+          out: mkLeg(od, outDur, fOrigIata, fDestIata, routeOut),
+          back: mkLeg(retDepTime, backDur, fDestIata, fOrigIata, routeBack),
         };
       })
     : DATA.map(([a, price, tax, stops, od, odur, bd, bdur, carry, hold], id) => ({
         id,
-        air: AIR[a],
+        air: AIR[a] || "World Travel Airlines",
         price,
         tax,
         stops,
         carry,
         hold,
-        out: mkLeg(od, odur, -1, [origIata, ...mids(stops), destIata]),
-        back: mkLeg(bd, bdur, 1, [destIata, ...mids(stops).reverse(), origIata]),
+        out: mkLeg(od, odur, origIata, destIata, [origIata, ...getMidHubs(stops, origIata, destIata), destIata]),
+        back: mkLeg(bd, bdur, destIata, origIata, [destIata, ...getMidHubs(stops, origIata, destIata).reverse(), origIata]),
       }));
 
   const total = (f) => f.price + f.tax;
@@ -152,11 +223,18 @@
   const lo = (i) => Math.floor(Math.min(...DATA.map((r) => r[i])) / 60);
   const hi = (i) => Math.ceil(Math.max(...DATA.map((r) => r[i])) / 60);
   
+  const allOutDurs = FL.map((f) => f.out.opts[0].d);
+  const allBackDurs = FL.map((f) => f.back.opts[0].d);
+  const minDurOut = allOutDurs.length ? Math.max(1, Math.floor(Math.min(...allOutDurs) / 60)) : lo(5);
+  const maxDurOut = allOutDurs.length ? Math.ceil(Math.max(...allOutDurs) / 60) + 1 : hi(5);
+  const minDurBack = allBackDurs.length ? Math.max(1, Math.floor(Math.min(...allBackDurs) / 60)) : lo(7);
+  const maxDurBack = allBackDurs.length ? Math.ceil(Math.max(...allBackDurs) / 60) + 1 : hi(7);
+
   const RG = [
     { key: "depOut", city: destName, tag: "Ida", min: 0, max: 24, txt: (v) => `Salida hasta ${pad(v)}:00`, edge: (v) => `${pad(v)}:00` },
     { key: "depBack", city: origName, tag: "Vuelta", min: 0, max: 24, txt: (v) => `Salida hasta ${pad(v)}:00`, edge: (v) => `${pad(v)}:00` },
-    { key: "durOut", city: destName, tag: "Ida", min: lo(5), max: hi(5), txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
-    { key: "durBack", city: origName, tag: "Vuelta", min: lo(7), max: hi(7), txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
+    { key: "durOut", city: destName, tag: "Ida", min: minDurOut, max: maxDurOut, txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
+    { key: "durBack", city: origName, tag: "Vuelta", min: minDurBack, max: maxDurBack, txt: (v) => `Hasta ${v}h`, edge: (v) => `${v}h` },
   ];
   
   const R = Object.fromEntries(RG.map((r) => [r.key, r.max]));
@@ -179,17 +257,24 @@
     const L = f[k],
       fOrig = (f.origen && f.origen.codigo_iata) ? f.origen.codigo_iata : origIata,
       fDest = (f.destino && f.destino.codigo_iata) ? f.destino.codigo_iata : destIata,
-      [a, b] = k === "out" ? [fOrig, fDest] : [fDest, fOrig];
+      fOrigNom = (f.origen && f.origen.nombre) ? f.origen.nombre : (NAMES[fOrig] ? NAMES[fOrig][0] : origName),
+      fDestNom = (f.destino && f.destino.nombre) ? f.destino.nombre : (NAMES[fDest] ? NAMES[fDest][0] : destName),
+      [aIata, bIata] = k === "out" ? [fOrig, fDest] : [fDest, fOrig],
+      [aNom, bNom] = k === "out" ? [fOrigNom, fDestNom] : [fDestNom, fOrigNom];
     const dateText = k === "out" ? dayLabel(0) : retDateLabel;
       
     return `
       <div class="leg" data-leg="${k}">
         <div class="leg__h">
-          <span class="ph">Logo</span>
-          <h3>${a} ${ICON("arrow")} ${b}</h3>
+          <span class="ph" title="${f.air}"><svg class="i" style="width:16px;height:16px;fill:#64748b;"><use href="#i-plane"/></svg></span>
+          <h3>
+            <span class="leg__dest"><span class="leg__city">${aNom}</span> <span class="leg__code">(${aIata})</span></span>
+            ${ICON("arrow")}
+            <span class="leg__dest"><span class="leg__city">${bNom}</span> <span class="leg__code">(${bIata})</span></span>
+          </h3>
           ${k === "out" ? `<button type="button" class="detail" data-detail>Ver detalle ${ICON("info")}</button>` : ""}
         </div>
-        <p class="date">${dateText}</p>
+        <p class="date">${dateText} <span class="leg__air-inline">· ${f.air}</span></p>
         <div class="col leg__main">
           <div>
             <div class="row" data-main>${rowInner(L.opts[L.sel], f)}</div>
@@ -332,6 +417,28 @@
 
   /* ---------- Render ---------- */
   function render(anim = false) {
+    if (params.busquedaIncompleta) {
+      const msg = params.avisoBusqueda || "Por favor, ingresa una ciudad de origen y una ciudad de destino para realizar la búsqueda de vuelos.";
+      list.innerHTML = `
+        <div class="search-notice-card" role="alert">
+          <div class="search-notice-card__icon">
+            <svg class="i" style="width:28px;height:28px;fill:#d97706;" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+          </div>
+          <div class="search-notice-card__body">
+            <h3>Búsqueda incompleta</h3>
+            <p>${msg}</p>
+          </div>
+        </div>
+      `;
+      $("#empty").hidden = true;
+      $("#moreBtn").hidden = true;
+      $("#count").textContent = "0 vuelos encontrados";
+      $$(".sort button").forEach((b) => {
+        $("small", b).textContent = "—";
+      });
+      return;
+    }
+
     const S = picked("stops"), B = picked("bag"), A = picked("air");
     
     const res = FL.filter((f) => 
@@ -489,27 +596,33 @@
   let lastFocus = null;
 
   function legDetail(f, k) {
+    const fOrig = (f.origen && f.origen.codigo_iata) ? f.origen.codigo_iata : origIata;
+    const fDest = (f.destino && f.destino.codigo_iata) ? f.destino.codigo_iata : destIata;
+    const fOrigNom = (f.origen && f.origen.nombre) ? f.origen.nombre : (NAMES[fOrig] ? NAMES[fOrig][0] : origName);
+    const fDestNom = (f.destino && f.destino.nombre) ? f.destino.nombre : (NAMES[fDest] ? NAMES[fDest][0] : destName);
+
     if (f.escalas && f.escalas.length > 0 && k === "out") {
-      const destNom = (f.destino && f.destino.nombre) ? f.destino.nombre : destName;
       let h = `
         <div class="dhead">
-          <b>Salida a ${destNom} <span>· ${dayLabel(0)}</span></b>
+          <b>Salida a ${fDestNom} <span>· ${dayLabel(0)}</span></b>
           <span>Duración total: <b>${f.duracion_formateada || dur(f.out.opts[f.out.sel].d)}</b></span>
         </div>`;
 
       f.escalas.forEach((esc, idx) => {
         const depTime = esc.hora_salida ? esc.hora_salida.split(" ")[1] : "11:45";
         const arrTime = esc.hora_llegada ? esc.hora_llegada.split(" ")[1] : "14:00";
+        const escOrigNom = esc.origen || (NAMES[esc.origen_iata] ? NAMES[esc.origen_iata][0] : esc.origen_iata);
+        const escDestNom = esc.llegada || (NAMES[esc.llegada_iata] ? NAMES[esc.llegada_iata][0] : esc.llegada_iata);
         h += `
           <p class="op">
-            <span class="ph"></span>${esc.numero_vuelo} · Operado por ${esc.aerolinea_operadora}
+            <span class="ph"><svg class="i" style="width:14px;height:14px;fill:#64748b;"><use href="#i-plane"/></svg></span>${esc.numero_vuelo} · Operado por ${esc.aerolinea_operadora}
           </p>
           <ol class="tl">
             <li>
               <time>${depTime}</time>
               <i class="dot"></i>
               <div>
-                <b>${esc.origen}</b><small>${esc.origen_iata}</small>
+                <b>${escOrigNom}</b><small>${NAMES[esc.origen_iata] ? NAMES[esc.origen_iata][1] : esc.origen_iata}</small>
               </div>
             </li>
             <li class="tl__fly">
@@ -519,7 +632,7 @@
               <time>${arrTime}</time>
               <i class="dot dot--end"></i>
               <div>
-                <b>${esc.llegada}</b><small>${esc.llegada_iata}</small>
+                <b>${escDestNom}</b><small>${NAMES[esc.llegada_iata] ? NAMES[esc.llegada_iata][1] : esc.llegada_iata}</small>
                 <em>Llega el ${dayLabel(idx + 1)}</em>
               </div>
             </li>
@@ -529,7 +642,7 @@
           h += `
             <div class="lay">
               ${ICON("clock")}
-              <span>${dur(esc.tiempo_espera_minutos || 270)}</span>Cambio de avión en <b>${esc.llegada}</b>
+              <span>${dur(esc.tiempo_espera_minutos || 120)}</span>Cambio de avión en <b>${escDestNom}</b>
             </div>`;
         }
       });
@@ -540,14 +653,13 @@
       o = L.opts[L.sel],
       r = L.route,
       stops = r.length - 2,
-      fl = Math.round((o.d - stops * 270) / (r.length - 1));
+      fl = Math.round((o.d - stops * 120) / (r.length - 1));
       
-    const getTz = (code) => TZ[code] !== undefined ? TZ[code] : 0;
     let u = (k === "out" ? 0 : 3) * 1440 + o.dep - getTz(r[0]) * 60; // minutos UTC desde el día base
     
     let h = `
       <div class="dhead">
-        <b>${k === "out" ? `Salida a ${destName}` : `Vuelta a ${origName}`} <span>· ${k === "out" ? dayLabel(0) : retDateLabel}</span></b>
+        <b>${k === "out" ? `Salida a ${fDestNom}` : `Vuelta a ${fOrigNom}`} <span>· ${k === "out" ? dayLabel(0) : retDateLabel}</span></b>
         <span>Duración total: <b>${dur(o.d)}</b></span>
       </div>`;
       
@@ -560,7 +672,7 @@
         
       h += `
         <p class="op">
-          <span class="ph"></span>${(f.id + 1) * 113 + i * 29} · Operado por ${f.air}
+          <span class="ph"><svg class="i" style="width:14px;height:14px;fill:#64748b;"><use href="#i-plane"/></svg></span>${(f.id + 1) * 113 + i * 29} · Operado por ${f.air}
         </p>
         <ol class="tl">
           <li>
@@ -587,10 +699,10 @@
         h += `
           <div class="lay">
             ${ICON("clock")}
-            <span>${dur(270)}</span>Cambio de avión en <b>${NAMES[b] ? NAMES[b][0] : b}</b>
+            <span>${dur(120)}</span>Cambio de avión en <b>${NAMES[b] ? NAMES[b][0] : b}</b>
           </div>`;
       }
-      u += fl + 270;
+      u += fl + 120;
     }
     return h;
   }

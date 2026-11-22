@@ -446,6 +446,29 @@
     const sForm = $("#searchForm");
     if (sForm) {
       sForm.addEventListener("submit", (e) => {
+        const origInput = $("#origin");
+        const destInput = $("#destination");
+        const origVal = origInput?.value?.trim() || "";
+        const destVal = destInput?.value?.trim() || "";
+
+        const isOrigEmpty = !origVal || origVal.toLowerCase() === "origen";
+        const isDestEmpty = !destVal || destVal.toLowerCase() === "destino";
+
+        if (isOrigEmpty || isDestEmpty) {
+          e.preventDefault();
+          if (isOrigEmpty && origInput) {
+            origInput.focus();
+            origInput.setCustomValidity("Por favor, ingresa una ciudad de origen");
+            origInput.reportValidity();
+            origInput.addEventListener("input", () => origInput.setCustomValidity(""), { once: true });
+          } else if (isDestEmpty && destInput) {
+            destInput.focus();
+            destInput.setCustomValidity("Por favor, ingresa una ciudad de destino");
+            destInput.reportValidity();
+            destInput.addEventListener("input", () => destInput.setCustomValidity(""), { once: true });
+          }
+          return;
+        }
         // Permitir que el formulario envíe los parámetros GET de búsqueda
       });
     }

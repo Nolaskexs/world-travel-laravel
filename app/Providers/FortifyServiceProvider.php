@@ -13,6 +13,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\TwoFactorLoginResponse;
 use Laravel\Fortify\Fortify;
 
@@ -25,6 +26,20 @@ class FortifyServiceProvider extends ServiceProvider
     {
         $this->app->singleton(LoginResponse::class, function () {
             return new class implements LoginResponse {
+                public function toResponse($request)
+                {
+                    $user = auth()->user();
+                    if ($user && $user->esAdmin()) {
+                        return redirect()->intended('/admin');
+                    }
+
+                    return redirect()->intended('/dashboard');
+                }
+            };
+        });
+
+        $this->app->singleton(RegisterResponse::class, function () {
+            return new class implements RegisterResponse {
                 public function toResponse($request)
                 {
                     $user = auth()->user();

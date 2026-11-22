@@ -138,27 +138,28 @@ Route::get('/alojamientos/{codigo}', function (string $codigo) {
 
 /*
 |--------------------------------------------------------------------------
-| 7. Selección de Asientos y Check-in
+| 7. Selección de Asientos y Check-in (Requiere autenticación de Cliente o Admin)
 |--------------------------------------------------------------------------
 */
 
-Route::get('/asientos', [AsientoController::class, 'index'])->name('asientos.index');
-Route::post('/asientos', [AsientoController::class, 'guardar'])->name('asientos.guardar');
-Route::get('/checkin/{reserva}', function ($reserva) {
-    return redirect()->route('asientos.index', ['reserva_id' => $reserva]);
-})->middleware('auth')->name('asientos.checkin');
+Route::middleware('auth')->group(function () {
+    Route::get('/asientos', [AsientoController::class, 'index'])->name('asientos.index');
+    Route::post('/asientos', [AsientoController::class, 'guardar'])->name('asientos.guardar');
+    Route::get('/checkin/{reserva}', function ($reserva) {
+        return redirect()->route('asientos.index', ['reserva_id' => $reserva]);
+    })->name('asientos.checkin');
 
-/*
-|--------------------------------------------------------------------------
-| 8. Proceso principal: Confirmación y registro de reserva en la BD
-|--------------------------------------------------------------------------
-*/
+    /*
+    |--------------------------------------------------------------------------
+    | 8. Proceso principal: Confirmación y registro de reserva en la BD
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/reservas/confirmar', [ReservaClienteController::class, 'create'])
+        ->name('reservas.confirmar');
 
-Route::get('/reservas/confirmar', [ReservaClienteController::class, 'create'])
-    ->name('reservas.confirmar');
-
-Route::post('/reservas', [ReservaClienteController::class, 'store'])
-    ->name('reservas.store');
+    Route::post('/reservas', [ReservaClienteController::class, 'store'])
+        ->name('reservas.store');
+});
 
 /*
 |--------------------------------------------------------------------------

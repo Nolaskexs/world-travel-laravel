@@ -14,9 +14,17 @@ class AsientosTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_pantalla_asientos_carga_correctamente_en_flujo_de_compra(): void
+    public function test_usuario_no_autenticado_es_redirigido_al_login_al_intentar_elegir_asientos(): void
     {
         $response = $this->get('/asientos?adultos=2&menores=1&origin=Lima&destination=Tokio&origin_iata=LIM&destination_iata=HND&codigo_vuelo=WT-8183');
+        $response->assertRedirect(route('login'));
+    }
+
+    public function test_pantalla_asientos_carga_correctamente_para_usuario_autenticado(): void
+    {
+        $user = User::factory()->create(['rol' => 'cliente']);
+
+        $response = $this->actingAs($user)->get('/asientos?adultos=2&menores=1&origin=Lima&destination=Tokio&origin_iata=LIM&destination_iata=HND&codigo_vuelo=WT-8183');
         $response->assertStatus(200);
         $response->assertSee('World Travel');
         $response->assertSee('Lima (LIM)');
@@ -25,6 +33,15 @@ class AsientosTest extends TestCase
         $response->assertSee('Adulto 1');
         $response->assertSee('Adulto 2');
         $response->assertSee('Menor 1');
+    }
+
+    public function test_pantalla_asientos_carga_correctamente_para_administrador(): void
+    {
+        $admin = User::factory()->create(['rol' => 'admin']);
+
+        $response = $this->actingAs($admin)->get('/asientos?adultos=1&origin=Lima&destination=Tokio');
+        $response->assertStatus(200);
+        $response->assertSee('World Travel');
     }
 
     public function test_guardar_asientos_en_checkin_actualiza_pasajeros(): void

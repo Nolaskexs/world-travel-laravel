@@ -8,7 +8,7 @@
     <div class="wrap claim-container">
         @if(session('success'))
             <div class="claim-alert" role="alert" style="background:#dcfce7; border:1px solid #86efac; color:#166534; padding:1.25rem; border-radius:12px; margin-bottom:1.5rem;">
-                <div style="font-weight:700; font-size:1.1rem; margin-bottom:0.25rem;">✔ Reclamación Ingresada al Sistema</div>
+                <div style="font-weight:700; font-size:1.1rem; margin-bottom:0.25rem;">Reclamación Ingresada al Sistema</div>
                 <p style="margin:0;">{{ session('success') }}</p>
                 @if(session('codigo_registrado'))
                     <div style="margin-top:0.6rem; padding:0.5rem 0.8rem; background:#ffffff; border-radius:8px; display:inline-block; font-weight:800; color:#0f172a; border:1px dashed #86efac;">

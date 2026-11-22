@@ -52,7 +52,7 @@
                         </svg>
                     </div>
                     <h3>Rutas e Itinerarios a Medida</h3>
-                    <p>Nuestro buscador avanzado permite cotizar viajes de ida y vuelta, solo ida o multidestino, armando itinerarios dinámicos para adultos, niños e infantes con transparencia en cada escala.</p>
+                    <p>Nuestro buscador avanzado permite cotizar viajes de ida y vuelta o solo ida, armando itinerarios dinámicos para adultos, niños e infantes con transparencia en cada escala.</p>
                 </article>
 
                 <article class="pillar-card">

@@ -44,7 +44,9 @@
     ['Vuelo a Roma','RM','1.230',11, 'icons/roma.jpg', 'icons/aireuropa.png', '/paquetes/17'],
     ['Vuelo a Tokio','TKY','2.890',9, 'icons/tokio.jpg', 'icons/japanairlines.png', '/paquetes/20'],
     ['India','GAR','2.890',5, 'icons/india.jpg', 'icons/airindia.png', '/paquetes/27'],
-    ['Vuelo a París','PAR','1.540',8, 'icons/Paris - paquete turitico.jpg', 'icons/LATAM-Logo.png', '/paquetes/16']
+    ['Vuelo a París','PAR','1.540',8, 'icons/Paris - paquete turitico.jpg', 'icons/LATAM-Logo.png', '/paquetes/16'],
+    ['Cusco y Machu Picchu','CUZ','519',15, 'icons/MachuPicchu1-Carrusel.jpg', 'icons/LATAM-Logo.png', '/paquetes/1'],
+    ['Vuelo a Cancún','CUN','1.290',12, 'icons/Cancun2-Carrusel.jpg', 'icons/aireuropa.png', '/paquetes/7']
   ];
   // ... asegúrate de hacerlo para todos
   const HOTELS = [
@@ -309,12 +311,40 @@
 
   /* ---------- Formularios ---------- */
   function initForms() {
-    $('#searchForm').addEventListener('submit', (e) => {
-      // En search.blade.php existe #list, se queda y re-consulta vía JS
-      // En inicio no hay #list, permitir envío natural del formulario hacia route('search')
-      if (!$('#list')) return;
-      e.preventDefault();
-    });
+    const sForm = $('#searchForm');
+    if (sForm) {
+      sForm.addEventListener('submit', (e) => {
+        const origInput = $('#origin');
+        const destInput = $('#destination');
+        const origVal = origInput?.value?.trim() || '';
+        const destVal = destInput?.value?.trim() || '';
+
+        const isOrigEmpty = !origVal || origVal.toLowerCase() === 'origen';
+        const isDestEmpty = !destVal || destVal.toLowerCase() === 'destino';
+
+        if (isOrigEmpty || isDestEmpty) {
+          e.preventDefault();
+          if (isOrigEmpty && origInput) {
+            origInput.focus();
+            origInput.setCustomValidity('Por favor, ingresa una ciudad de origen');
+            origInput.reportValidity();
+            origInput.addEventListener('input', () => origInput.setCustomValidity(''), { once: true });
+          } else if (isDestEmpty && destInput) {
+            destInput.focus();
+            destInput.setCustomValidity('Por favor, ingresa una ciudad de destino');
+            destInput.reportValidity();
+            destInput.addEventListener('input', () => destInput.setCustomValidity(''), { once: true });
+          }
+          return;
+        }
+
+        // En search.blade.php existe #list, se queda y re-consulta vía JS
+        // En inicio no hay #list, permitir envío natural del formulario hacia route('search')
+        if (!$('#list')) return;
+        e.preventDefault();
+      });
+    }
+
     const f = $('#newsletter'), msg = $('#nlMsg');
     if (!f) return;
     f.addEventListener('submit', (e) => {

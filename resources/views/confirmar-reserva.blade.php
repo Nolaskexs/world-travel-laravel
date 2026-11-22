@@ -53,7 +53,7 @@
 
                     @if(!empty($hotelNombre))
                         <div style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                            <span style="font-size: 20px;">🏨</span>
+                            <svg style="width: 22px; height: 22px; fill: #166534; flex-shrink: 0;" viewBox="0 0 24 24"><path d="M19 7h-8v8H3V4H1v17h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4zm-6 6h6c1.1 0 2 .9 2 2v2H13v-4zM7 7c1.66 0 3-1.34 3-3S8.66 1 7 1 4 2.34 4 4s1.34 3 3 3z"/></svg>
                             <div>
                                 <strong style="display: block;">Alojamiento seleccionado: {{ $hotelNombre }}</strong>
                                 <small style="color: #15803d;">{{ $hotelUbicacion ?? '' }} {{ !empty($hotelNoches) ? '· ' . $hotelNoches . ' noches' : '' }}</small>
@@ -247,7 +247,7 @@
                         <div style="margin: 8px 0; text-align: right;">
                             <a href="{{ route('asientos.index', ['paquete_id' => $paqueteSeleccionado->id ?? 1, 'adultos' => $numPasajeros, 'fecha_viaje' => $fechaViaje]) }}"
                                style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #2563eb; font-weight: 600; text-decoration: none;">
-                                ✈ Seleccionar asientos en el mapa &rarr;
+                                Seleccionar asientos en el mapa &rarr;
                             </a>
                         </div>
                     @endif

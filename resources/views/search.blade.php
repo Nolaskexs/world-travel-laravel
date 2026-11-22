@@ -28,9 +28,6 @@
             <label class="radio">
               <input type="radio" name="trip" value="one" {{ ($trip ?? '') === 'one' ? 'checked' : '' }}>Solo ida
             </label>
-            <label class="radio">
-              <input type="radio" name="trip" value="multi" {{ ($trip ?? '') === 'multi' ? 'checked' : '' }}>Multidestino
-            </label>
           </fieldset>
           <div class="dd-wrap">
             <button type="button" class="chip" data-dd="pax" aria-expanded="false">
@@ -80,7 +77,7 @@
           <div class="dd-wrap">
             <label class="field">
               <svg class="i"><use href="#i-pin"/></svg>
-              <input id="origin" name="origin" value="{{ $origin ?? '' }}" placeholder="Origen" aria-label="Origen" data-dd="origin">
+              <input id="origin" name="origin" value="{{ (!empty($origin) && strcasecmp($origin, 'origen') !== 0) ? $origin : '' }}" placeholder="Origen" aria-label="Origen" data-dd="origin" required autocomplete="off">
             </label>
             <div class="dd dd--list" id="dd-origin" hidden></div>
           </div>
@@ -92,7 +89,7 @@
           <div class="dd-wrap">
             <label class="field">
               <svg class="i"><use href="#i-pin"/></svg>
-              <input id="destination" name="destination" value="{{ $destination ?? '' }}" placeholder="Destino" aria-label="Destino" data-dd="destination">
+              <input id="destination" name="destination" value="{{ (!empty($destination) && strcasecmp($destination, 'destino') !== 0) ? $destination : '' }}" placeholder="Destino" aria-label="Destino" data-dd="destination" required autocomplete="off">
             </label>
             <div class="dd dd--list" id="dd-destination" hidden></div>
           </div>
@@ -127,6 +124,18 @@
         </div>
       </form>
     </section>
+
+    @if (!empty($avisoBusqueda))
+      <div class="wrap wrap--search" style="padding-bottom: 0;">
+        <div class="search-alert" role="alert">
+          <svg class="i search-alert__icon" style="width:24px;height:24px;fill:#d97706;flex:none;"><use href="#i-info"/></svg>
+          <div class="search-alert__text">
+            <strong>Completa tu búsqueda</strong>
+            <p>{{ $avisoBusqueda }}</p>
+          </div>
+        </div>
+      </div>
+    @endif
 
     <!-- Filtros de búsqueda y resultados -->
     <div class="wrap wrap--search">

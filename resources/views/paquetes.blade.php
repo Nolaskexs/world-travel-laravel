@@ -23,7 +23,7 @@
                     <a class="wt-button wt-button--white" href="#explorar-paquetes">Explorar paquetes <span aria-hidden="true">→</span></a>
                     <a class="wt-hero__quiet" href="{{ route('ofertas') }}">Ver ofertas especiales <span aria-hidden="true">↗</span></a>
                 </div>
-                <div class="wt-hero__trust"><span>✦</span> Destinos seleccionados <span class="wt-trust-divider">·</span> Precios en dólares estadounidenses (USD) · por persona</div>
+                <div class="wt-hero__trust">Destinos seleccionados <span class="wt-trust-divider">·</span> Precios en dólares estadounidenses (USD) · por persona</div>
             </div>
         </section>
 
@@ -95,7 +95,7 @@
                                 <span class="wt-card__duration">{{ $paquete->duracion_dias }} días / {{ max(0, $paquete->duracion_dias - 1) }} noches</span>
                             </div>
                             <div class="wt-card__content">
-                                <p class="wt-card__location"><span aria-hidden="true">⌖</span> {{ $paquete->destino }}, {{ $paquete->pais }}</p>
+                                <p class="wt-card__location">{{ $paquete->destino }}, {{ $paquete->pais }}</p>
                                 <h3>{{ $paquete->titulo }}</h3>
                                 <p class="wt-card__desc">{{ $paquete->descripcion }}</p>
                                 <div class="wt-card__perks">

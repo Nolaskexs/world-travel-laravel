@@ -161,9 +161,9 @@
             @if($hotel)
                 <h1>{{ $hotel['nombre'] }}</h1>
                 <p class="detalle-ubicacion">
-                    <span>📍 {{ $hotel['ubicacion'] }}</span>
-                    @if(!empty($hotel['habitacion'])) · <span>🛏️ {{ $hotel['habitacion'] }}</span> @endif
-                    @if(!empty($hotel['puntuacion'])) · <span>⭐ {{ $hotel['puntuacion'] }}/5</span> @endif
+                    <span>{{ $hotel['ubicacion'] }}</span>
+                    @if(!empty($hotel['habitacion'])) · <span>{{ $hotel['habitacion'] }}</span> @endif
+                    @if(!empty($hotel['puntuacion'])) · <span>Puntuación: {{ $hotel['puntuacion'] }}/5</span> @endif
                 </p>
 
                 <img class="detalle-imagen"
@@ -182,7 +182,7 @@
 
                         <div class="detalle-servicios">
                             @foreach($hotel['servicios'] as $servicio)
-                                <span>✓ {{ $servicio }}</span>
+                                <span>{{ $servicio }}</span>
                             @endforeach
                         </div>
                     </div>
@@ -270,6 +270,9 @@
                             <button type="submit">
                                 Continuar con la reserva
                             </button>
+                            @guest
+                                <small style="display: block; text-align: center; color: #64748b; margin-top: 6px; font-size: 0.78rem;">Requiere iniciar sesión para reservar</small>
+                            @endguest
 
                             <small>
                                 Demostración: no se realizará ningún cobro

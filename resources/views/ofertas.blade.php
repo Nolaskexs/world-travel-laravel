@@ -40,7 +40,7 @@
                                 <span class="wt-card__duration">{{ $oferta->paquete->duracion_dias }} días de viaje</span>
                             </div>
                             <div class="wt-card__content">
-                                <p class="wt-card__location"><span aria-hidden="true">⌖</span> {{ $oferta->paquete->destino }}, {{ $oferta->paquete->pais }}</p>
+                                <p class="wt-card__location">{{ $oferta->paquete->destino }}, {{ $oferta->paquete->pais }}</p>
                                 <h3>{{ $oferta->titulo }}</h3>
                                 <p class="wt-card__desc">{{ $oferta->paquete->descripcion }}</p>
                                 <div class="wt-offer-expiry">Promoción vigente hasta el {{ $oferta->fecha_fin->format('d/m/Y') }}</div>

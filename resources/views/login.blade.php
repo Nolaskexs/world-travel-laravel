@@ -19,6 +19,29 @@
     </p>
  </div>
 
+        @if (session()->has('url.intended') && (str_contains(session('url.intended'), 'reservas') || str_contains(session('url.intended'), 'asientos')))
+            <div class="alert alert--info" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 14px; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.88rem; display: flex; align-items: center; gap: 8px;">
+                <svg style="width: 18px; height: 18px; fill: currentColor; flex-shrink: 0;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span>Inicia sesión como <strong>Cliente</strong> o <strong>Administrador</strong> para continuar con tu reserva.</span>
+            </div>
+        @endif
+
+        @if (session('status'))
+            <div class="alert alert--success" style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 10px 14px; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.88rem;">
+                {{ session('status') }}
+            </div>
+        @endif
+        @if (session('info'))
+            <div class="alert alert--info" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 10px 14px; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.88rem;">
+                {{ session('info') }}
+            </div>
+        @endif
+        @if (session('warning'))
+            <div class="alert alert--warning" style="background: #fffbeb; border: 1px solid #fde68a; color: #92400e; padding: 10px 14px; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.88rem;">
+                {{ session('warning') }}
+            </div>
+        @endif
+
         <form id="loginForm" action="{{ route('login') }}" method="POST">
     @csrf
     
