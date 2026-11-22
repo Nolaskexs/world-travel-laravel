@@ -164,119 +164,306 @@
 </style>
 @endpush
 
+
 @section('content')
 <main class="wt-admin">
 
     <div class="wt-admin__top">
         <div>
-            <span class="wt-admin__label">Panel Administrativo</span>
+            <span class="wt-admin__label">
+                Panel Administrativo
+            </span>
+
             <h1>Facturación y Finanzas</h1>
-            <p class="wt-admin__desc">Consulta ingresos, pagos cobrados, pendientes y comprobantes electrónicos emitidos.</p>
+
+            <p class="wt-admin__desc">
+                Consulta las operaciones, métodos de pago,
+                estados y comprobantes de demostración.
+            </p>
+
+            <p style="color:#92400e;font-size:13px;margin-top:10px;">
+                SIMULACIÓN ACADÉMICA — SIN COBROS REALES
+            </p>
         </div>
     </div>
 
+    <!-- Estadísticas -->
     <section class="wt-stats-grid">
+
         <div class="wt-stat-card wt-stat-card--green">
-            <span class="wt-stat-card__val">US$ {{ number_format($totalCobrado, 2) }}</span>
-            <span class="wt-stat-card__lbl">Ingresos Cobrados</span>
+            <span class="wt-stat-card__val">
+                {{ $pagosAprobados }}
+            </span>
+            <span class="wt-stat-card__lbl">
+                Pagos aprobados
+            </span>
         </div>
-        <div class="wt-stat-card wt-stat-card--amber">
-            <span class="wt-stat-card__val">US$ {{ number_format($totalPendiente, 2) }}</span>
-            <span class="wt-stat-card__lbl">Pendiente de Cobro</span>
-        </div>
+
         <div class="wt-stat-card wt-stat-card--red">
-            <span class="wt-stat-card__val">US$ {{ number_format($totalAnulado, 2) }}</span>
-            <span class="wt-stat-card__lbl">Anulaciones / Reembolsos</span>
+            <span class="wt-stat-card__val">
+                {{ $pagosRechazados }}
+            </span>
+            <span class="wt-stat-card__lbl">
+                Pagos rechazados
+            </span>
         </div>
+
+        <div class="wt-stat-card wt-stat-card--amber">
+            <span class="wt-stat-card__val">
+                {{ $reservasPendientes }}
+            </span>
+            <span class="wt-stat-card__lbl">
+                Reservas pendientes
+            </span>
+        </div>
+
         <div class="wt-stat-card wt-stat-card--blue">
-            <span class="wt-stat-card__val">{{ $totalOperaciones }}</span>
-            <span class="wt-stat-card__lbl">Comprobantes Emitidos</span>
+            <span class="wt-stat-card__val">
+                {{ $totalOperaciones }}
+            </span>
+            <span class="wt-stat-card__lbl">
+                Operaciones registradas
+            </span>
         </div>
+
     </section>
 
-    <form class="wt-filter-bar" method="GET" action="{{ route('admin.facturacion.index') }}">
-        <input class="wt-search-input" type="search" name="q" value="{{ $busqueda }}" placeholder="Buscar por N° comprobante, cliente o paquete...">
+    <!-- Totales de prueba por moneda -->
+    <div class="wt-stat-card" style="margin-bottom:25px;">
+
+        <strong>
+            Total aprobado en simulaciones
+        </strong>
+
+        @forelse ($totalesSimulados as $total)
+            <div style="font-size:23px;font-weight:700;
+                        color:#059669;margin-top:8px;">
+                {{ $total->moneda }}
+                {{ number_format((float) $total->total, 2) }}
+            </div>
+        @empty
+            <p>No existen pagos de prueba aprobados.</p>
+        @endforelse
+
+        <p style="font-size:12px;color:#64798a;margin-top:8px;">
+            Estos importes son ficticios y no representan
+            ingresos bancarios reales.
+        </p>
+
+    </div>
+
+    <!-- Búsqueda y filtros -->
+    <form
+        class="wt-filter-bar"
+        method="GET"
+        action="{{ route('admin.facturacion.index') }}"
+    >
+
+        <input
+            class="wt-search-input"
+            type="search"
+            name="q"
+            value="{{ $busqueda }}"
+            placeholder="Buscar operación, reserva, cliente o paquete..."
+        >
 
         <select class="wt-select" name="estado">
-            <option value="">Todos los estados</option>
-            <option value="confirmada" {{ $estado === 'confirmada' ? 'selected' : '' }}>Cobrado / Pagado</option>
-            <option value="pendiente" {{ $estado === 'pendiente' ? 'selected' : '' }}>Pendiente de pago</option>
-            <option value="cancelada" {{ $estado === 'cancelada' ? 'selected' : '' }}>Anulado</option>
+
+            <option value="">
+                Todos los estados
+            </option>
+
+            <option value="aprobado"
+                {{ $estado === 'aprobado' ? 'selected' : '' }}>
+                Aprobado
+            </option>
+
+            <option value="rechazado"
+                {{ $estado === 'rechazado' ? 'selected' : '' }}>
+                Rechazado
+            </option>
+
+            <option value="pendiente"
+                {{ $estado === 'pendiente' ? 'selected' : '' }}>
+                Pago pendiente
+            </option>
+
+            <option value="procesando"
+                {{ $estado === 'procesando' ? 'selected' : '' }}>
+                Procesando
+            </option>
+
         </select>
 
-        <button class="wt-btn-filter" type="submit">Filtrar</button>
+        <button class="wt-btn-filter" type="submit">
+            Filtrar
+        </button>
 
         @if ($busqueda || $estado)
-            <a href="{{ route('admin.facturacion.index') }}" style="color: #64798a; text-decoration: none; font-size: 13px; font-weight: 600;">Limpiar</a>
+            <a
+                href="{{ route('admin.facturacion.index') }}"
+                style="color:#64798a;text-decoration:none;
+                       font-size:13px;font-weight:600;"
+            >
+                Limpiar
+            </a>
         @endif
+
     </form>
 
+    <!-- Tabla de operaciones -->
     <div class="wt-admin__card">
+
         <table class="wt-admin__table">
+
             <thead>
                 <tr>
-                    <th>N° Comprobante</th>
-                    <th>Fecha de Emisión</th>
+                    <th>Operación</th>
+                    <th>Fecha</th>
                     <th>Cliente</th>
-                    <th>Concepto / Paquete</th>
-                    <th>Monto Total</th>
-                    <th>Estado de Pago</th>
-                    <th>Acción</th>
+                    <th>Paquete</th>
+                    <th>Método</th>
+                    <th>Importe</th>
+                    <th>Resultado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
+
             <tbody>
-                @forelse ($comprobantes as $item)
-                    @php
-                        $numeroBoleta = 'B001-' . str_pad($item->id, 6, '0', STR_PAD_LEFT);
-                        $fechaEmision = \Carbon\Carbon::parse($item->created_at)->format('d/m/Y H:i');
-                    @endphp
+
+                @forelse ($operaciones as $item)
+
                     <tr>
+
                         <td>
-                            <strong style="color: #106d9f;">{{ $numeroBoleta }}</strong>
-                        </td>
-                        <td style="color: #64798a; font-size: 13px;">
-                            {{ $fechaEmision }}
-                        </td>
-                        <td>
-                            <div>
-                                <strong>{{ $item->cliente_nombre }}</strong>
-                                <div style="font-size: 12px; color: #64798a;">{{ $item->cliente_email }}</div>
+                            <strong style="color:#106d9f;">
+                                {{ $item->proveedor === 'simulador' ? 'DEMO-' : 'OP-' }}{{ str_pad($item->id, 6, '0', STR_PAD_LEFT) }}
+                            </strong>
+                            <div style="font-size:12px;color:#64798a;">
+                                Reserva #{{ $item->reserva_id }}
                             </div>
                         </td>
+
+                        <td style="color:#64798a;font-size:13px;">
+                            {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y H:i') }}
+                        </td>
+
+                        <td>
+                            <strong>
+                                {{ $item->cliente_nombre }}
+                            </strong>
+
+                            <div style="font-size:12px;color:#64798a;">
+                                {{ $item->cliente_email }}
+                            </div>
+                        </td>
+
                         <td>
                             {{ $item->paquete_titulo }}
                         </td>
+
                         <td>
-                            <strong>US$ {{ number_format($item->total, 2) }}</strong>
+                            <strong>
+                                {{ ucfirst($item->metodo) }}
+                            </strong>
+
+                            <div style="font-size:12px;color:#64798a;">
+                                {{ $item->proveedor === 'simulador' ? 'Simulado' : ucfirst($item->proveedor) }}
+                            </div>
                         </td>
+
                         <td>
-                            @if ($item->estado === 'confirmada')
-                                <span class="wt-badge wt-badge--paid">Pagado</span>
-                            @elseif ($item->estado === 'pendiente')
-                                <span class="wt-badge wt-badge--pending">Pendiente</span>
+                            <strong>
+                                {{ $item->moneda }}
+                                {{ number_format((float) $item->monto, 2) }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            @if ($item->estado === 'aprobado')
+
+                                <span class="wt-badge wt-badge--paid">
+                                    Aprobado
+                                </span>
+
+                            @elseif ($item->estado === 'rechazado')
+
+                                <span class="wt-badge wt-badge--canceled">
+                                    Rechazado
+                                </span>
+
                             @else
-                                <span class="wt-badge wt-badge--canceled">Anulado</span>
+
+                                <span class="wt-badge wt-badge--pending">
+                                    {{ ucfirst($item->estado) }}
+                                </span>
+
                             @endif
                         </td>
+
                         <td>
-                            <a href="{{ route('admin.reservas.show', $item->id) }}" style="color: #106d9f; text-decoration: none; font-weight: 600; font-size: 13px;">
-                                Ver Reserva →
+
+                            @if (
+                                $item->estado === 'aprobado'
+                                && $item->proveedor === 'simulador'
+                            )
+
+                                <a
+                                    href="{{ route('admin.facturacion.comprobante', $item->id) }}"
+                                    style="color:#106d9f;
+                                           text-decoration:none;
+                                           font-weight:600;
+                                           font-size:13px;
+                                           display:block;
+                                           margin-bottom:8px;"
+                                >
+                                    Ver comprobante de prueba
+                                </a>
+
+                            @else
+
+                                <span style="font-size:12px;color:#64798a;
+                                             display:block;margin-bottom:8px;">
+                                    Sin comprobante aprobado
+                                </span>
+
+                            @endif
+
+                            <a
+                                href="{{ route('admin.reservas.show', $item->reserva_id) }}"
+                                style="color:#64798a;
+                                       text-decoration:none;
+                                       font-size:13px;"
+                            >
+                                Ver reserva
                             </a>
+
                         </td>
+
                     </tr>
+
                 @empty
+
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 35px; color: #64798a;">
-                            No se encontraron comprobantes ni transacciones registradas.
+                        <td
+                            colspan="8"
+                            style="text-align:center;padding:35px;
+                                   color:#64798a;"
+                        >
+                            No se encontraron operaciones de pago.
                         </td>
                     </tr>
+
                 @endforelse
+
             </tbody>
+
         </table>
+
     </div>
 
-    <div style="margin-top: 20px;">
-        {{ $comprobantes->links() }}
+    <div style="margin-top:20px;">
+        {{ $operaciones->links() }}
     </div>
 
 </main>

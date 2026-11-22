@@ -37,6 +37,17 @@ Route::view('/ayuda', 'ayuda')->name('ayuda');
 
 Route::view('/nosotros', 'nosotros')->name('nosotros');
 
+
+Route::view('/preguntas-frecuentes', 'preguntas-frecuentes')
+    ->name('preguntas.frecuentes');
+
+Route::view('/terminos-y-condiciones', 'terminos')
+    ->name('terminos');
+
+Route::view('/politica-de-privacidad', 'privacidad')
+    ->name('privacidad');
+
+
 Route::get('/libro-de-reclamaciones', [ReclamacionController::class, 'create'])->name('reclamaciones');
 Route::post('/libro-de-reclamaciones', [ReclamacionController::class, 'store'])->name('reclamaciones.store');
 
@@ -201,6 +212,20 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/pagos/{reserva}', [\App\Http\Controllers\PagoController::class, 'show'])
+    ->middleware('auth')
+    ->name('pagos.show');
+
+Route::post(
+    '/pagos/{reserva}/simular',
+    [\App\Http\Controllers\PagoController::class, 'simular']
+)->middleware('auth')->name('pagos.simular');
+
+Route::get(
+    '/pagos/comprobante/{pago}',
+    [\App\Http\Controllers\PagoController::class, 'comprobante']
+)->middleware('auth')->name('pagos.comprobante');
+
 /*
 |--------------------------------------------------------------------------
 | 11. Vista previa de itinerarios
@@ -275,6 +300,20 @@ Route::patch(
 
         // FACTURACIÓN: Listado y balance financiero
         Route::get('/facturacion', [FacturacionController::class, 'index'])->name('facturacion.index');
+
+
+        // FACTURACIÓN: Listado y balance financiero
+        Route::get('/facturacion', [
+            FacturacionController::class,
+            'index'
+        ])->name('facturacion.index');
+
+        // FACTURACIÓN: Ver comprobante de pago simulado
+        Route::get('/facturacion/comprobante/{pago}', [
+            FacturacionController::class,
+            'comprobante'
+        ])->name('facturacion.comprobante');
+
 
         // RECLAMACIONES: Hoja de reclamaciones y atención al cliente
         Route::get('/reclamaciones', [AdminReclamacionController::class, 'index'])->name('reclamaciones.index');
