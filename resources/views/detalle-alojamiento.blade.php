@@ -232,7 +232,13 @@
                         <h2>Reserva tu alojamiento</h2>
 
                         <p>Precio referencial por noche</p>
-                        <strong>{{ $hotel['moneda_simbolo'] ?? 'US$' }} {{ number_format($hotel['precio'], 0, '.', ',') }}</strong>
+                        @if(($hotel['moneda_simbolo'] ?? 'US$') === 'S/')
+                            <strong>S/ {{ number_format($hotel['precio'], 0, '.', ',') }}</strong>
+                            <small style="display:block; font-size:12px; color:#64748b; font-weight:600; margin-top:-10px; margin-bottom:12px;">aprox. US$ {{ number_format($hotel['precio'] / 3.51, 2) }}</small>
+                        @else
+                            <strong>US$ {{ number_format($hotel['precio'], 0, '.', ',') }}</strong>
+                            <small style="display:block; font-size:12px; color:#64748b; font-weight:600; margin-top:-10px; margin-bottom:12px;">aprox. S/ {{ number_format($hotel['precio'] * 3.51, 2) }}</small>
+                        @endif
                         @if(!empty($hotel['precio_anterior']))
                             <small style="text-decoration: line-through; color: #94a3b8; display: block; margin-top: -15px; margin-bottom: 15px;">
                                 Precio habitual: {{ $hotel['moneda_simbolo'] ?? 'US$' }} {{ number_format($hotel['precio_anterior'], 0, '.', ',') }}
@@ -265,6 +271,7 @@
                                 <p>Noches: <span id="totalNoches">0</span></p>
                                 <p>Total estimado:</p>
                                 <h3 id="precioTotal">{{ $hotel['moneda_simbolo'] ?? 'US$' }} 0.00</h3>
+                                <small id="precioSecundario" style="display:block; font-size:12px; color:#64748b; font-weight:600; margin-top:-4px;">aprox. {{ ($hotel['moneda_simbolo'] ?? 'US$') === 'S/' ? 'US$ 0.00' : 'S/ 0.00' }}</small>
                             </div>
 
                             <button type="submit">
@@ -530,12 +537,25 @@
             if (noches <= 0) {
                 nochesTexto.textContent = '0';
                 totalTexto.textContent = simbolo + ' 0.00';
+                const secEl = document.getElementById('precioSecundario');
+                if (secEl) {
+                    secEl.textContent = 'aprox. ' + (simbolo === 'S/' ? 'US$ 0.00' : 'S/ 0.00');
+                }
                 return;
             }
 
+            const total = noches * precioNoche;
             nochesTexto.textContent = noches;
             totalTexto.textContent =
-                simbolo + ' ' + (noches * precioNoche).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                simbolo + ' ' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const secEl = document.getElementById('precioSecundario');
+            if (secEl) {
+                if (simbolo === 'S/') {
+                    secEl.textContent = 'aprox. US$ ' + (total / 3.51).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                } else {
+                    secEl.textContent = 'aprox. S/ ' + (total * 3.51).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+            }
         }
 
         entrada.addEventListener('change', () => {

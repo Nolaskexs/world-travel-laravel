@@ -391,11 +391,17 @@
                             </td>
 
                             <td>
-                                {{ $reserva->num_pasajeros }}
+                                <div>{{ $reserva->num_pasajeros }} {{ $reserva->num_pasajeros == 1 ? 'persona' : 'personas' }}</div>
+                                @if(!empty($reserva->asientos_texto))
+                                    <small style="display: block; color: #0284c7; font-weight: 600; font-size: 11px; margin-top: 3px;">
+                                        Asientos: {{ $reserva->asientos_texto }}
+                                    </small>
+                                @endif
                             </td>
 
                             <td class="reservas-price">
-                                US$ {{ number_format((float) $reserva->total, 2) }}
+                                <div>US$ {{ number_format((float) $reserva->total, 2) }}</div>
+                                <small style="display: block; font-size: 11px; color: #64748b; font-weight: 500;">aprox. S/ {{ number_format((float) $reserva->total * 3.51, 2) }}</small>
                             </td>
 
                             <td>

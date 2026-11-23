@@ -94,6 +94,7 @@ class DashboardController extends Controller
                 'estado'       => $estado,
                 'estado_label' => $estadoLabel,
                 'destacado'    => 'US$ ' . number_format($reserva->total, 2),
+                'total_num'    => (float) $reserva->total,
                 'nota'         => $reserva->num_pasajeros . ' ' . ($reserva->num_pasajeros === 1 ? 'pasajero' : 'pasajeros'),
                 'imagen'       => $img,
                 'checkin_url'  => route('asientos.checkin', $reserva->id),

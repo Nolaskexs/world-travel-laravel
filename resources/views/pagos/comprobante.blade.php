@@ -125,6 +125,16 @@
                         Volver a mi reserva
                     </a>
 
+                    <a href="{{ auth()->user()?->esAdmin() ? route('admin.reservas.show', $reserva->id) : route('dashboard') }}"
+                       style="padding:12px 20px;
+                              background:#0b1c27;
+                              color:#fff;
+                              border-radius:8px;
+                              text-decoration:none;
+                              font-weight:600;">
+                        Ver en {{ auth()->user()?->esAdmin() ? 'Panel Admin' : 'Mis Viajes (Dashboard)' }} &rarr;
+                    </a>
+
                 @endif
 
             </div>

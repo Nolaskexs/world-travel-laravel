@@ -58,7 +58,7 @@
     <div class="hero__view"><div class="hero__track">
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/MachuPicchu1-Carrusel.jpg" alt="Vuelo a Roma">
+        <img class="hero__bg" src="/icons/MachuPicchu1-Carrusel.jpg" alt="Vuelo a Cusco y Machu Picchu">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
         <div class="hero__badge">-12%</div>
@@ -66,12 +66,12 @@
           <span class="hero__tag">Perú · Sudamérica</span>
           <h2>Machu Picchu te llama</h2>
           <p>Cusco, Valle Sagrado y tren incluido</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 420</b></div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 420</b><small style="display:block; font-size:12px; color:#cbd5e1; font-weight:500;">aprox. S/ 1,474.20</small></div><a class="hero__btn" href="{{ route('search', ['origin' => 'Lima', 'destination' => 'Cusco']) }}">Ver vuelo</a></div>
         </div>
       </div>
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/Cancun2-Carrusel.jpg" alt="Vuelo a Tokio">
+        <img class="hero__bg" src="/icons/Cancun2-Carrusel.jpg" alt="Vuelo a Cancún">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
         <div class="hero__badge">-10%</div>
@@ -79,12 +79,12 @@
           <span class="hero__tag">México · Caribe</span>
           <h2>Cancún todo incluido</h2>
           <p>Playas de arena blanca y mar turquesa</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 980</b></div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 980</b><small style="display:block; font-size:12px; color:#cbd5e1; font-weight:500;">aprox. S/ 3,439.80</small></div><a class="hero__btn" href="{{ route('search', ['origin' => 'Lima', 'destination' => 'Cancún']) }}">Ver vuelo</a></div>
         </div>
       </div>
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/NuevaYork3-Carrusel.jpg" alt="India">
+        <img class="hero__bg" src="/icons/NuevaYork3-Carrusel.jpg" alt="Vuelo a Nueva York">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
         <div class="hero__badge">-8%</div>
@@ -92,12 +92,12 @@
           <span class="hero__tag">Estados Unidos · Norteamérica</span>
           <h2>Nueva York te espera</h2>
           <p>Times Square, Central Park y compras</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 920</b></div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 920</b><small style="display:block; font-size:12px; color:#cbd5e1; font-weight:500;">aprox. S/ 3,229.20</small></div><a class="hero__btn" href="{{ route('search', ['origin' => 'Lima', 'destination' => 'Nueva York']) }}">Ver vuelo</a></div>
         </div>
       </div>
 
       <div class="hero__slide">
-        <img class="hero__bg" src="/icons/Buenos Aires4-Carrusel.jpeg" alt="Hospedajes en el Caribe">
+        <img class="hero__bg" src="/icons/Buenos Aires4-Carrusel.jpeg" alt="Vuelo a Buenos Aires">
         <div class="hero__shade"></div>
         <div class="hero__logo">WORLD TRAVEL</div>
         <div class="hero__badge">-10%</div>
@@ -105,7 +105,7 @@
           <span class="hero__tag">Argentina · Sudamérica</span>
           <h2>Buenos Aires te enamora</h2>
           <p>Tango, gastronomía y cultura en 4 días</p>
-          <div class="hero__row"><div class="hero__price">Desde<b>US$ 520</b>por noche</div><a class="hero__btn" href="{{ route('ofertas') }}">Ver vuelo</a></div>
+          <div class="hero__row"><div class="hero__price">Desde<b>US$ 520</b><small style="display:block; font-size:12px; color:#cbd5e1; font-weight:500;">aprox. S/ 1,825.20 por noche</small></div><a class="hero__btn" href="{{ route('search', ['origin' => 'Lima', 'destination' => 'Buenos Aires']) }}">Ver vuelo</a></div>
         </div>
       </div>
 

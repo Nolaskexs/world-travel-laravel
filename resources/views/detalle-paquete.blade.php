@@ -35,10 +35,12 @@
                     <span class="wt-booking-card__discount">Promoción -{{ $oferta->descuento_porcentaje }}%</span>
                     <p class="wt-booking-card__old">Precio habitual: <s>US$ {{ number_format((float) $paquete->precio, 2, '.', ',') }}</s></p>
                     <div class="wt-booking-card__price">US$ {{ number_format($final, 2, '.', ',') }}</div>
+                    <small style="display:block; font-size:12px; color:#64748b; font-weight:600; margin-top:-4px; margin-bottom:4px;">aprox. S/ {{ number_format($final * 3.51, 2, '.', ',') }}</small>
                     <small>Por persona · USD · precio promocional de prueba</small>
                     <p class="wt-booking-card__valid">Hasta el {{ $oferta->fecha_fin->format('d/m/Y') }}</p>
                 @else
                     <div class="wt-booking-card__price">US$ {{ number_format((float) $paquete->precio, 2, '.', ',') }}</div>
+                    <small style="display:block; font-size:12px; color:#64748b; font-weight:600; margin-top:-4px; margin-bottom:4px;">aprox. S/ {{ number_format((float) $paquete->precio * 3.51, 2, '.', ',') }}</small>
                     <small>Desde / por persona · USD · precio de prueba</small>
                 @endif
                 <hr>

@@ -15,37 +15,78 @@
             </div>
         </section>
 
-        <section class="hotel-container">
-            <form class="hotel-buscador" id="formHoteles">
-                <div class="hotel-campo">
-                    <label for="hotelDestino">Destino</label>
-                    <input type="search" id="hotelDestino"
-                           placeholder="¿A dónde viajas?">
+        <section class="hotel-container" style="position: relative; z-index: 20;">
+            <form class="sf sf--hotel" id="formHoteles" autocomplete="off" style="margin-top: -38px; position: relative;">
+                <input type="hidden" name="entrada" id="inputStart" value="">
+                <input type="hidden" name="salida" id="inputEnd" value="">
+                <input type="hidden" name="huespedes" id="inputAdults" value="2">
+                <input type="hidden" name="kids" id="inputKids" value="0">
+                <input type="hidden" name="infants" id="inputInfants" value="0">
+
+                <div class="sf__top" style="justify-content: flex-end; margin-bottom: 0.35rem;">
+                    <div class="dd-wrap">
+                        <button type="button" class="chip" data-dd="pax" aria-expanded="false">
+                            <svg class="i"><use href="#i-user"/></svg>
+                            <span id="paxLabel" data-mode="hotel">2 huéspedes</span>
+                        </button>
+                        <div class="dd dd--pax" id="dd-pax" hidden>
+                            <div class="prow" data-pax="adults">
+                                <div><strong>Adultos</strong><small>Mayores de 12 años</small></div>
+                                <div class="cnt">
+                                    <button type="button" data-step="-1" aria-label="Quitar adulto"><svg class="i"><use href="#i-minus"/></svg></button>
+                                    <output>2</output>
+                                    <button type="button" data-step="1" aria-label="Agregar adulto"><svg class="i"><use href="#i-plus"/></svg></button>
+                                </div>
+                            </div>
+                            <div class="prow" data-pax="kids">
+                                <div><strong>Menores</strong><small>De 2 a 11 años</small></div>
+                                <div class="cnt">
+                                    <button type="button" data-step="-1" aria-label="Quitar menor"><svg class="i"><use href="#i-minus"/></svg></button>
+                                    <output>0</output>
+                                    <button type="button" data-step="1" aria-label="Agregar menor"><svg class="i"><use href="#i-plus"/></svg></button>
+                                </div>
+                            </div>
+                            <div class="pax-actions">
+                                <button type="button" class="btn-ghost" data-act="cancel">Cancelar</button>
+                                <button type="button" class="btn-dark" data-act="apply">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="hotel-campo">
-                    <label for="hotelEntrada">Entrada</label>
-                    <input type="date" id="hotelEntrada">
-                </div>
+                <div class="sf__row sf__row--hotel">
+                    <div class="dd-wrap" style="flex: 1.4; min-width: 220px;">
+                        <label class="field" style="width: 100%;">
+                            <svg class="i"><use href="#i-pin"/></svg>
+                            <input id="destination" name="destination" value="" placeholder="¿A dónde viajas? (ej. Tokio, Madrid, Cusco...)" aria-label="Destino" data-dd="destination" autocomplete="off">
+                        </label>
+                        <div class="dd dd--list" id="dd-destination" hidden></div>
+                    </div>
 
-                <div class="hotel-campo">
-                    <label for="hotelSalida">Salida</label>
-                    <input type="date" id="hotelSalida">
-                </div>
+                    <div class="dates dd-wrap" style="flex: 1.6; min-width: 260px;">
+                        <button type="button" class="field" id="startBtn" data-dd="cal" data-field="start" aria-expanded="false" style="flex: 1;">
+                            <svg class="i"><use href="#i-cal"/></svg>
+                            <span id="startLabel" data-label="Entrada">Entrada</span>
+                        </button>
+                        <button type="button" class="field" id="endBtn" data-dd="cal" data-field="end" aria-expanded="false" style="flex: 1;">
+                            <svg class="i"><use href="#i-cal"/></svg>
+                            <span id="endLabel" data-label="Salida">Salida</span>
+                        </button>
+                        <div class="dd dd--cal" id="dd-cal" data-field="start" hidden>
+                            <div class="cal">
+                                <button type="button" class="cal__nav cal__prev" aria-label="Mes anterior"><svg class="i"><use href="#i-left"/></svg></button>
+                                <button type="button" class="cal__nav cal__next" aria-label="Mes siguiente"><svg class="i"><use href="#i-right"/></svg></button>
+                                <div class="cal__m"></div>
+                                <div class="cal__m"></div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="hotel-campo">
-                    <label for="hotelHuespedes">Huéspedes</label>
-                    <select id="hotelHuespedes">
-                        <option value="1">1 huésped</option>
-                        <option value="2" selected>2 huéspedes</option>
-                        <option value="3">3 huéspedes</option>
-                        <option value="4">4 huéspedes</option>
-                    </select>
+                    <button class="go" type="submit" style="min-width: 130px;">
+                        <svg class="i"><use href="#i-search"/></svg>
+                        <span>Buscar</span>
+                    </button>
                 </div>
-
-                <button type="submit" class="hotel-boton">
-                    Buscar
-                </button>
             </form>
         </section>
 
@@ -94,6 +135,7 @@
                             <div>
                                 <small>Precio referencial / noche</small>
                                 <strong>US$ 19,957</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 70,049</small>
                             </div>
 
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'tokio-ritz']) }}"
@@ -124,6 +166,7 @@
                             <div>
                                 <small>Precio referencial / noche</small>
                                 <strong>US$ 74</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 259.74</small>
                             </div>
 
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'cartagena-oz']) }}"
@@ -154,6 +197,7 @@
                             <div>
                                 <small>Precio referencial / noche</small>
                                 <strong>US$ 268</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 940.68</small>
                             </div>
 
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'madrid-riu']) }}"
@@ -184,6 +228,7 @@
                             <div>
                                 <small>Precio referencial / noche</small>
                                 <strong>US$ 540</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 1,895.40</small>
                             </div>
 
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'cusco-monasterio']) }}"
@@ -214,6 +259,7 @@
                             <div>
                                 <small>Precio referencial / noche</small>
                                 <strong>US$ 990</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 3,474.90</small>
                             </div>
 
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'barcelona-arts']) }}"
@@ -244,6 +290,7 @@
                             <div>
                                 <small>Precio referencial / noche</small>
                                 <strong>US$ 265</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 930.15</small>
                             </div>
 
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'lima-miraflores']) }}"
@@ -273,7 +320,8 @@
                         <div class="hotel-footer">
                             <div>
                                 <small>Precio referencial / noche</small>
-                                <strong>S/ 250</strong>
+                                <strong>US$ 71</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 250.00</small>
                             </div>
 
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'cusco']) }}"
@@ -303,7 +351,8 @@
                         <div class="hotel-footer">
                             <div>
                                 <small>Precio referencial / noche</small>
-                                <strong>S/ 320</strong>
+                                <strong>US$ 91</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 320.00</small>
                             </div>
                              <a href="{{ route('alojamientos.detalle', ['codigo' => 'lima']) }}"
                              class="hotel-ver">
@@ -332,7 +381,8 @@
                         <div class="hotel-footer">
                             <div>
                                 <small>Precio referencial / noche</small>
-                                <strong>S/ 120</strong>
+                                <strong>US$ 34</strong>
+                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 120.00</small>
                             </div>
                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'arequipa']) }}"
                              class="hotel-ver">
@@ -394,17 +444,22 @@
             font-size: 15px;
         }
 
-        .hotel-buscador {
-            background: white;
-            border-radius: 16px;
-            padding: 22px;
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr 1fr auto;
-            gap: 12px;
-            align-items: end;
+        .sf--hotel {
+            background: #fff;
+            border-radius: 18px;
+            padding: 1.25rem;
             margin-top: -48px;
-            position: relative;
             box-shadow: 0 9px 28px rgba(15, 30, 45, .1);
+            position: relative;
+        }
+
+        @media (min-width: 900px) {
+            .sf__row--hotel {
+                display: grid !important;
+                grid-template-columns: 1.4fr 1.6fr auto !important;
+                gap: 0.6rem !important;
+                align-items: center !important;
+            }
         }
 
         .hotel-campo label,
@@ -587,37 +642,20 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('formHoteles');
-            const destino = document.getElementById('hotelDestino');
+            const destino = document.getElementById('destination');
             const tipo = document.getElementById('tipoHotel');
-            const entrada = document.getElementById('hotelEntrada');
-            const salida = document.getElementById('hotelSalida');
             const tarjetas = [...document.querySelectorAll('.hotel-card')];
             const contador = document.getElementById('hotelContador');
             const vacio = document.getElementById('hotelVacio');
 
-            const hoy = new Date();
-            const fechaLocal = new Date(
-                hoy.getTime() - hoy.getTimezoneOffset() * 60000
-            ).toISOString().slice(0, 10);
-
-            entrada.min = fechaLocal;
-            salida.min = fechaLocal;
-
-            entrada.addEventListener('change', () => {
-                salida.min = entrada.value || fechaLocal;
-                if (salida.value && salida.value < salida.min) {
-                    salida.value = '';
-                }
-            });
-
             function filtrar() {
-                const ciudad = destino.value.trim().toLowerCase();
-                const categoria = tipo.value;
+                const ciudad = (destino ? destino.value : '').trim().toLowerCase();
+                const categoria = tipo ? tipo.value : 'todos';
                 let visibles = 0;
 
                 tarjetas.forEach(tarjeta => {
                     const coincideCiudad =
-                        tarjeta.dataset.destino.includes(ciudad);
+                        !ciudad || (tarjeta.dataset.destino || '').toLowerCase().includes(ciudad);
 
                     const coincideTipo =
                         categoria === 'todos' ||
@@ -629,24 +667,36 @@
                     if (mostrar) visibles++;
                 });
 
-                contador.textContent =
-                    visibles + ' alojamientos encontrados (demostración)';
+                if (contador) {
+                    contador.textContent =
+                        visibles + ' alojamientos encontrados (demostración)';
+                }
 
-                vacio.hidden = visibles !== 0;
+                if (vacio) {
+                    vacio.hidden = visibles !== 0;
+                }
             }
 
-            form.addEventListener('submit', (evento) => {
-                evento.preventDefault();
-                if (!entrada.value && salida.value) {
-                    entrada.reportValidity();
-                    return;
+            if (form) {
+                form.addEventListener('submit', (evento) => {
+                    evento.preventDefault();
+                    filtrar();
+                });
+            }
+
+            if (destino) {
+                destino.addEventListener('input', filtrar);
+                const ddDest = document.getElementById('dd-destination');
+                if (ddDest) {
+                    ddDest.addEventListener('click', () => {
+                        setTimeout(filtrar, 50);
+                    });
                 }
-                filtrar();
-            });
+            }
 
-            tipo.addEventListener('change', filtrar);
-
-            
+            if (tipo) {
+                tipo.addEventListener('change', filtrar);
+            }
         });
     </script>
 </x-layout>

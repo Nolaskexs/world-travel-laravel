@@ -181,7 +181,17 @@
         ['ciudad' => 'Cancún', 'nombre' => 'Cancún, México', 'reservas' => 1, 'pct' => 13, 'up' => true, 'color' => '#5B6B78', 'coords' => [21.1619, -86.8515], 'radius' => 7.4, 'is_leader' => false],
         ['ciudad' => 'Tokio', 'nombre' => 'Tokio, Japón', 'reservas' => 1, 'pct' => 13, 'up' => true, 'color' => '#2A4256', 'coords' => [35.6762, 139.6503], 'radius' => 7.4, 'is_leader' => false],
     ];
+    $ultimasReservas = $ultimasReservas ?? collect();
 @endphp
+
+@if (session('success'))
+    <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 12px 18px; border-radius: 12px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <svg style="width: 20px; height: 20px; fill: #10b981; flex-shrink: 0;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <strong style="font-size: 0.92rem;">{{ session('success') }}</strong>
+        </div>
+    </div>
+@endif
 
 <div class="top">
     <div>
@@ -195,7 +205,7 @@
     </div>
     <form class="search" role="search" action="{{ url()->current() }}" method="get">
         <label class="sr" for="q">Buscar</label>
-        <input id="q" type="search" name="q" placeholder="Buscar reservas, clientes, destinos...">
+        <input id="q" type="search" name="q" value="{{ $busqueda ?? '' }}" placeholder="Buscar reservas, clientes, destinos...">
         <svg class="i"><use href="#i-search"/></svg>
     </form>
 </div>
@@ -244,6 +254,90 @@
                 <li class="dest" style="color: var(--mut); padding: 1rem 0;">No hay destinos con reservas registradas aún.</li>
             @endforelse
         </ul>
+    </div>
+</section>
+
+{{-- Sección de Últimas Reservas Registradas en la Base de Datos --}}
+<section class="card" style="margin-top: 1.75rem; padding: 1.5rem; border-radius: 18px; border: 1px solid #dae5ec; background: #fff; box-shadow: 0 4px 18px rgba(12, 27, 38, 0.06);">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h2 style="font-size: 1.15rem; font-weight: 700; color: #0f172a; margin: 0 0 4px 0;">Últimas Reservas Registradas en Base de Datos</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">Sincronización en tiempo real con MySQL</p>
+        </div>
+        <a href="{{ url('/admin/reservas') }}" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 600; color: #0284c7; text-decoration: none; padding: 6px 12px; border-radius: 8px; background: #f0f9ff;">
+            Ver todas las reservas &rarr;
+        </a>
+    </div>
+
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+            <thead>
+                <tr style="border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <th style="padding: 10px 12px;">ID</th>
+                    <th style="padding: 10px 12px;">Cliente</th>
+                    <th style="padding: 10px 12px;">Paquete / Destino</th>
+                    <th style="padding: 10px 12px;">Fecha Viaje</th>
+                    <th style="padding: 10px 12px;">Pasajeros</th>
+                    <th style="padding: 10px 12px;">Total</th>
+                    <th style="padding: 10px 12px;">Estado</th>
+                    <th style="padding: 10px 12px; text-align: right;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($ultimasReservas ?? [] as $res)
+                    <tr style="border-bottom: 1px solid #f1f5f9; transition: background .15s ease;">
+                        <td style="padding: 12px; font-weight: 700; color: #0284c7;">#{{ $res->id }}</td>
+                        <td style="padding: 12px;">
+                            <strong style="display: block; color: #0f172a;">{{ $res->user->name ?? 'Usuario Demo' }}</strong>
+                            <small style="color: #64748b; font-size: 0.8rem;">{{ $res->user->email ?? 'cliente@worldtravel.com' }}</small>
+                        </td>
+                        <td style="padding: 12px;">
+                            <strong style="color: #1e293b;">{{ $res->paquete->titulo ?? $res->paquete->destino ?? 'Viaje personalizado' }}</strong>
+                            <small style="display: block; color: #64748b;">{{ $res->paquete->pais ?? 'Mundo' }}</small>
+                        </td>
+                        <td style="padding: 12px; color: #334155;">{{ $res->fecha_viaje ? \Carbon\Carbon::parse($res->fecha_viaje)->format('d/m/Y') : '—' }}</td>
+                        <td style="padding: 12px; color: #334155;">
+                            <div>{{ $res->num_pasajeros }} {{ $res->num_pasajeros == 1 ? 'persona' : 'personas' }}</div>
+                            @php
+                                $asientosRes = $res->pasajeros->pluck('asiento')->filter()->values();
+                            @endphp
+                            @if ($asientosRes->isNotEmpty())
+                                <small style="display: block; color: #0284c7; font-weight: 600; font-size: 11px; margin-top: 2px;">
+                                    Asientos: {{ $asientosRes->implode(', ') }}
+                                </small>
+                            @endif
+                        </td>
+                        <td style="padding: 12px;">
+                            <strong style="display: block; font-weight: 700; color: #0f172a;">US$ {{ number_format($res->total, 2) }}</strong>
+                            <small style="display: block; font-size: 11px; color: #64748b; font-weight: 500;">aprox. S/ {{ number_format($res->total * 3.51, 2) }}</small>
+                        </td>
+                        <td style="padding: 12px;">
+                            @php
+                                $badgeStyles = match($res->estado) {
+                                    'confirmada' => 'background: #dcfce7; color: #166534;',
+                                    'cancelada'  => 'background: #fee2e2; color: #991b1b;',
+                                    default      => 'background: #fef3c7; color: #92400e;',
+                                };
+                            @endphp
+                            <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; {{ $badgeStyles }}">
+                                {{ ucfirst($res->estado) }}
+                            </span>
+                        </td>
+                        <td style="padding: 12px; text-align: right;">
+                            <a href="{{ route('admin.reservas.show', $res->id) }}" style="display: inline-block; padding: 5px 10px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: #0f172a; text-decoration: none;">
+                                Ver detalle
+                            </a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="8" style="padding: 24px; text-align: center; color: #64748b;">
+                            No hay reservas registradas en la base de datos aún.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </section>
 @endsection

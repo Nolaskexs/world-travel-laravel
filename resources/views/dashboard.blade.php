@@ -1,305 +1,583 @@
-<x-layout-dashboard title="Dashboard" body-class="page-dashboard">
-    <div class="dashboard" data-dashboard>
+<x-layout>
+    <x-slot:titulo>World Travel | Mi Panel de Viajero</x-slot:titulo>
 
-        {{-- ===================== BARRA MÓVIL (< 1024px) ===================== --}}
-        <header class="mobile-bar">
-            <button type="button" class="icon-btn" data-drawer-open aria-controls="sidebar" aria-expanded="false">
-                <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
-                <span class="sr-only">Abrir menú</span>
-            </button>
-            <a href="{{ url('/dashboard') }}" class="brand brand--compact">
-                <span class="brand__logo"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg></span>
-                <span class="brand__name">World Travel</span>
-            </a>
-            <div class="mobile-bar__actions">
-                <button type="button" class="icon-btn" data-search-focus aria-controls="dashboard-search">
-                    <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
-                    <span class="sr-only">Buscar</span>
-                </button>
-                <a href="#perfil" class="avatar avatar--sm" data-initials="{{ $usuario['iniciales'] }}">
-                    <img src="{{ asset($usuario['avatar']) }}" alt="" data-fallback>
-                    <span class="sr-only">Ir a mi perfil</span>
-                </a>
+    <x-slot:recursos>
+        @vite(['resources/css/styles.css', 'resources/js/main.js'])
+        <style>
+            .user-dashboard {
+                padding-bottom: 5rem;
+            }
+            .user-hero {
+                background: linear-gradient(135deg, #0b2535 0%, #153e56 100%);
+                color: #fff;
+                padding: 3rem 2rem 3.5rem;
+                border-radius: 24px;
+                margin-top: 1.5rem;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 12px 36px rgba(11, 37, 53, 0.18);
+            }
+            .user-hero__glow {
+                position: absolute;
+                right: -60px;
+                top: -60px;
+                width: 320px;
+                height: 320px;
+                background: radial-gradient(circle, rgba(22, 131, 243, 0.25) 0%, transparent 70%);
+                border-radius: 50%;
+                pointer-events: none;
+            }
+            .user-hero__badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(255, 255, 255, 0.12);
+                backdrop-filter: blur(8px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #93c5fd;
+                padding: 6px 14px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-bottom: 1rem;
+            }
+            .user-hero h1 {
+                font-size: clamp(26px, 3.5vw, 38px);
+                font-weight: 800;
+                line-height: 1.2;
+                margin-bottom: 0.75rem;
+            }
+            .user-hero p {
+                color: #cbd5e1;
+                font-size: 15px;
+                max-width: 620px;
+                line-height: 1.5;
+                margin-bottom: 1.75rem;
+            }
+            .user-hero__actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.85rem;
+            }
+            .user-hero__btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.4rem;
+                border-radius: 12px;
+                font-weight: 600;
+                font-size: 14px;
+                transition: transform 0.2s, background 0.2s;
+                text-decoration: none;
+            }
+            .user-hero__btn--primary {
+                background: #fff;
+                color: #0b2535;
+            }
+            .user-hero__btn--primary:hover {
+                transform: translateY(-2px);
+                background: #f1f5f9;
+            }
+            .user-hero__btn--outline {
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+                border: 1px solid rgba(255, 255, 255, 0.25);
+            }
+            .user-hero__btn--outline:hover {
+                background: rgba(255, 255, 255, 0.16);
+                transform: translateY(-2px);
+            }
+            .user-hero__btn--logout {
+                background: rgba(239, 68, 68, 0.16);
+                color: #fca5a5;
+                border: 1px solid rgba(239, 68, 68, 0.35);
+                cursor: pointer;
+            }
+            .user-hero__btn--logout:hover {
+                background: rgba(239, 68, 68, 0.32);
+                color: #fff;
+                transform: translateY(-2px);
+            }
+
+            /* Métricas Rápidas */
+            .user-metrics {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 1.25rem;
+                margin-top: -1.75rem;
+                position: relative;
+                z-index: 10;
+            }
+            .user-metric-card {
+                background: #fff;
+                border-radius: 18px;
+                padding: 1.35rem 1.5rem;
+                box-shadow: 0 8px 24px rgba(12, 27, 38, 0.08);
+                border: 1px solid #e2e8f0;
+                display: flex;
+                align-items: center;
+                gap: 1.25rem;
+                transition: transform 0.2s;
+            }
+            .user-metric-card:hover {
+                transform: translateY(-3px);
+            }
+            .user-metric-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .user-metric-icon--blue { background: #e0f2fe; color: #0284c7; }
+            .user-metric-icon--green { background: #dcfce7; color: #16a34a; }
+            .user-metric-icon--purple { background: #f3e8ff; color: #9333ea; }
+            .user-metric-info strong {
+                display: block;
+                font-size: 24px;
+                font-weight: 800;
+                color: #0b2535;
+                line-height: 1.1;
+            }
+            .user-metric-info span {
+                font-size: 13px;
+                color: #64748b;
+                font-weight: 500;
+            }
+
+            /* Secciones de contenido */
+            .user-section {
+                margin-top: 3.25rem;
+            }
+            .user-section-head {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                margin-bottom: 1.35rem;
+            }
+            .user-section-head h2 {
+                font-size: 24px;
+                font-weight: 800;
+                color: #0b2535;
+                margin-bottom: 4px;
+            }
+            .user-section-head p {
+                font-size: 14px;
+                color: #64748b;
+            }
+
+            /* Tarjetas de Viajes / Reservas */
+            .user-trips-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 1.5rem;
+            }
+            .user-trip-card {
+                background: #fff;
+                border-radius: 18px;
+                border: 1px solid #e2e8f0;
+                overflow: hidden;
+                box-shadow: 0 6px 20px rgba(12, 27, 38, 0.05);
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .user-trip-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 32px rgba(12, 27, 38, 0.1);
+            }
+            .user-trip-card__media {
+                height: 180px;
+                position: relative;
+                background: #0b2535;
+            }
+            .user-trip-card__media img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .user-trip-card__badge {
+                position: absolute;
+                top: 14px;
+                left: 14px;
+                padding: 6px 12px;
+                border-radius: 8px;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .badge--confirmada, .badge--checkin {
+                background: #dcfce7;
+                color: #166534;
+            }
+            .badge--pendiente {
+                background: #fef3c7;
+                color: #92400e;
+            }
+            .badge--cancelada {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+            .user-trip-card__body {
+                padding: 1.35rem;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+            .user-trip-card__title {
+                font-size: 18px;
+                font-weight: 700;
+                color: #0b2535;
+                margin-bottom: 0.35rem;
+            }
+            .user-trip-card__date {
+                font-size: 13px;
+                color: #64748b;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-bottom: 1rem;
+            }
+            .user-trip-card__footer {
+                margin-top: auto;
+                padding-top: 1rem;
+                border-top: 1px solid #f1f5f9;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .user-trip-card__price {
+                display: flex;
+                flex-direction: column;
+            }
+            .user-trip-card__price strong {
+                font-size: 18px;
+                font-weight: 800;
+                color: #0b2535;
+            }
+            .user-trip-card__price small {
+                font-size: 11px;
+                color: #64748b;
+            }
+            .user-trip-card__btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 14px;
+                border-radius: 9px;
+                font-size: 13px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: background 0.2s, transform 0.2s;
+            }
+            .user-trip-card__btn:hover {
+                transform: translateY(-1px);
+            }
+            .user-trip-card__btn--dark {
+                background: #0b2535;
+                color: #fff;
+            }
+            .user-trip-card__btn--dark:hover {
+                background: #1e3a4e;
+            }
+            .user-trip-card__btn--pay {
+                background: #2563eb;
+                color: #fff;
+            }
+            .user-trip-card__btn--pay:hover {
+                background: #1d4ed8;
+            }
+
+            /* Tabla de tramos y asientos */
+            .user-table-card {
+                background: #fff;
+                border-radius: 18px;
+                border: 1px solid #e2e8f0;
+                box-shadow: 0 8px 24px rgba(12, 27, 38, 0.05);
+                overflow-x: auto;
+            }
+            .user-table {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: left;
+                min-width: 650px;
+            }
+            .user-table th {
+                background: #f8fafc;
+                padding: 1rem 1.25rem;
+                font-size: 12px;
+                font-weight: 700;
+                color: #475569;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            .user-table td {
+                padding: 1.1rem 1.25rem;
+                font-size: 14px;
+                color: #1e293b;
+                border-bottom: 1px solid #f1f5f9;
+                vertical-align: middle;
+            }
+            .user-table tr:last-child td {
+                border-bottom: 0;
+            }
+            .seat-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                background: #e0f2fe;
+                color: #0369a1;
+                font-size: 12px;
+                font-weight: 700;
+                padding: 4px 10px;
+                border-radius: 6px;
+            }
+            .seat-unassigned {
+                color: #94a3b8;
+                font-size: 13px;
+                font-style: italic;
+            }
+
+            /* Estado vacío */
+            .user-empty {
+                background: #fff;
+                border-radius: 18px;
+                border: 1px dashed #cbd5e1;
+                padding: 3.5rem 2rem;
+                text-align: center;
+            }
+            .user-empty h3 {
+                font-size: 18px;
+                font-weight: 700;
+                color: #0b2535;
+                margin-bottom: 0.5rem;
+            }
+            .user-empty p {
+                font-size: 14px;
+                color: #64748b;
+                max-width: 440px;
+                margin: 0 auto 1.5rem;
+            }
+
+            @media (max-width: 900px) {
+                .user-metrics {
+                    grid-template-columns: 1fr;
+                    margin-top: 1rem;
+                }
+            }
+        </style>
+    </x-slot:recursos>
+
+    <div class="wrap user-dashboard">
+
+        @if (session('success'))
+            <div style="background: #e8f5e9; border: 1px solid #81c784; color: #1b5e20; padding: 14px 20px; border-radius: 12px; margin-top: 1.5rem; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(46,125,50,0.1);">
+                <svg class="i" style="width: 22px; height: 22px; color: #2e7d32; flex-shrink: 0;"><use href="#i-cal"/></svg>
+                <span>{{ session('success') }}</span>
             </div>
-        </header>
+        @endif
 
-        {{-- ===================== SIDEBAR IZQUIERDO ===================== --}}
-        <aside class="sidebar" id="sidebar" aria-label="Navegación principal" data-drawer>
-            <div class="sidebar__head">
-                <a href="{{ url('/dashboard') }}" class="brand">
-                    <img src="{{ asset('icons/icon-extends-white.png') }}" alt="World Travel" class="brand__logo">
+        {{-- Hero de bienvenida --}}
+        <section class="user-hero">
+            <div class="user-hero__glow"></div>
+            <span class="user-hero__badge">
+                <svg class="i" style="width: 14px; height: 14px;"><use href="#i-plane"/></svg>
+                Panel de Viajero
+            </span>
+            <h1>¡Hola, {{ $usuario['primer_nombre'] }}!</h1>
+            <p>Gestiona tus reservas, consulta tus vuelos y elige tus asientos para tus próximas aventuras nacionales e internacionales.</p>
+            <div class="user-hero__actions">
+                <a href="{{ route('search') }}" class="user-hero__btn user-hero__btn--primary">
+                    <svg class="i" style="width: 16px; height: 16px;"><use href="#i-search"/></svg>
+                    <span>Buscar Vuelos</span>
                 </a>
-                <button type="button" class="icon-btn sidebar__close" data-drawer-close>
-                    <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
-                    <span class="sr-only">Cerrar menú</span>
-                </button>
+                <a href="{{ route('alojamientos') }}" class="user-hero__btn user-hero__btn--outline">
+                    <span>Ver Alojamientos</span>
+                </a>
+                <a href="{{ route('paquetes') }}" class="user-hero__btn user-hero__btn--outline">
+                    <span>Paquetes Turísticos</span>
+                </a>
+                <a href="{{ route('ofertas') }}" class="user-hero__btn user-hero__btn--outline">
+                    <span>Ofertas Especiales</span>
+                </a>
+                <form method="POST" action="{{ route('logout') }}" style="display:inline-flex; margin:0;">
+                    @csrf
+                    <button type="submit" class="user-hero__btn user-hero__btn--logout" title="Cerrar sesión">
+                        <svg class="i" style="width: 15px; height: 15px;"><use href="#i-logout"/></svg>
+                        <span>Cerrar sesión</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        {{-- Métricas Rápidas --}}
+        <section class="user-metrics" aria-label="Resumen de viajes">
+            <div class="user-metric-card">
+                <div class="user-metric-icon user-metric-icon--blue">
+                    <svg class="i" style="width: 24px; height: 24px;"><use href="#i-plane"/></svg>
+                </div>
+                <div class="user-metric-info">
+                    <strong>{{ $metricas[0]['valor'] ?? 0 }}</strong>
+                    <span>Vuelos activos próximos</span>
+                </div>
             </div>
 
-            <nav class="sidebar__section" aria-labelledby="nav-overview">
-                <h2 class="sidebar__label" id="nav-overview">Overview</h2>
-                <ul class="nav-list">
-                    <li><a href="{{ url('/dashboard') }}" class="nav-link is-active" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg><span>Dashboard</span></a></li>
-                    <li><a href="#mis-viajes" class="nav-link"><svg class="icon" aria-hidden="true"><use href="#i-plane"/></svg><span>Mis Vuelos</span></a></li>
-                    <li><a href="{{ url('/search') }}" class="nav-link"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>Buscar Vuelos</span></a></li>
-                    <li><a href="#historial" class="nav-link"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Check-in</span></a></li>
-                    <li><a href="#" class="nav-link"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg><span>Checklist / Tareas</span></a></li>
-                    <li><a href="#" class="nav-link"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span>Mi Grupo / Familia</span></a></li>
-                </ul>
-            </nav>
+            <div class="user-metric-card">
+                <div class="user-metric-icon user-metric-icon--green">
+                    <svg class="i" style="width: 24px; height: 24px;"><use href="#i-cal"/></svg>
+                </div>
+                <div class="user-metric-info">
+                    <strong>{{ $metricas[1]['valor'] ?? 0 }}</strong>
+                    <span>Check-in / Asientos listos</span>
+                </div>
+            </div>
 
-            <section class="sidebar__section" aria-labelledby="nav-frecuentes">
-                <h2 class="sidebar__label" id="nav-frecuentes">Pasajeros frecuentes / Favoritos</h2>
-                <ul class="people-list">
-                    @forelse ($frecuentes as $pasajero)
-                        <li class="person">
-                            <span class="avatar" data-initials="{{ $pasajero['iniciales'] }}">
-                                <img src="{{ asset($pasajero['avatar']) }}" alt="" loading="lazy" data-fallback>
-                            </span>
-                            <span class="person__info">
-                                <span class="person__name truncate" title="{{ $pasajero['nombre'] }}">{{ $pasajero['nombre'] }}</span>
-                                <span class="person__meta truncate">{{ $pasajero['estado'] }}</span>
-                            </span>
-                        </li>
-                    @empty
-                        <li class="empty-text">Aún no tienes pasajeros favoritos.</li>
-                    @endforelse
-                </ul>
-            </section>
+            <div class="user-metric-card">
+                <div class="user-metric-icon user-metric-icon--purple">
+                    <svg class="i" style="width: 24px; height: 24px;"><use href="#i-user"/></svg>
+                </div>
+                <div class="user-metric-info">
+                    <strong>{{ count($viajes) }}</strong>
+                    <span>Total de reservas registradas</span>
+                </div>
+            </div>
+        </section>
 
-            <nav class="sidebar__section sidebar__footer" aria-labelledby="nav-config">
-                <h2 class="sidebar__label" id="nav-config">Configuración</h2>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>Ajustes</span></a></li>
-                    <li>
-                        <form method="POST" action="{{ url('/logout') }}">
-                            @csrf
-                            <button type="submit" class="nav-link nav-link--button"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg><span>Cerrar sesión</span></button>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
-        <div class="drawer-overlay" data-drawer-overlay hidden></div>
+        {{-- Mis Viajes y Reservas --}}
+        <section class="user-section" id="mis-viajes">
+            <div class="user-section-head">
+                <div>
+                    <h2>Mis Viajes y Reservas</h2>
+                    <p>Historial y seguimiento de tus paquetes y vuelos contratados.</p>
+                </div>
+                <a href="{{ route('paquetes') }}" class="btn-dark" style="padding: 8px 16px; border-radius: 9px; font-size: 13px;">Explorar más viajes</a>
+            </div>
 
-        {{-- ===================== CONTENIDO CENTRAL ===================== --}}
-        <main class="main" id="contenido">
-            @if (session('success'))
-                <div style="background: #e8f5e9; border: 1px solid #81c784; color: #1b5e20; padding: 14px 20px; border-radius: 12px; margin-bottom: 24px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(46,125,50,0.1);">
-                    <svg class="icon icon--sm" style="fill: #2e7d32; width: 22px; height: 22px; flex-shrink: 0;" aria-hidden="true"><use href="#i-check"/></svg>
-                    <span>{{ session('success') }}</span>
+            @if (empty($viajes))
+                <div class="user-empty">
+                    <h3>Aún no tienes viajes registrados</h3>
+                    <p>Encuentra las mejores experiencias y paquetes turísticos con vuelos, hospedajes y traslados incluidos.</p>
+                    <a href="{{ route('paquetes') }}" class="btn-dark" style="display: inline-block; padding: 10px 20px; border-radius: 10px;">Ver Paquetes Turísticos</a>
+                </div>
+            @else
+                <div class="user-trips-grid">
+                    @foreach ($viajes as $viaje)
+                        <article class="user-trip-card">
+                            <div class="user-trip-card__media">
+                                <img src="{{ asset($viaje['imagen']) }}" alt="{{ $viaje['titulo'] }}" loading="lazy">
+                                <span class="user-trip-card__badge badge--{{ $viaje['estado'] }}">
+                                    {{ $viaje['estado_label'] }}
+                                </span>
+                            </div>
+                            <div class="user-trip-card__body">
+                                <h3 class="user-trip-card__title">{{ $viaje['titulo'] }}</h3>
+                                <p class="user-trip-card__date">
+                                    <svg class="i" style="width: 15px; height: 15px; color: #94a3b8;"><use href="#i-cal"/></svg>
+                                    <span>{{ $viaje['fecha'] }}</span>
+                                    <span>·</span>
+                                    <span>{{ $viaje['nota'] }}</span>
+                                </p>
+                                <div class="user-trip-card__footer">
+                                    <div class="user-trip-card__price">
+                                        <small>Monto total</small>
+                                        <strong>{{ $viaje['destacado'] }}</strong>
+                                        <small style="font-size:11px; color:#64748b; font-weight:500;">aprox. S/ {{ number_format(($viaje['total_num'] ?? 0) * 3.51, 2) }}</small>
+                                    </div>
+                                    @if ($viaje['estado'] === 'pendiente')
+                                        <a href="{{ route('pagos.show', $viaje['id']) }}" class="user-trip-card__btn user-trip-card__btn--pay">
+                                            <span>Pagar Reserva</span>
+                                            <svg class="i" style="width: 14px; height: 14px;"><use href="#i-right"/></svg>
+                                        </a>
+                                    @else
+                                        <a href="{{ $viaje['checkin_url'] ?? '#' }}" class="user-trip-card__btn user-trip-card__btn--dark">
+                                            <svg class="i" style="width: 14px; height: 14px;"><use href="#i-plane"/></svg>
+                                            <span>{{ $viaje['estado'] === 'checkin' ? 'Hacer Check-in' : 'Elegir Asientos' }}</span>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
                 </div>
             @endif
+        </section>
 
-            <section class="promo" aria-labelledby="promo-title">
-                <p class="promo__eyebrow">¡Explora nuevos destinos!</p>
-                <h1 class="promo__title" id="promo-title">Consigue hasta 30% de descuento en tu próximo viaje a Cusco o Cancún</h1>
-                <a href="{{ url('/search') }}" class="btn btn--light">
-                    Reservar ahora
-                    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                </a>
-            </section>
-
-            <section class="metrics" aria-label="Resumen de actividad">
-                @foreach ($metricas as $metrica)
-                    <article class="metric">
-                        <span class="metric__icon metric__icon--{{ $metrica['tono'] }}">
-                            <svg class="icon" aria-hidden="true"><use href="#i-{{ $metrica['icono'] }}"/></svg>
-                        </span>
-                        <h2 class="metric__label">{{ $metrica['label'] }}</h2>
-                        <span class="metric__value">({{ $metrica['valor'] }})</span>
-                    </article>
-                @endforeach
-            </section>
-
-            <section class="block" id="mis-viajes" aria-labelledby="viajes-title" data-carousel>
-                <div class="block__head">
-                    <h2 class="block__title" id="viajes-title">Continuar planificando / Mis Viajes</h2>
-                    <div class="carousel-controls">
-                        <button type="button" class="round-btn" data-carousel-prev>
-                            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-left"/></svg>
-                            <span class="sr-only">Viaje anterior</span>
-                        </button>
-                        <button type="button" class="round-btn" data-carousel-next>
-                            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg>
-                            <span class="sr-only">Viaje siguiente</span>
-                        </button>
+        {{-- Tramos de Vuelo y Asientos Asignados --}}
+        @if (!empty($historial))
+            <section class="user-section" id="tramos">
+                <div class="user-section-head">
+                    <div>
+                        <h2>Tramos de Vuelo y Asientos</h2>
+                        <p>Detalle de pasajeros y asignación de asientos por tramo reservado.</p>
                     </div>
                 </div>
 
-                <ul class="carousel" data-carousel-track>
-                    @forelse ($viajes as $viaje)
-                        <li class="trip-card" data-searchable data-search-text="{{ $viaje['titulo'] }} {{ $viaje['estado_label'] }}">
-                            <div class="trip-card__media">
-                                <img src="{{ asset($viaje['imagen']) }}" alt="{{ $viaje['titulo'] }}" loading="lazy" data-fallback>
-                                <span class="badge badge--{{ $viaje['estado'] }}">{{ $viaje['estado_label'] }}</span>
-                            </div>
-                            <div class="trip-card__body">
-                                <h3 class="trip-card__title truncate" title="{{ $viaje['titulo'] }}">{{ $viaje['titulo'] }}</h3>
-                                <p class="trip-card__date">{{ $viaje['fecha'] }}</p>
-                                <div class="trip-card__footer">
-                                    <div class="trip-card__summary">
-                                        <strong class="trip-card__price truncate">{{ $viaje['destacado'] }}</strong>
-                                        @if (!empty($viaje['nota']))
-                                            <span class="trip-card__note truncate">{{ $viaje['nota'] }}</span>
-                                        @endif
-                                    </div>
-                                    <a href="{{ $viaje['checkin_url'] ?? '#' }}" class="btn btn--accent btn--sm" style="text-decoration: none;">
-                                        {{ $viaje['estado'] === 'checkin' ? 'Check-in' : 'Asientos' }}
-                                        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    @empty
-                        <li class="empty-card">No tienes viajes en planificación. <a href="{{ url('/search') }}">Busca tu próximo destino</a>.</li>
-                    @endforelse
-                </ul>
-            </section>
-
-            <section class="block" id="historial" aria-labelledby="historial-title">
-                <div class="block__head">
-                    <h2 class="block__title" id="historial-title">Historial de Vuelos / Próximos Tramos</h2>
-                </div>
-
-                <div class="table-card">
-                    <table class="table">
+                <div class="user-table-card">
+                    <table class="user-table">
                         <thead>
                             <tr>
-                                <th scope="col" class="col-passenger">Pasajero y fecha</th>
-                                <th scope="col" class="col-type">Tipo</th>
-                                <th scope="col" class="col-route">Ruta</th>
-                                <th scope="col" class="col-actions">Acciones</th>
+                                <th>Pasajero</th>
+                                <th>Fecha de Viaje</th>
+                                <th>Tipo</th>
+                                <th>Ruta</th>
+                                <th>Asiento Asignado</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($historial as $tramo)
-                                <tr data-searchable data-search-text="{{ $tramo['pasajero'] }} {{ $tramo['tipo'] }} {{ $tramo['origen_ciudad'] }} {{ $tramo['destino_ciudad'] }} {{ $tramo['origen'] }} {{ $tramo['destino'] }}">
+                            @foreach ($historial as $tramo)
+                                <tr>
                                     <td>
-                                        <div class="cell-person">
-                                            <span class="avatar avatar--sm" data-initials="{{ $tramo['iniciales'] }}">
-                                                <img src="{{ asset($tramo['avatar']) }}" alt="" loading="lazy" data-fallback>
-                                            </span>
-                                            <span class="cell-stack">
-                                                <span class="truncate cell-strong" title="{{ $tramo['pasajero'] }}">{{ $tramo['pasajero'] }}</span>
-                                                <span class="truncate cell-muted">{{ $tramo['fecha'] }}</span>
-                                            </span>
-                                        </div>
+                                        <strong>{{ $tramo['pasajero'] }}</strong>
                                     </td>
-                                    <td><span class="truncate">{{ $tramo['tipo'] }}</span></td>
+                                    <td>{{ $tramo['fecha'] }}</td>
+                                    <td>{{ $tramo['tipo'] }}</td>
                                     <td>
-                                        <span class="cell-stack">
-                                            <span class="route truncate" title="{{ $tramo['origen_ciudad'] }} → {{ $tramo['destino_ciudad'] }}">
-                                                {{ $tramo['origen_ciudad'] }} {{ $tramo['origen'] }}
-                                                <svg class="icon icon--xs" aria-label="a"><use href="#i-swap"/></svg>
-                                                {{ $tramo['destino'] }}
-                                            </span>
-                                            <span class="truncate cell-muted">{{ $tramo['destino_ciudad'] }}</span>
-                                        </span>
+                                        <span>{{ $tramo['origen_ciudad'] }} ({{ $tramo['origen'] }})</span>
+                                        <span style="color: #64748b; margin: 0 4px;">→</span>
+                                        <strong>{{ $tramo['destino_ciudad'] }} ({{ $tramo['destino'] }})</strong>
                                     </td>
                                     <td>
                                         @if (!empty($tramo['asiento']))
-                                            <span style="display: block; font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 700; width: fit-content; margin-bottom: 5px;">
+                                            <span class="seat-pill">
+                                                <svg class="i" style="width: 12px; height: 12px;"><use href="#i-check"/></svg>
                                                 Asiento {{ $tramo['asiento'] }}
                                             </span>
+                                        @else
+                                            <span class="seat-unassigned">Pendiente de selección</span>
                                         @endif
-                                        <a href="{{ $tramo['accion_url'] ?? '#' }}" class="btn btn--outline btn--xs" style="text-decoration: none;">
+                                    </td>
+                                    <td>
+                                        <a href="{{ $tramo['accion_url'] ?? '#' }}" class="btn-dark" style="padding: 6px 12px; border-radius: 7px; font-size: 12px;">
                                             {{ $tramo['accion_label'] }}
                                         </a>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="empty-text">No hay vuelos registrados todavía.</td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-                <p class="empty-text search-empty" data-search-empty hidden>No se encontraron resultados para tu búsqueda.</p>
             </section>
-        </main>
+        @endif
 
-        {{-- ===================== PANEL DERECHO ===================== --}}
-        <aside class="panel" id="perfil" aria-label="Tu perfil">
-            <form class="search" role="search" action="{{ url('/search') }}" method="GET" data-search>
-                <label for="dashboard-search" class="sr-only">Buscar vuelos, destinos o reservas</label>
-                <svg class="icon search__icon" aria-hidden="true"><use href="#i-search"/></svg>
-                <input id="dashboard-search" name="q" type="search" class="search__input" placeholder="Buscar vuelos, destinos o reservas..." autocomplete="off" data-search-input>
-                <button type="button" class="icon-btn" data-action="filtros" data-label="Filtros avanzados">
-                    <svg class="icon" aria-hidden="true"><use href="#i-filter"/></svg>
-                    <span class="sr-only">Filtros</span>
-                </button>
-            </form>
+        {{-- Soporte y Reclamaciones --}}
+        <section class="user-section" style="background: #fff; border-radius: 18px; border: 1px solid #e2e8f0; padding: 1.75rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
+            <div>
+                <h3 style="font-size: 18px; font-weight: 800; color: #0b2535; margin-bottom: 4px;">¿Necesitas ayuda con tu viaje?</h3>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">Llámanos a nuestra central de ventas y atención <strong>000-1010001</strong> o ingresa una consulta o reclamo.</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <a href="{{ route('ayuda') }}" class="btn-ghost" style="padding: 9px 16px; border-radius: 9px; font-size: 13px; font-weight: 600;">Centro de Ayuda</a>
+                <a href="{{ route('reclamaciones') }}" class="btn-dark" style="padding: 9px 16px; border-radius: 9px; font-size: 13px; font-weight: 600;">Libro de Reclamaciones</a>
+            </div>
+        </section>
 
-            <section class="profile" aria-labelledby="perfil-title">
-                <div class="panel__head">
-                    <h2 class="panel__title" id="perfil-title">Tu Perfil</h2>
-                    <button type="button" class="icon-btn" data-action="perfil" data-label="Opciones de perfil">
-                        <svg class="icon" aria-hidden="true"><use href="#i-more"/></svg>
-                        <span class="sr-only">Más opciones</span>
-                    </button>
-                </div>
-
-                <div class="profile__ring" data-progress="{{ $usuario['progreso'] }}" role="img" aria-label="Perfil completado al {{ $usuario['progreso'] }}%">
-                    <span class="avatar avatar--xl" data-initials="{{ $usuario['iniciales'] }}">
-                        <img src="{{ asset($usuario['avatar']) }}" alt="Foto de {{ $usuario['nombre'] }}" data-fallback>
-                    </span>
-                </div>
-
-                <p class="profile__name truncate-2" title="{{ $usuario['nombre'] }}">{{ $usuario['nombre'] }}</p>
-                <p class="profile__greeting">¡Buen viaje, {{ $usuario['primer_nombre'] }}!</p>
-                <p class="profile__hint">Revisa tus millas acumuladas y próximos destinos</p>
-
-                <div class="profile__actions">
-                    <button type="button" class="round-btn round-btn--dark" data-action="notificaciones" data-label="Notificaciones"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-bell"/></svg><span class="sr-only">Notificaciones</span></button>
-                    <button type="button" class="round-btn round-btn--dark" data-action="mensajes" data-label="Mensajes"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-message"/></svg><span class="sr-only">Mensajes</span></button>
-                    <button type="button" class="round-btn round-btn--dark" data-action="descargas" data-label="Descargar boletos"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-download"/></svg><span class="sr-only">Descargas</span></button>
-                </div>
-            </section>
-
-            <section class="miles" aria-labelledby="millas-title">
-                <h2 class="panel__title" id="millas-title">Millas Acumuladas</h2>
-                <p class="panel__subtitle">Historial de Viajes</p>
-
-                <ul class="chart" data-chart aria-describedby="millas-title">
-                    @foreach ($millas as $mes)
-                        <li class="chart__col" data-nacional="{{ $mes['nacional'] }}" data-internacional="{{ $mes['internacional'] }}" title="{{ $mes['mes'] }}: {{ number_format($mes['nacional'] + $mes['internacional']) }} millas">
-                            <span class="chart__bar">
-                                <span class="chart__seg chart__seg--int"></span>
-                                <span class="chart__seg chart__seg--nac"></span>
-                            </span>
-                            <span class="chart__label">{{ $mes['mes'] }}</span>
-                            <span class="sr-only">{{ $mes['mes'] }}: {{ number_format($mes['nacional']) }} nacionales y {{ number_format($mes['internacional']) }} internacionales</span>
-                        </li>
-                    @endforeach
-                </ul>
-                <div class="chart__legend" aria-hidden="true">
-                    <span><i class="dot dot--nac"></i>Nacional</span>
-                    <span><i class="dot dot--int"></i>Internacional</span>
-                </div>
-            </section>
-
-            <section class="crew" aria-labelledby="crew-title">
-                <h2 class="panel__title" id="crew-title">Tus Pilotos</h2>
-                <p class="panel__subtitle">Tripulación Favorita</p>
-                <ul class="crew__list">
-                    @forelse ($tripulacion as $miembro)
-                        <li class="person person--row">
-                            <span class="avatar" data-initials="{{ $miembro['iniciales'] }}">
-                                <img src="{{ asset($miembro['avatar']) }}" alt="" loading="lazy" data-fallback>
-                            </span>
-                            <span class="person__info">
-                                <span class="person__name truncate" title="{{ $miembro['nombre'] }}">{{ $miembro['nombre'] }}</span>
-                                <span class="person__meta truncate">{{ $miembro['rol'] }}</span>
-                            </span>
-                            <button type="button" class="btn btn--outline btn--xs" data-action="tripulacion" data-label="{{ $miembro['accion'] }}: {{ $miembro['nombre'] }}">{{ $miembro['accion'] }}</button>
-                        </li>
-                    @empty
-                        <li class="empty-text">Sin tripulación favorita.</li>
-                    @endforelse
-                </ul>
-                <a href="#historial" class="btn btn--accent btn--block">Ver Todo el Historial</a>
-            </section>
-        </aside>
     </div>
-</x-layout-dashboard>
+</x-layout>

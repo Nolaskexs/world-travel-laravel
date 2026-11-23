@@ -46,6 +46,8 @@
     <symbol id="i-bag" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M8 14h8"/></symbol>
     <symbol id="i-suit" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="15" rx="2"/><path d="M9 6V3h6v3M9 10v7M15 10v7"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
   </svg>
 
   @auth
@@ -123,9 +125,16 @@
         <span class="sep"></span>
         <a href="{{ route('ayuda') }}">Ayuda</a>
         @auth
-          <a class="btn-login" href="{{ auth()->user()->esAdmin() ? route('admin.dashboard') : route('dashboard') }}">
+          <a class="btn-login" href="{{ auth()->user()->esAdmin() ? route('admin.dashboard') : route('dashboard') }}" title="Ir a mi panel">
             {{ Str::limit(auth()->user()->name, 15) }}
           </a>
+          <form method="POST" action="{{ route('logout') }}" style="display:inline-flex; align-items:center; margin:0;">
+            @csrf
+            <button type="submit" class="hdr__logout" title="Cerrar sesión" style="background:none; border:0; color:#ef4444; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:3px; padding:5px 8px; border-radius:6px; transition:background .2s;">
+              <svg class="i" style="width:13px; height:13px;"><use href="#i-logout"/></svg>
+              <span>Salir</span>
+            </button>
+          </form>
         @else
           <a class="btn-login" href="{{ route('login') }}">Iniciar sesión</a>
         @endauth

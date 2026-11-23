@@ -242,7 +242,19 @@
   /* ---------- Plantillas ---------- */
   const fmtN = (n) => Math.round(n * (cur === "USD" ? 1 : RATE)).toLocaleString("de-DE");
   const sym = () => (cur === "USD" ? "US$" : "S/");
-  const money = (n) => `<small>${cur === "USD" ? "USD" : "S/"}</small> <b>${fmtN(n)}</b>`;
+  const money = (n) => {
+    const isUSD = cur === "USD";
+    const mainCur = isUSD ? "USD" : "S/";
+    const mainVal = Math.round(n * (isUSD ? 1 : RATE)).toLocaleString("de-DE");
+    const secCur = isUSD ? "S/" : "USD";
+    const secVal = Math.round(n * (isUSD ? RATE : 1)).toLocaleString("de-DE");
+    return `<span class="price-wrapper" style="display:inline-flex; flex-direction:column; align-items:flex-end;">
+      <span class="price-main" style="display:inline-flex; align-items:baseline; gap:3px;">
+        <small style="font-size:11px; font-weight:700;">${mainCur}</small> <b style="font-size:1.15rem; font-weight:800; color:#0c1b26;">${mainVal}</b>
+      </span>
+      <span class="price-sec" style="font-size:11px; color:#64748b; font-weight:500; line-height:1.2; margin-top:2px;">aprox. ${secCur} ${secVal}</span>
+    </span>`;
+  };
   const ic = (id, on) => `<svg class="i${on ? "" : " off"}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
   
   const bags = (f) => `<span class="bags" title="Artículo personal, equipaje de mano y de bodega">${ic("bag", 1)}${ic("case", f.carry)}${ic("suit", f.hold)}</span>`;
@@ -465,7 +477,16 @@
     
     $$(".sort button").forEach((b) => {
       const t = top(b.dataset.sort);
-      $("small", b).textContent = t ? `${sym()} ${fmtN(total(t) * paxCount)} · ${dur(tdur(t))}` : "—";
+      if (!t) {
+        $("small", b).textContent = "—";
+        return;
+      }
+      const isUSD = cur === "USD";
+      const mainTotal = Math.round(total(t) * paxCount * (isUSD ? 1 : RATE)).toLocaleString("de-DE");
+      const secTotal = Math.round(total(t) * paxCount * (isUSD ? RATE : 1)).toLocaleString("de-DE");
+      const mainCur = isUSD ? "US$" : "S/";
+      const secCur = isUSD ? "S/" : "US$";
+      $("small", b).innerHTML = `<b>${mainCur} ${mainTotal}</b> <span style="color:#64748b; font-size:10px;">(${secCur} ${secTotal})</span> · ${dur(tdur(t))}`;
     });
     
     const cheap = top("price");

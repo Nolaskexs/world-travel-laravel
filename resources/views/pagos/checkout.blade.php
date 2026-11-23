@@ -21,15 +21,27 @@
             <p><strong>Paquete:</strong> {{ $paquete->titulo }}</p>
             <p><strong>Destino:</strong> {{ $paquete->destino }}</p>
             <p><strong>Pasajeros:</strong> {{ $reserva->num_pasajeros }}</p>
+            @php
+                $asientosCheck = $reserva->pasajeros->pluck('asiento')->filter()->values();
+            @endphp
+            @if ($asientosCheck->isNotEmpty())
+                <p><strong>Asientos asignados:</strong> <span style="display: inline-block; padding: 3px 9px; background: #e0f2fe; color: #0284c7; border-radius: 6px; font-weight: 700;">{{ $asientosCheck->implode(', ') }}</span></p>
+            @endif
 
             <hr style="margin:24px 0;">
 
-            <h2 style="color:#0b1c27;">
+            <h2 style="color:#0b1c27; margin-bottom: 4px;">
                 {{ $moneda }}
                 {{ number_format($reserva->total, 2) }}
             </h2>
+            <small style="display: block; font-size: 13px; color: #64748b; font-weight: 500; margin-bottom: 12px;">aprox. S/ {{ number_format($reserva->total * 3.51, 2) }}</small>
 
             <p>Estado: <strong>{{ ucfirst($reserva->estado) }}</strong></p>
+            <div style="margin-top: 12px;">
+                <a href="{{ auth()->user()?->esAdmin() ? route('admin.reservas.show', $reserva->id) : route('dashboard') }}" style="display: inline-flex; align-items: center; gap: 5px; color: #0284c7; font-weight: 600; text-decoration: none; font-size: 14px;">
+                    Ver registro completo en {{ auth()->user()?->esAdmin() ? 'Panel Admin' : 'Mis Viajes' }} &rarr;
+                </a>
+            </div>
 
             @if(session('error'))
                 <p style="color:#b91c1c;margin-top:16px;">

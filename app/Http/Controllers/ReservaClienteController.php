@@ -100,10 +100,10 @@ class ReservaClienteController extends Controller
                 ->with('error', 'Debes iniciar sesión para reservar.');
         }
 
-        if (Auth::user()->rol !== 'cliente') {
+        if (!in_array(Auth::user()->rol, ['cliente', 'admin'])) {
             return back()
                 ->withErrors([
-                    'cuenta' => 'Debes utilizar una cuenta de cliente para reservar.'
+                    'cuenta' => 'Debes iniciar sesión como cliente o administrador para reservar.'
                 ])
                 ->withInput();
         }
@@ -136,12 +136,30 @@ class ReservaClienteController extends Controller
             $asientosLista = array_values(array_filter(array_map('trim', explode(',', (string) $asientosInput))));
         }
 
+        // Si no se eligieron suficientes asientos en el mapa, auto-asignar asientos reales disponibles
+        if (count($asientosLista) < (int) $validated['num_pasajeros']) {
+            $asientosOcupados = ReservaPasajero::whereNotNull('asiento')->where('asiento', '!=', '')->pluck('asiento')->all();
+            $filas = range(10, 35);
+            $letras = ['A', 'B', 'C', 'D', 'E', 'F'];
+            foreach ($filas as $fila) {
+                foreach ($letras as $letra) {
+                    $codigo = $fila . $letra;
+                    if (!in_array($codigo, $asientosOcupados, true) && !in_array($codigo, $asientosLista, true)) {
+                        $asientosLista[] = $codigo;
+                        if (count($asientosLista) >= (int) $validated['num_pasajeros']) {
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+
         // 2. Guardar en la tabla reserva_pasajeros (Pasajero titular)
         ReservaPasajero::create([
             'reserva_id' => $reserva->id,
             'nombre'     => $validated['nombre'],
             'documento'  => $validated['documento'],
-            'asiento'    => $asientosLista[0] ?? null,
+            'asiento'    => $asientosLista[0] ?? '14A',
         ]);
 
         // Pasajeros acompañantes si num_pasajeros > 1
@@ -150,16 +168,23 @@ class ReservaClienteController extends Controller
                 'reserva_id' => $reserva->id,
                 'nombre'     => "Pasajero acompañante {$i} ({$validated['nombre']})",
                 'documento'  => 'DNI-' . rand(10000000, 99999999),
-                'asiento'    => $asientosLista[$i - 1] ?? null,
+                'asiento'    => $asientosLista[$i - 1] ?? ('14' . chr(64 + $i)),
             ]);
         }
 
+        $asientosTexto = implode(', ', array_slice($asientosLista, 0, (int) $validated['num_pasajeros']));
+
+        if (Auth::user()?->esAdmin()) {
+            return redirect()
+                ->route('admin.reservas.show', $reserva->id)
+                ->with('success', "¡Reserva #{$reserva->id} registrada exitosamente en la base de datos! Asientos asignados: {$asientosTexto}.");
+        }
 
         return redirect()
             ->route('pagos.show', $reserva->id)
             ->with(
                 'success',
-                'Reserva registrada correctamente. Continúa con el pago.'
+                "Reserva #{$reserva->id} registrada correctamente. Asientos asignados: {$asientosTexto}. Continúa con el pago."
             );
 
     }

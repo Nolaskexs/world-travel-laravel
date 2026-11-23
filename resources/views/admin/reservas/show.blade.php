@@ -220,10 +220,25 @@
                     <strong>{{ $reserva->num_pasajeros }}</strong>
                 </div>
 
+                @php
+                    $asientosCol = collect($pasajeros)->pluck('asiento')->filter()->values();
+                @endphp
+                <div class="res-detail__field">
+                    <span>Asientos asignados</span>
+                    <strong style="color: #0284c7; font-weight: 800; font-size: 15px;">
+                        @if ($asientosCol->isNotEmpty())
+                            {{ $asientosCol->implode(', ') }}
+                        @else
+                            <span style="color: #64748b; font-weight: 500;">Pendiente de selección</span>
+                        @endif
+                    </strong>
+                </div>
+
                 <div class="res-detail__field">
                     <span>Total de la reserva</span>
                     <strong>
                         US$ {{ number_format((float) $reserva->total, 2) }}
+                        <small style="display: block; font-size: 12px; color: #64748b; font-weight: 500;">aprox. S/ {{ number_format((float) $reserva->total * 3.51, 2) }}</small>
                     </strong>
                 </div>
 
@@ -236,15 +251,30 @@
 
                 @forelse ($pasajeros as $pasajero)
 
-                    <div class="res-detail__passenger">
+                    <div class="res-detail__passenger" style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #e7edf1;">
 
-                        <strong>
-                            {{ $pasajero->nombre }}
-                        </strong>
+                        <div>
+                            <strong style="display: block; font-size: 15px; color: #0f172a; margin-bottom: 4px;">
+                                {{ $pasajero->nombre }}
+                            </strong>
 
-                        <span>
-                            Documento: {{ $pasajero->documento }}
-                        </span>
+                            <span style="display: block; color: #64748b; font-size: 13px;">
+                                Documento: {{ $pasajero->documento }}
+                            </span>
+                        </div>
+
+                        <div>
+                            @if (!empty($pasajero->asiento))
+                                <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; border-radius: 999px; font-weight: 700; font-size: 13px;">
+                                    <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24"><path d="M4 18v3h3v-3h10v3h3v-3h1a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-1V4a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h1zM7 4h10v8H7V4z"/></svg>
+                                    Asiento {{ $pasajero->asiento }}
+                                </span>
+                            @else
+                                <span style="display: inline-block; padding: 5px 12px; background: #f1f5f9; color: #64748b; border-radius: 999px; font-size: 12px; font-weight: 600;">
+                                    Sin asignar
+                                </span>
+                            @endif
+                        </div>
 
                     </div>
 

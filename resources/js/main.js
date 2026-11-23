@@ -81,6 +81,7 @@
         <div class="card-precio">
           <small>Precio referencial</small>
           <strong>US$ ${price}</strong>
+          <small class="precio-soles" style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ ${Math.round(parseFloat(String(price).replace(/\./g, '').replace(/,/g, '')) * 3.51).toLocaleString('es-PE')}</small>
         </div>
         <a href="${link || '/paquetes'}" class="btn-ver-detalles">Ver detalles</a>
       </div>
@@ -103,6 +104,7 @@
             <small>Precio referencial / noche</small>
             <small class="precio-anterior">US$ ${old}</small>
             <strong>US$ ${now}</strong>
+            <small class="precio-soles" style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ ${Math.round(parseFloat(String(now).replace(/\./g, '').replace(/,/g, '')) * 3.51).toLocaleString('es-PE')}</small>
           </div>
           <a href="${link || '/alojamientos'}" class="btn-ver-detalles">Ver detalles</a>
         </div>
@@ -160,6 +162,7 @@
     };
     ['origin', 'destination'].forEach((id) => {
       const input = $('#' + id), p = $('#dd-' + id);
+      if (!input || !p) return;
       render(p);
       p.addEventListener('open', () => render(p));
       input.addEventListener('input', () => { openDD(id); render(p, input.value); });
@@ -168,25 +171,31 @@
         if (!b) return;
         input.value = b.dataset.city;
         closeDD(id);
-        if (id === 'origin') $('#destination').focus();
-        else { $('#dd-cal').dataset.field = 'start'; openDD('cal'); }
+        if (id === 'origin') $('#destination')?.focus();
+        else if ($('#dd-cal')) { $('#dd-cal').dataset.field = 'start'; openDD('cal'); }
       });
     });
-    $('.swap').addEventListener('click', () => {
-      const o = $('#origin'), d = $('#destination');
-      [o.value, d.value] = [d.value, o.value];
-    });
+    if ($('.swap')) {
+      $('.swap').addEventListener('click', () => {
+        const o = $('#origin'), d = $('#destination');
+        if (o && d) [o.value, d.value] = [d.value, o.value];
+      });
+    }
   }
 
   /* ---------- Calendario ---------- */
   function initCalendar() {
     const p = $('#dd-cal'), startL = $('#startLabel'), endL = $('#endLabel'), endBtn = $('#endBtn');
+    if (!p || !startL) return;
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const iso = (b) => (b.dataset.date ? new Date(b.dataset.date + 'T00:00:00') : null); // fechas precargadas (data-date)
+    const iso = (b) => (b && b.dataset && b.dataset.date ? new Date(b.dataset.date + 'T00:00:00') : null); // fechas precargadas (data-date)
     const st = { view: firstOfMonth, start: iso($('#startBtn')), end: iso(endBtn) };
     const fmt = (d) => `${d.getDate()} ${MONTHS[d.getMonth()].slice(0, 3).toLowerCase()}`;
-    const isOneWay = () => $('input[name=trip]:checked').value !== 'round';
+    const isOneWay = () => {
+      const checkedTrip = $('input[name=trip]:checked');
+      return checkedTrip ? checkedTrip.value !== 'round' : false;
+    };
 
     const month = (first) => {
       const y = first.getFullYear(), m = first.getMonth();
@@ -203,8 +212,10 @@
     const render = () => {
       $$('.cal__m', p).forEach((el, i) => { el.innerHTML = month(new Date(st.view.getFullYear(), st.view.getMonth() + i, 1)); });
       $('.cal__prev', p).classList.toggle('is-hidden', st.view <= firstOfMonth);
-      startL.textContent = st.start ? fmt(st.start) : 'Salida';
-      endL.textContent = st.end ? fmt(st.end) : 'Retorno';
+      const defStart = startL.dataset.label || 'Salida';
+      const defEnd = endL ? (endL.dataset.label || 'Retorno') : '';
+      startL.textContent = st.start ? fmt(st.start) : defStart;
+      if (endL) endL.textContent = st.end ? fmt(st.end) : defEnd;
       if ($('#inputStart')) $('#inputStart').value = st.start ? st.start.toISOString().split('T')[0] : '';
       if ($('#inputEnd')) $('#inputEnd').value = st.end ? st.end.toISOString().split('T')[0] : '';
     };
@@ -227,7 +238,7 @@
 
     $$('input[name=trip]').forEach((r) => r.addEventListener('change', () => {
       const one = isOneWay();
-      endBtn.disabled = one;
+      if (endBtn) endBtn.disabled = one;
       if (one) { st.end = null; if (p.dataset.field === 'end') p.dataset.field = 'start'; }
       render();
     }));
@@ -237,7 +248,8 @@
   /* ---------- Pasajeros ---------- */
   function initPassengers() {
     const p = $('#dd-pax'), label = $('#paxLabel'), MAX = 9;
-    const initAdults = Number($('#inputAdults')?.value) || 1;
+    if (!p || !label) return;
+    const initAdults = Number($('#inputAdults')?.value) || (label.dataset.mode === 'hotel' ? 2 : 1);
     const initKids = Number($('#inputKids')?.value) || 0;
     const initInfants = Number($('#inputInfants')?.value) || 0;
     let applied = { adults: initAdults, kids: initKids, infants: initInfants }, draft = { ...applied };
@@ -256,7 +268,10 @@
       if (act.dataset.act === 'apply') {
         applied = { ...draft };
         const n = total(applied);
-        label.textContent = `${n} pasajero${n > 1 ? 's' : ''}`;
+        const isHotel = label.dataset.mode === 'hotel';
+        label.textContent = isHotel
+          ? `${n} huésped${n > 1 ? 'es' : ''}`
+          : `${n} pasajero${n > 1 ? 's' : ''}`;
         if ($('#inputAdults')) $('#inputAdults').value = applied.adults;
         if ($('#inputKids')) $('#inputKids').value = applied.kids;
         if ($('#inputInfants')) $('#inputInfants').value = applied.infants;

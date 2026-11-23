@@ -168,6 +168,29 @@ class DashboardController extends Controller
         }
         unset($d);
 
-        return view('dashboard-admin', compact('stats', 'chart', 'destinos'));
+        // 5. Últimas reservas registradas en la base de datos
+        $busqueda = trim((string) $request->query('q', ''));
+        $reservasQuery = Reserva::with(['user', 'paquete', 'pasajeros'])
+            ->latest('id');
+
+        if ($busqueda !== '') {
+            $reservasQuery->where(function ($q) use ($busqueda) {
+                $q->whereHas('user', function ($uq) use ($busqueda) {
+                    $uq->where('name', 'like', "%{$busqueda}%")
+                       ->orWhere('email', 'like', "%{$busqueda}%");
+                })->orWhereHas('paquete', function ($pq) use ($busqueda) {
+                    $pq->where('titulo', 'like', "%{$busqueda}%")
+                       ->orWhere('destino', 'like', "%{$busqueda}%");
+                });
+
+                if (ctype_digit($busqueda)) {
+                    $q->orWhere('id', (int) $busqueda);
+                }
+            });
+        }
+
+        $ultimasReservas = $reservasQuery->take(8)->get();
+
+        return view('dashboard-admin', compact('stats', 'chart', 'destinos', 'ultimasReservas', 'busqueda'));
     }
 }

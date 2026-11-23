@@ -17,10 +17,9 @@ class PagoController extends Controller
 {
     private function verificarCliente(Reserva $reserva): void
     {
+        $user = Auth::user();
         abort_unless(
-            Auth::check()
-            && Auth::user()->rol === 'cliente'
-            && (int) $reserva->user_id === (int) Auth::id(),
+            $user && ($user->esAdmin() || ((int) $reserva->user_id === (int) $user->id)),
             403
         );
     }

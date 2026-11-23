@@ -26,13 +26,13 @@ class ReservaController extends Controller
         ];
 
         $consulta = DB::table('reservas')
-            ->join(
+            ->leftJoin(
                 'users',
                 'users.id',
                 '=',
                 'reservas.user_id'
             )
-            ->join(
+            ->leftJoin(
                 'paquetes',
                 'paquetes.id',
                 '=',
@@ -40,9 +40,9 @@ class ReservaController extends Controller
             )
             ->select(
                 'reservas.*',
-                'users.name as cliente_nombre',
-                'users.email as cliente_email',
-                'paquetes.titulo as paquete_titulo'
+                DB::raw('COALESCE(users.name, "Cliente Registrado") as cliente_nombre'),
+                DB::raw('COALESCE(users.email, "cliente@worldtravel.com") as cliente_email'),
+                DB::raw('COALESCE(paquetes.titulo, "Viaje Turístico / Vuelo") as paquete_titulo')
             );
 
         // Buscar por cliente, correo, paquete o ID.
@@ -72,6 +72,22 @@ class ReservaController extends Controller
             ->orderByDesc('reservas.id')
             ->paginate(10)
             ->withQueryString();
+
+        // Obtener asientos agrupados para las reservas listadas
+        $reservaIds = collect($reservas->items())->pluck('id')->all();
+        $pasajerosPorReserva = DB::table('reserva_pasajeros')
+            ->whereIn('reserva_id', $reservaIds)
+            ->whereNotNull('asiento')
+            ->where('asiento', '!=', '')
+            ->get()
+            ->groupBy('reserva_id');
+
+        foreach ($reservas as $r) {
+            $asientosLista = isset($pasajerosPorReserva[$r->id])
+                ? $pasajerosPorReserva[$r->id]->pluck('asiento')->all()
+                : [];
+            $r->asientos_texto = !empty($asientosLista) ? implode(', ', $asientosLista) : null;
+        }
 
         // Estadísticas reales desde MySQL.
         $totalReservas = DB::table('reservas')->count();
@@ -105,13 +121,13 @@ class ReservaController extends Controller
     public function show(int $reserva): View
     {
         $reservaData = DB::table('reservas')
-            ->join(
+            ->leftJoin(
                 'users',
                 'users.id',
                 '=',
                 'reservas.user_id'
             )
-            ->join(
+            ->leftJoin(
                 'paquetes',
                 'paquetes.id',
                 '=',
@@ -119,11 +135,11 @@ class ReservaController extends Controller
             )
             ->select(
                 'reservas.*',
-                'users.name as cliente_nombre',
-                'users.email as cliente_email',
-                'paquetes.titulo as paquete_titulo',
-                'paquetes.destino as paquete_destino',
-                'paquetes.pais as paquete_pais'
+                DB::raw('COALESCE(users.name, "Cliente Registrado") as cliente_nombre'),
+                DB::raw('COALESCE(users.email, "cliente@worldtravel.com") as cliente_email'),
+                DB::raw('COALESCE(paquetes.titulo, "Viaje Turístico / Vuelo") as paquete_titulo'),
+                DB::raw('COALESCE(paquetes.destino, "Destino") as paquete_destino'),
+                DB::raw('COALESCE(paquetes.pais, "Mundo") as paquete_pais')
             )
             ->where('reservas.id', $reserva)
             ->first();
