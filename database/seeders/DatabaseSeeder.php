@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PaquetesOfertasSeeder::class,
             DestinosSeeder::class, // siempre DESPUÉS de PaquetesOfertasSeeder
+            AlojamientoSeeder::class,
             ReservaSeeder::class,
             VueloSeeder::class,
             ReclamacionSeeder::class,

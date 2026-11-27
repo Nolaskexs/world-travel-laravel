@@ -89,6 +89,14 @@
             <input type="hidden" name="paquete_id" value="{{ request('paquete_id') }}">
             <input type="hidden" name="fecha_viaje" value="{{ request('fecha_viaje') }}">
             <input type="hidden" name="num_pasajeros" value="{{ count($pasajeros) }}">
+            <input type="hidden" name="origin" value="{{ request('origin') }}">
+            <input type="hidden" name="destination" value="{{ request('destination') }}">
+            <input type="hidden" name="origin_iata" value="{{ request('origin_iata') }}">
+            <input type="hidden" name="destination_iata" value="{{ request('destination_iata') }}">
+            <input type="hidden" name="codigo_vuelo" value="{{ request('codigo_vuelo') ?? data_get($vuelo, 'numero') }}">
+            <input type="hidden" name="precio" value="{{ request('precio') ?? data_get($vuelo, 'precio_base') }}">
+            <input type="hidden" name="adultos" value="{{ request('adultos') ?? $adultos }}">
+            <input type="hidden" name="menores" value="{{ request('menores') ?? $menores }}">
         @endif
 
         <div id="seatInputs" hidden></div>

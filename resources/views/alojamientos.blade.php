@@ -58,7 +58,7 @@
                     <div class="dd-wrap" style="flex: 1.4; min-width: 220px;">
                         <label class="field" style="width: 100%;">
                             <svg class="i"><use href="#i-pin"/></svg>
-                            <input id="destination" name="destination" value="" placeholder="¿A dónde viajas? (ej. Tokio, Madrid, Cusco...)" aria-label="Destino" data-dd="destination" autocomplete="off">
+                            <input id="destination" name="q" value="{{ $filtros['q'] ?? '' }}" placeholder="¿A dónde viajas? (ej. Tokio, Madrid, Cusco...)" aria-label="Destino" data-dd="destination" autocomplete="off">
                         </label>
                         <div class="dd dd--list" id="dd-destination" hidden></div>
                     </div>
@@ -100,300 +100,58 @@
 
                 <div class="hotel-filtro">
                     <label for="tipoHotel">Tipo de alojamiento</label>
-                    <select id="tipoHotel">
-                        <option value="todos">Todos</option>
-                        <option value="hotel">Hoteles</option>
-                        <option value="resort">Resorts</option>
-                        <option value="hostal">Hostales</option>
+                    <select id="tipoHotel" name="tipo">
+                        <option value="todos" {{ ($filtros['tipo'] ?? 'todos') === 'todos' ? 'selected' : '' }}>Todos</option>
+                        <option value="hotel" {{ ($filtros['tipo'] ?? '') === 'hotel' ? 'selected' : '' }}>Hoteles</option>
+                        <option value="resort" {{ ($filtros['tipo'] ?? '') === 'resort' ? 'selected' : '' }}>Resorts</option>
+                        <option value="hostal" {{ ($filtros['tipo'] ?? '') === 'hostal' ? 'selected' : '' }}>Hostales</option>
                     </select>
                 </div>
             </div>
 
             <p id="hotelContador" class="hotel-contador">
-                9 alojamientos disponibles en esta demostración
+                {{ $alojamientos->count() }} alojamientos disponibles en esta demostración
             </p>
 
             <div class="hotel-grid" id="listaHoteles">
+                @foreach ($alojamientos as $alojamiento)
+                    @php
+                        $esSoles = $alojamiento->moneda_simbolo === 'S/';
+                        $precioUsd = $esSoles ? round((float) $alojamiento->precio / 3.51) : (float) $alojamiento->precio;
+                        $precioSoles = $esSoles ? (float) $alojamiento->precio : (float) $alojamiento->precio * 3.51;
+                        $imagenTarjeta = $alojamiento->imagen_tarjeta ?: $alojamiento->imagen;
+                    @endphp
 
-                <article class="hotel-card"
-                         data-destino="tokio japon japón tokyo"
-                         data-tipo="hotel">
-                    <img
-                        src="{{ asset('icons/hotel1.jpg') }}"
-                        alt="The Ritz-Carlton, Tokyo"
-                        loading="lazy">
+                    <article class="hotel-card"
+                             data-destino="{{ $alojamiento->palabras_clave }}"
+                             data-tipo="{{ $alojamiento->categoria }}">
+                        <img src="{{ str_starts_with($imagenTarjeta, 'http') ? $imagenTarjeta : asset($imagenTarjeta) }}"
+                             alt="{{ $alojamiento->nombre }}"
+                             loading="lazy">
 
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">HOTEL DE LUJO</span>
-                        <h3>The Ritz-Carlton, Tokyo</h3>
-                        <p class="hotel-ubicacion">Tokio, Japón (Roppongi)</p>
-                        <p class="hotel-servicios">
-                            Wi-Fi · Spa Michelin · Piscina · Vista Mt. Fuji
-                        </p>
+                        <div class="hotel-info">
+                            <span class="hotel-tipo">{{ strtoupper($alojamiento->tipo) }}</span>
+                            <h3>{{ $alojamiento->nombre }}</h3>
+                            <p class="hotel-ubicacion">{{ $alojamiento->ubicacion }}</p>
+                            <p class="hotel-servicios">{{ $alojamiento->servicios_resumen }}</p>
 
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 19,957</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 70,049</small>
+                            <div class="hotel-footer">
+                                <div>
+                                    <small>Precio referencial / noche</small>
+                                    <strong>US$ {{ number_format($precioUsd, 0, '.', ',') }}</strong>
+                                    <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ {{ number_format($precioSoles, 2, '.', ',') }}</small>
+                                </div>
+
+                                <a href="{{ route('alojamientos.detalle', ['codigo' => $alojamiento->codigo]) }}"
+                                   class="hotel-ver">
+                                    Ver detalles
+                                </a>
                             </div>
-
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'tokio-ritz']) }}"
-                            class="hotel-ver">
-                                Ver detalles
-                            </a>
                         </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="cartagena colombia"
-                         data-tipo="hotel">
-                    <img
-                        src="{{ asset('icons/hotel3.jpg') }}"
-                        alt="Oz Hotel Luxury"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">HOTEL BOUTIQUE</span>
-                        <h3>Oz Hotel Luxury</h3>
-                        <p class="hotel-ubicacion">Cartagena de Indias, Colombia</p>
-                        <p class="hotel-servicios">
-                            Desayuno buffet · Rooftop lounge · Wi-Fi
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 74</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 259.74</small>
-                            </div>
-
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'cartagena-oz']) }}"
-                            class="hotel-ver">
-                                Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="madrid espana españa"
-                         data-tipo="hotel">
-                    <img
-                        src="{{ asset('icons/hotel2.jpg') }}"
-                        alt="Hotel Riu Plaza España"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">HOTEL</span>
-                        <h3>Hotel Riu Plaza España</h3>
-                        <p class="hotel-ubicacion">Madrid, España (Gran Vía)</p>
-                        <p class="hotel-servicios">
-                            Sky Bar 360° · Desayuno gourmet · Piscina
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 268</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 940.68</small>
-                            </div>
-
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'madrid-riu']) }}"
-                            class="hotel-ver">
-                                Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="cusco peru perú machu picchu"
-                         data-tipo="hotel">
-                    <img
-                        src="{{ asset('icons/belmond-hotel-monasterio.jpg') }}"
-                        alt="Belmond Monasterio, Cusco"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">HOTEL HISTÓRICO</span>
-                        <h3>Belmond Monasterio, Cusco</h3>
-                        <p class="hotel-ubicacion">Cusco, Perú (Plazoleta Nazarenas)</p>
-                        <p class="hotel-servicios">
-                            Oxígeno enriquecido · Desayuno · Arte virreinal
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 540</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 1,895.40</small>
-                            </div>
-
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'cusco-monasterio']) }}"
-                            class="hotel-ver">
-                                Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="barcelona espana españa"
-                         data-tipo="resort">
-                    <img
-                        src="{{ asset('icons/HotelArtsBarcelona.jpg') }}"
-                        alt="Hotel Arts Barcelona"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">RESORT URBANO</span>
-                        <h3>Hotel Arts Barcelona</h3>
-                        <p class="hotel-ubicacion">Barcelona, España (Port Olímpic)</p>
-                        <p class="hotel-servicios">
-                            2 estrellas Michelin · Spa panorámico · Playa
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 990</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 3,474.90</small>
-                            </div>
-
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'barcelona-arts']) }}"
-                            class="hotel-ver">
-                                Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="lima peru perú miraflores"
-                         data-tipo="hotel">
-                    <img
-                        src="{{ asset('icons/MirafloresParkLimaJuniorSuite.jpg') }}"
-                        alt="Miraflores Park, Lima"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">HOTEL DE LUJO</span>
-                        <h3>Miraflores Park, Lima</h3>
-                        <p class="hotel-ubicacion">Lima, Perú (Malecón)</p>
-                        <p class="hotel-servicios">
-                            Piscina en azotea · Vista al mar · Tragaluz
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 265</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 930.15</small>
-                            </div>
-
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'lima-miraflores']) }}"
-                            class="hotel-ver">
-                                Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="cusco peru perú"
-                         data-tipo="hotel">
-                    <img
-                        src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900"
-                        alt="Hotel con piscina"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">HOTEL</span>
-                        <h3>Hotel Imperial Cusco</h3>
-                        <p class="hotel-ubicacion">Cusco, Perú</p>
-                        <p class="hotel-servicios">
-                            Wi-Fi · Desayuno · Piscina
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 71</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 250.00</small>
-                            </div>
-
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'cusco']) }}"
-                            class="hotel-ver">
-                                Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="lima peru perú"
-                         data-tipo="resort">
-                    <img
-                        src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900"
-                        alt="Alojamiento con piscina"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">RESORT</span>
-                        <h3>Ocean Resort Lima</h3>
-                        <p class="hotel-ubicacion">Lima, Perú</p>
-                        <p class="hotel-servicios">
-                            Piscina · Restaurante · Wi-Fi
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 91</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 320.00</small>
-                            </div>
-                             <a href="{{ route('alojamientos.detalle', ['codigo' => 'lima']) }}"
-                             class="hotel-ver">
-                                Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hotel-card"
-                         data-destino="arequipa peru perú"
-                         data-tipo="hostal">
-                    <img
-                        src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900"
-                        alt="Fachada de alojamiento turístico"
-                        loading="lazy">
-
-                    <div class="hotel-info">
-                        <span class="hotel-tipo">HOSTAL</span>
-                        <h3>Hostal Mirador Arequipa</h3>
-                        <p class="hotel-ubicacion">Arequipa, Perú</p>
-                        <p class="hotel-servicios">
-                            Wi-Fi · Terraza · Desayuno
-                        </p>
-
-                        <div class="hotel-footer">
-                            <div>
-                                <small>Precio referencial / noche</small>
-                                <strong>US$ 34</strong>
-                                <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ 120.00</small>
-                            </div>
-                            <a href="{{ route('alojamientos.detalle', ['codigo' => 'arequipa']) }}"
-                             class="hotel-ver">
-                             Ver detalles
-                            </a>
-                        </div>
-                    </div>
-                </article>
+                    </article>
+                @endforeach
 
             </div>
-
             <p id="hotelVacio" class="hotel-vacio" hidden>
                 No encontramos alojamientos para ese destino o tipo.
             </p>

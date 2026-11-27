@@ -51,7 +51,7 @@
                                         <small style="display:block; font-size:11px; color:#64748b; font-weight:500; margin-top:2px;">aprox. S/ {{ number_format($precioFinal * 3.51, 2, '.', ',') }}</small>
                                         <small>Por persona · precio de prueba</small>
                                     </div>
-                                    <a class="btn-ver-detalles" href="{{ route('paquetes.detalle', $oferta->paquete) }}">Ver detalles</a>
+                                    <a class="btn-ver-detalles" href="{{ route('ofertas.detalle', $oferta) }}">Ver detalles</a>
                                 </div>
                             </div>
                         </article>
@@ -64,6 +64,6 @@
             <div><span class="wt-kicker">¿TODAVÍA EXPLORANDO?</span><h2>Encuentra tu experiencia ideal.</h2><p>Compara duraciones, destinos y presupuestos.</p></div>
             <a class="hero__btn" href="{{ route('paquetes') }}" style="display: inline-flex; align-items: center; background: #fff; color: #0b2535; padding: .65rem 1.4rem; border-radius: 10px; font-weight: 700; font-size: .95rem; text-decoration: none;">Ver todos los paquetes</a>
         </section>
-        <p class="wt-catalog-note">Todas las promociones están expresadas en USD y son datos de demostración. No hay cobro, pago ni reserva real en este módulo.</p>
+        <p class="wt-catalog-note">Todas las promociones están expresadas en USD. Puedes ver el detalle de la oferta y registrar tu reserva sin realizar ningún cobro.</p>
     </div>
 </x-layout>

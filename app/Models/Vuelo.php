@@ -40,11 +40,17 @@ class Vuelo extends Model
         return $this->hasMany(VueloEscala::class)->orderBy('orden');
     }
 
+    public function reservas(): HasMany
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
     // Helper para mostrar "51h 45m" automáticamente en Blade: {{ $vuelo->duracion_formateada }}
     public function getDuracionFormateadaAttribute(): string
     {
         $horas = intdiv($this->duracion_minutos, 60);
         $minutos = $this->duracion_minutos % 60;
-        return "{$horas}h " . str_pad((string) $minutos, 2, '0', STR_PAD_LEFT) . "m";
+
+        return "{$horas}h ".str_pad((string) $minutos, 2, '0', STR_PAD_LEFT).'m';
     }
 }

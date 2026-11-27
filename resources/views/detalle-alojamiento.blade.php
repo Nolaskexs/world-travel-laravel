@@ -9,149 +9,28 @@
     </x-slot:recursos>
 
     @php
-        $hoteles = [
-            'tokio-ritz' => [
-                'nombre' => 'The Ritz-Carlton, Tokyo',
-                'tipo' => 'Hotel de Lujo',
-                'ubicacion' => 'Tokio, Japón (Roppongi)',
-                'precio' => 19957,
-                'precio_anterior' => 20032,
-                'moneda_simbolo' => 'US$',
-                'puntuacion' => 4.3,
-                'estrellas' => 5,
-                'habitacion' => 'Deluxe Room, 2 Queen Beds',
-                'estadia' => '18 noches, 2 personas',
-                'imagen' => 'icons/hotel1.jpg',
-                'descripcion' => 'Ubicado en los pisos más altos de la icónica torre Midtown en Roppongi, The Ritz-Carlton, Tokyo ofrece impresionantes vistas panorámicas del Monte Fuji y de la bahía de Tokio. Disfruta de gastronomía con estrellas Michelin, un spa de nivel internacional y un servicio legendario en el corazón cosmopolita de Japón.',
-                'servicios' => ['Wi-Fi de alta velocidad', 'Spa & Wellness de lujo', 'Piscina cubierta climatizada', 'Restaurantes con estrella Michelin', 'Servicio de conserjería 24/7', 'Gimnasio con vista panorámica', 'Desayuno buffet internacional']
-            ],
-            'cartagena-oz' => [
-                'nombre' => 'Oz Hotel Luxury',
-                'tipo' => 'Hotel Boutique',
-                'ubicacion' => 'Cartagena de Indias, Colombia (Bocagrande)',
-                'precio' => 74,
-                'precio_anterior' => 104,
-                'moneda_simbolo' => 'US$',
-                'puntuacion' => 4.8,
-                'estrellas' => 5,
-                'habitacion' => 'Classic Room',
-                'estadia' => '1 noche, 2 personas',
-                'imagen' => 'icons/hotel3.jpg',
-                'descripcion' => 'Situado en el corazón turístico de Bocagrande a dos calles de las playas del Caribe, Oz Hotel Luxury fusiona confort contemporáneo, hospitalidad caribeña y un espectacular rooftop lounge con vistas panorámicas a la bahía y a la ciudad colonial amurallada.',
-                'servicios' => ['Desayuno buffet incluido', 'Wi-Fi gratuito', 'Rooftop bar panorámico', 'Aire acondicionado', 'Recepción y seguridad 24h', 'Servicio a la habitación']
-            ],
-            'madrid-riu' => [
-                'nombre' => 'Hotel Riu Plaza España',
-                'tipo' => 'Hotel',
-                'ubicacion' => 'Madrid, España (Gran Vía)',
-                'precio' => 268,
-                'precio_anterior' => 414,
-                'moneda_simbolo' => 'US$',
-                'puntuacion' => 4.9,
-                'estrellas' => 5,
-                'habitacion' => 'Habitación Doble de Lujo',
-                'estadia' => '1 noche, 2 personas',
-                'imagen' => 'icons/hotel2.jpg',
-                'descripcion' => 'Emplazado en el histórico rascacielos Edificio España en plena Gran Vía madrileña. Célebre por su pasarela de cristal y su Sky Bar 360° en la planta 27, ofrece habitaciones de diseño sofisticado y acceso directo a los mejores teatros, tiendas y museos de la capital.',
-                'servicios' => ['Sky Bar 360° en piso 27', 'Desayuno buffet gourmet', 'Piscina exterior de temporada', 'Gimnasio 24 horas', 'Wi-Fi de cortesía', 'Restaurante gastronómico']
-            ],
-            'cusco-monasterio' => [
-                'nombre' => 'Belmond Monasterio, Cusco',
-                'tipo' => 'Hotel Histórico de Lujo',
-                'ubicacion' => 'Cusco, Perú (Plazoleta Nazarenas)',
-                'precio' => 540,
-                'precio_anterior' => 620,
-                'moneda_simbolo' => 'US$',
-                'puntuacion' => 4.7,
-                'estrellas' => 5,
-                'habitacion' => 'Habitación Superior',
-                'estadia' => '2 noches, 2 personas',
-                'imagen' => 'icons/belmond-hotel-monasterio.jpg',
-                'descripcion' => 'Antiguo monasterio renacentista fundado en 1592, transformado en un exclusivo santuario de hospitalidad cusqueña. Cuenta con claustros coloniales empedrados, arte virreinal original, alta gastronomía andina y habitaciones enriquecidas con oxígeno.',
-                'servicios' => ['Enriquecimiento de oxígeno en habitación', 'Desayuno a la carta en el patio', 'Tours privados de arte colonial', 'Restaurante Illariy', 'Lobby bar de pisco y cava', 'Wi-Fi en toda la propiedad']
-            ],
-            'barcelona-arts' => [
-                'nombre' => 'Hotel Arts Barcelona',
-                'tipo' => 'Resort Urbano de Lujo',
-                'ubicacion' => 'Barcelona, España (Port Olímpic)',
-                'precio' => 990,
-                'precio_anterior' => 1150,
-                'moneda_simbolo' => 'US$',
-                'puntuacion' => 4.6,
-                'estrellas' => 5,
-                'habitacion' => 'Deluxe Vista al Mar',
-                'estadia' => '3 noches, 2 personas',
-                'imagen' => 'icons/HotelArtsBarcelona.jpg',
-                'descripcion' => 'Imponente rascacielos de cristal y acero a orillas del mar Mediterráneo junto al puerto olímpico de Barcelona. Alberga el célebre restaurante Enoteca Paco Pérez galardonado con 2 estrellas Michelin, jardines mediterráneos y piscinas panorámicas frente a la playa.',
-                'servicios' => ['Restaurante 2 estrellas Michelin', '43 The Spa con vistas al mar', 'Piscinas infinitas exteriores', 'Acceso directo a la playa', 'Servicio de mayordomo', 'Wi-Fi de alta velocidad']
-            ],
-            'lima-miraflores' => [
-                'nombre' => 'Miraflores Park, Lima',
-                'tipo' => 'Hotel de Lujo',
-                'ubicacion' => 'Lima, Perú (Malecón de la Reserva)',
-                'precio' => 265,
-                'precio_anterior' => 330,
-                'moneda_simbolo' => 'US$',
-                'puntuacion' => 4.8,
-                'estrellas' => 5,
-                'habitacion' => 'Junior Suite',
-                'estadia' => '1 noche, 2 personas',
-                'imagen' => 'icons/MirafloresParkLimaJuniorSuite.jpg',
-                'descripcion' => 'Elegante hotel boutique sobre los acantilados de Miraflores con vistas incomparables al Océano Pacífico. Cuenta con piscina climatizada en la azotea, spa botánico Zest y el prestigioso restaurante Tragaluz.',
-                'servicios' => ['Piscina infinity en azotea', 'Restaurante de autor Tragaluz', 'Zest Spa botánico', 'Bicicletas de cortesía', 'Desayuno buffet en piso 11', 'Wi-Fi de cortesía']
-            ],
-            'cusco' => [
-                'nombre' => 'Hotel Imperial Cusco',
-                'tipo' => 'Hotel',
-                'ubicacion' => 'Cusco, Perú',
-                'precio' => 250,
-                'precio_anterior' => null,
-                'moneda_simbolo' => 'S/',
-                'puntuacion' => 4.5,
-                'estrellas' => 4,
-                'habitacion' => 'Habitación Estándar',
-                'estadia' => '1 noche, 2 personas',
-                'imagen' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
-                'descripcion' => 'Disfruta de una estadía cómoda en Cusco, ideal para descansar después de explorar la ciudad histórica, el Valle Sagrado y Machu Picchu.',
-                'servicios' => ['Wi-Fi gratuito', 'Desayuno buffet andino', 'Piscina temperada', 'Calefacción central', 'Custodia de equipaje']
-            ],
-            'lima' => [
-                'nombre' => 'Ocean Resort Lima',
-                'tipo' => 'Resort',
-                'ubicacion' => 'Lima, Perú',
-                'precio' => 320,
-                'precio_anterior' => null,
-                'moneda_simbolo' => 'S/',
-                'puntuacion' => 4.6,
-                'estrellas' => 4,
-                'habitacion' => 'Habitación Ejecutiva',
-                'estadia' => '1 noche, 2 personas',
-                'imagen' => 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200',
-                'descripcion' => 'Un resort costero frente al mar para disfrutar de una estadía relajante con gastronomía peruana marina, piscinas y amplias áreas verdes.',
-                'servicios' => ['Piscina', 'Restaurante marino', 'Wi-Fi', 'Gimnasio', 'Estacionamiento']
-            ],
-            'arequipa' => [
-                'nombre' => 'Hostal Mirador Arequipa',
-                'tipo' => 'Hostal',
-                'ubicacion' => 'Arequipa, Perú',
-                'precio' => 120,
-                'precio_anterior' => null,
-                'moneda_simbolo' => 'S/',
-                'puntuacion' => 4.4,
-                'estrellas' => 3,
-                'habitacion' => 'Habitación Tradicional',
-                'estadia' => '1 noche, 2 personas',
-                'imagen' => 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200',
-                'descripcion' => 'Una opción accesible, acogedora y con vista a los volcanes Misti y Chachani, perfecta para descubrir la Ciudad Blanca y el Cañón del Colca.',
-                'servicios' => ['Wi-Fi', 'Terraza con vista a volcanes', 'Desayuno típico arequipeño', 'Información turística']
-            ]
+        $hotel = [
+            'codigo' => $alojamiento->codigo,
+            'nombre' => $alojamiento->nombre,
+            'tipo' => $alojamiento->tipo,
+            'ubicacion' => $alojamiento->ubicacion,
+            'precio' => $alojamiento->precio,
+            'precio_anterior' => $alojamiento->precio_anterior,
+            'moneda_simbolo' => $alojamiento->moneda_simbolo,
+            'puntuacion' => $alojamiento->puntuacion,
+            'estrellas' => $alojamiento->estrellas,
+            'habitacion' => $alojamiento->habitacion,
+            'estadia' => $alojamiento->categoria,
+            'imagen' => $alojamiento->imagen,
+            'descripcion' => $alojamiento->descripcion,
+            'servicios' => $alojamiento->servicios ?? [],
         ];
 
-        $hotel = $hoteles[$codigo] ?? null;
-        $imgHotel = $hotel ? (str_starts_with($hotel['imagen'], 'http') ? $hotel['imagen'] : asset($hotel['imagen'])) : null;
+        $imgHotel = str_starts_with($hotel['imagen'], 'http')
+            ? $hotel['imagen']
+            : asset($hotel['imagen']);
     @endphp
-
-    <div class="detalle-alojamiento">
+<div class="detalle-alojamiento">
         <div class="detalle-contenedor">
 
             <a class="detalle-volver" href="{{ route('alojamientos') }}">
@@ -282,8 +161,7 @@
                             @endguest
 
                             <small>
-                                Demostración: no se realizará ningún cobro
-                                ni reserva real.
+                                No se realizará ningún cobro. La reserva quedará registrada en la base de datos.
                             </small>
                         </form>
                     </aside>
@@ -595,9 +473,7 @@
             const noches = Math.max(1, Math.round((fin - inicio) / 86400000));
 
             const parametros = new URLSearchParams({
-                hotel: @json($codigo),
-                hotel_nombre: @json($hotel['nombre'] ?? ''),
-                hotel_ubicacion: @json($hotel['ubicacion'] ?? ''),
+                alojamiento: @json($alojamiento->codigo),
                 entrada: entrada.value,
                 salida: salida.value,
                 huespedes: huespedes.value,
@@ -606,7 +482,7 @@
                 moneda: simbolo
             });
 
-            const url = @json(route('reservas.confirmar'));
+            const url = @json(route('reservas.confirmar.alojamientos'));
 
             window.location.href =
                 url + '?' + parametros.toString();

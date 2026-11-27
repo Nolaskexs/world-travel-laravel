@@ -21,24 +21,24 @@ class CatalogoViajesController extends Controller
 
         $consulta = Paquete::query()->where('activo', true);
 
-        if (!empty($filtros['q'])) {
+        if (! empty($filtros['q'])) {
             $busqueda = $filtros['q'];
             $consulta->where(function ($q) use ($busqueda) {
                 $q->where('titulo', 'like', "%{$busqueda}%")
-                  ->orWhere('destino', 'like', "%{$busqueda}%")
-                  ->orWhere('pais', 'like', "%{$busqueda}%");
+                    ->orWhere('destino', 'like', "%{$busqueda}%")
+                    ->orWhere('pais', 'like', "%{$busqueda}%");
             });
         }
 
-        if (!empty($filtros['continente'])) {
+        if (! empty($filtros['continente'])) {
             $consulta->where('continente', $filtros['continente']);
         }
 
-        if (!empty($filtros['maximo'])) {
+        if (! empty($filtros['maximo'])) {
             $consulta->where('precio', '<=', $filtros['maximo']);
         }
 
-        if (!empty($filtros['duracion'])) {
+        if (! empty($filtros['duracion'])) {
             $consulta->where('duracion_dias', '<=', $filtros['duracion']);
         }
 
@@ -91,5 +91,29 @@ class CatalogoViajesController extends Controller
             ->first();
 
         return view('detalle-paquete', compact('paquete', 'oferta'));
+    }
+
+    /**
+     * Detalle de una promoción: muestra el descuento y los servicios incluidos
+     * antes de pasar al formulario de confirmación de la oferta.
+     */
+    public function detalleOferta(Oferta $oferta): View
+    {
+        $hoy = now()->toDateString();
+
+        abort_unless(
+            $oferta->activo
+                && $oferta->fecha_inicio->toDateString() <= $hoy
+                && $oferta->fecha_fin->toDateString() >= $hoy
+                && $oferta->paquete?->activo,
+            404
+        );
+
+        $paquete = $oferta->paquete;
+        $precioOriginal = (float) $paquete->precio;
+        $precioFinal = round($precioOriginal * (1 - $oferta->descuento_porcentaje / 100), 2);
+        $ahorro = round($precioOriginal - $precioFinal, 2);
+
+        return view('detalle-oferta', compact('oferta', 'paquete', 'precioOriginal', 'precioFinal', 'ahorro'));
     }
 }

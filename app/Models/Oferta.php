@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Oferta extends Model
 {
@@ -25,5 +26,10 @@ class Oferta extends Model
     public function paquete(): BelongsTo
     {
         return $this->belongsTo(Paquete::class);
+    }
+
+    public function reservas(): HasMany
+    {
+        return $this->hasMany(Reserva::class);
     }
 }

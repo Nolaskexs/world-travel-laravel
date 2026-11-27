@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Paquete;
+use Database\Seeders\AlojamientoSeeder;
+use Database\Seeders\PaquetesOfertasSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +15,8 @@ class CatalogosHomeTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed(\Database\Seeders\PaquetesOfertasSeeder::class);
+        $this->seed(PaquetesOfertasSeeder::class);
+        $this->seed(AlojamientoSeeder::class);
     }
 
     public function test_pagina_inicio_carga_correctamente(): void
