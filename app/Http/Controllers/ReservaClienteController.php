@@ -257,6 +257,7 @@ class ReservaClienteController extends Controller
             'email' => $validated['email'],
             'telefono' => $validated['telefono'] ?? null,
             'documento' => $validated['documento'],
+            'asientos' => $validated['asientos'] ?? $request->input('asientos'),
         ]);
 
         return redirect()
@@ -449,6 +450,7 @@ class ReservaClienteController extends Controller
 
         $oferta = $oferta->orderByDesc('descuento_porcentaje')->firstOrFail();
         $paquete = $oferta->paquete;
+        $asientos = (string) $request->query('asientos', '');
         $precioOriginal = (float) $paquete->precio;
         $precioFinal = round($precioOriginal * (1 - $oferta->descuento_porcentaje / 100), 2);
         $numPasajeros = (int) ($filtros['num_pasajeros'] ?? 1);
@@ -462,6 +464,7 @@ class ReservaClienteController extends Controller
             'precioOriginal',
             'precioFinal',
             'numPasajeros',
+            'asientos',
             'totalEstimado',
             'fechaViaje',
             'user'
@@ -483,6 +486,7 @@ class ReservaClienteController extends Controller
             'oferta_id' => ['required', 'exists:ofertas,id'],
             'fecha_viaje' => ['required', 'date'],
             'num_pasajeros' => ['required', 'integer', 'min:1', 'max:10'],
+            'asientos' => ['nullable', 'string', 'max:255'],
         ]);
 
         $hoy = now()->toDateString();
@@ -527,6 +531,7 @@ class ReservaClienteController extends Controller
             'email' => $validated['email'],
             'telefono' => $validated['telefono'] ?? null,
             'documento' => $validated['documento'],
+            'asientos' => $validated['asientos'] ?? $request->input('asientos'),
         ]);
 
         return redirect()
@@ -615,6 +620,38 @@ class ReservaClienteController extends Controller
     private function registrarServicio(array $data): Reserva
     {
         return DB::transaction(function () use ($data): Reserva {
+            $numPax = max(1, (int) ($data['num_pasajeros'] ?? 1));
+
+            // Procesar asientos si fueron proporcionados o si el servicio incluye vuelo
+            $asientosInput = $data['asientos'] ?? '';
+            $asientosLista = [];
+            if (! empty($asientosInput)) {
+                $asientosLista = array_values(array_filter(array_map('trim', explode(',', (string) $asientosInput))));
+            }
+
+            $incluyeVuelo = ($data['tipo_servicio'] === 'vuelo')
+                || ! empty($data['vuelo_id'])
+                || ! empty($data['detalle_snapshot']['incluye_vuelo']);
+
+            if ($incluyeVuelo && count($asientosLista) < $numPax) {
+                $asientosOcupados = ReservaPasajero::whereNotNull('asiento')->where('asiento', '!=', '')->pluck('asiento')->all();
+                $filas = range(10, 35);
+                $letras = ['A', 'B', 'C', 'D', 'E', 'F'];
+                foreach ($filas as $fila) {
+                    foreach ($letras as $letra) {
+                        $codigo = $fila.$letra;
+                        if (! in_array($codigo, $asientosOcupados, true) && ! in_array($codigo, $asientosLista, true)) {
+                            $asientosLista[] = $codigo;
+                            if (count($asientosLista) >= $numPax) {
+                                break 2;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $asientosTexto = ! empty($asientosLista) ? implode(', ', array_slice($asientosLista, 0, $numPax)) : ($data['asientos'] ?? null);
+
             $reserva = Reserva::create([
                 'user_id' => Auth::id(),
                 'paquete_id' => null,
@@ -628,7 +665,7 @@ class ReservaClienteController extends Controller
                 'noches' => $data['noches'] ?? null,
                 'moneda' => $data['moneda'] ?? 'USD',
                 'cotizacion' => $data['cotizacion'] ?? null,
-                'num_pasajeros' => $data['num_pasajeros'],
+                'num_pasajeros' => $numPax,
                 'total' => $data['total'],
                 'detalle_servicio' => $data['detalle_servicio'],
                 'detalle_snapshot' => $data['detalle_snapshot'] + [
@@ -639,16 +676,27 @@ class ReservaClienteController extends Controller
                         'documento' => $data['documento'],
                     ],
                 ],
-                'asientos' => $data['asientos'] ?? null,
+                'asientos' => $asientosTexto,
                 'estado' => 'pendiente',
             ]);
 
+            // Pasajero titular
             ReservaPasajero::create([
                 'reserva_id' => $reserva->id,
                 'nombre' => $data['nombre'],
                 'documento' => $data['documento'],
-                'asiento' => $data['asiento'] ?? null,
+                'asiento' => $asientosLista[0] ?? ($data['asiento'] ?? null),
             ]);
+
+            // Pasajeros acompañantes si num_pasajeros > 1
+            for ($i = 2; $i <= $numPax; $i++) {
+                ReservaPasajero::create([
+                    'reserva_id' => $reserva->id,
+                    'nombre' => "Pasajero acompañante {$i} ({$data['nombre']})",
+                    'documento' => 'DNI-'.rand(10000000, 99999999),
+                    'asiento' => $asientosLista[$i - 1] ?? null,
+                ]);
+            }
 
             return $reserva;
         });

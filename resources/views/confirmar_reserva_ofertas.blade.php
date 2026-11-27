@@ -31,6 +31,7 @@
                     <x-slot:hidden>
                         <input type="hidden" name="oferta_id" value="{{ $oferta->id }}">
                         <input type="hidden" name="fecha_viaje" value="{{ $fechaViaje }}">
+                        <input type="hidden" name="asientos" id="inputAsientos" value="{{ old('asientos', $asientos ?? '') }}">
                     </x-slot:hidden>
 
                     <x-slot:extra>
@@ -97,7 +98,7 @@
 
                     <div class="checkout-fila">
                         <span>Viajeros</span>
-                        <strong>{{ $numPasajeros }}</strong>
+                        <strong id="displayPasajeros">{{ $numPasajeros }}</strong>
                     </div>
 
                     <div class="checkout-fila">
@@ -115,17 +116,83 @@
                         <strong>{{ $paquete->incluye_vuelo ? 'Incluido' : 'No incluido' }}</strong>
                     </div>
 
+                    @if ($paquete->incluye_vuelo)
+                        @if (!empty($asientos))
+                            <div class="checkout-fila" style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 9px 12px; border-radius: 8px; margin: 8px 0;">
+                                <span style="color: #1e40af; font-weight: 600;">Asientos asignados</span>
+                                <strong style="color: #1d4ed8; font-size: 14px;">{{ $asientos }}</strong>
+                            </div>
+                        @else
+                            <div style="margin: 8px 0; text-align: right;">
+                                <a id="btnElegirAsientosOferta"
+                                   href="{{ route('asientos.index', ['oferta_id' => $oferta->id, 'adultos' => $numPasajeros, 'fecha_viaje' => $fechaViaje]) }}"
+                                   class="checkout-enlace">
+                                    Seleccionar asientos en el mapa &rarr;
+                                </a>
+                            </div>
+                        @endif
+                    @endif
+
+                    <div class="checkout-fila">
+                        <span>Subtotal</span>
+                        <strong id="displaySubtotal">US$ {{ number_format($totalEstimado, 2) }}</strong>
+                    </div>
+
                     <div class="checkout-total">
                         <span>Total estimado</span>
-                        <strong>US$ {{ number_format($totalEstimado, 2) }}</strong>
+                        <div style="text-align: right;">
+                            <strong id="displayTotal" style="display: block;">US$ {{ number_format($totalEstimado, 2) }}</strong>
+                            <small id="displayTotalSoles" style="display: block; font-size: 12px; color: #64748b; font-weight: 600; margin-top: 2px;">
+                                aprox. S/ {{ number_format($totalEstimado * 3.51, 2) }}
+                            </small>
+                        </div>
                     </div>
 
                     <p class="checkout-aclaracion">
-                        Ahorras US$ {{ number_format($precioOriginal - $precioFinal, 2) }} por persona respecto al precio habitual.
+                        Ahorras US$ {{ number_format($precioOriginal - $precioFinal, 2) }} por persona respecto al precio habitual. El registro se procesará con estado inicial <strong>Pendiente</strong>.
                     </p>
                 </aside>
             </div>
 
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectNumPasajeros = document.getElementById('numPasajeros');
+            const displayPasajeros = document.getElementById('displayPasajeros');
+            const displaySubtotal = document.getElementById('displaySubtotal');
+            const displayTotal = document.getElementById('displayTotal');
+            const displayTotalSoles = document.getElementById('displayTotalSoles');
+            const btnAsientos = document.getElementById('btnElegirAsientosOferta');
+            const precioUnitario = {{ (float) $precioFinal }};
+            const tipoCambio = 3.51;
+
+            const formatMoney = (val) => 'US$ ' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const formatSoles = (val) => 'aprox. S/ ' + Number(val * tipoCambio).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            function recalcular() {
+                const pax = parseInt(selectNumPasajeros ? selectNumPasajeros.value : 1, 10) || 1;
+                const total = Math.round(precioUnitario * pax * 100) / 100;
+
+                if (displayPasajeros) displayPasajeros.textContent = pax;
+                if (displaySubtotal) displaySubtotal.textContent = formatMoney(total);
+                if (displayTotal) displayTotal.textContent = formatMoney(total);
+                if (displayTotalSoles) displayTotalSoles.textContent = formatSoles(total);
+
+                if (btnAsientos) {
+                    try {
+                        const url = new URL(btnAsientos.href, window.location.origin);
+                        url.searchParams.set('adultos', pax);
+                        btnAsientos.href = url.pathname + url.search;
+                    } catch (e) {}
+                }
+            }
+
+            if (selectNumPasajeros) {
+                selectNumPasajeros.addEventListener('change', recalcular);
+                selectNumPasajeros.addEventListener('input', recalcular);
+            }
+        });
+    </script>
 </x-layout>

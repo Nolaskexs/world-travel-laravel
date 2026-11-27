@@ -197,6 +197,11 @@
         const b = e.target.closest(".opt");
         if (!b) return;
         input.value = b.dataset.city;
+        input.setCustomValidity("");
+        $("#origin")?.setCustomValidity("");
+        $("#destination")?.setCustomValidity("");
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
         closeDD(id);
         if (id === "origin") {
           $("#destination").focus();
@@ -207,11 +212,19 @@
       });
     });
 
-    $(".swap").addEventListener("click", () => {
-      const o = $("#origin"),
-        d = $("#destination");
-      [o.value, d.value] = [d.value, o.value];
-    });
+    if ($(".swap")) {
+      $(".swap").addEventListener("click", () => {
+        const o = $("#origin"),
+          d = $("#destination");
+        if (o && d) {
+          [o.value, d.value] = [d.value, o.value];
+          o.setCustomValidity("");
+          d.setCustomValidity("");
+          o.dispatchEvent(new Event("input", { bubbles: true }));
+          d.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+      });
+    }
   }
 
   /* ---------- Calendario ---------- */
@@ -444,10 +457,22 @@
   /* ---------- Formularios ---------- */
   function initForms() {
     const sForm = $("#searchForm");
+    const origInput = $("#origin");
+    const destInput = $("#destination");
+
+    const clearValidity = () => {
+      if (origInput) origInput.setCustomValidity("");
+      if (destInput) destInput.setCustomValidity("");
+    };
+
+    origInput?.addEventListener("input", clearValidity);
+    origInput?.addEventListener("change", clearValidity);
+    destInput?.addEventListener("input", clearValidity);
+    destInput?.addEventListener("change", clearValidity);
+
     if (sForm) {
       sForm.addEventListener("submit", (e) => {
-        const origInput = $("#origin");
-        const destInput = $("#destination");
+        clearValidity();
         const origVal = origInput?.value?.trim() || "";
         const destVal = destInput?.value?.trim() || "";
 
@@ -460,12 +485,20 @@
             origInput.focus();
             origInput.setCustomValidity("Por favor, ingresa una ciudad de origen");
             origInput.reportValidity();
-            origInput.addEventListener("input", () => origInput.setCustomValidity(""), { once: true });
           } else if (isDestEmpty && destInput) {
             destInput.focus();
             destInput.setCustomValidity("Por favor, ingresa una ciudad de destino");
             destInput.reportValidity();
-            destInput.addEventListener("input", () => destInput.setCustomValidity(""), { once: true });
+          }
+          return;
+        }
+
+        if (origVal.toLowerCase() === destVal.toLowerCase()) {
+          e.preventDefault();
+          if (destInput) {
+            destInput.focus();
+            destInput.setCustomValidity("El origen y el destino no pueden ser iguales");
+            destInput.reportValidity();
           }
           return;
         }

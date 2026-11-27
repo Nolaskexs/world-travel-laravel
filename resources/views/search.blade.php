@@ -127,11 +127,11 @@
 
     @if (!empty($avisoBusqueda))
       <div class="wrap wrap--search" style="padding-bottom: 0;">
-        <div class="search-alert" role="alert">
-          <svg class="i search-alert__icon" style="width:24px;height:24px;fill:#d97706;flex:none;"><use href="#i-info"/></svg>
+        <div class="search-alert" role="alert" style="background: {{ (!empty($isEqualSearch)) ? '#fef2f2; border: 1px solid #fecaca;' : '#fffbeb; border: 1px solid #fef3c7;' }};">
+          <svg class="i search-alert__icon" style="width:24px;height:24px;fill:{{ (!empty($isEqualSearch)) ? '#dc2626' : '#d97706' }};flex:none;"><use href="#i-info"/></svg>
           <div class="search-alert__text">
-            <strong>Completa tu búsqueda</strong>
-            <p>{{ $avisoBusqueda }}</p>
+            <strong style="color: {{ (!empty($isEqualSearch)) ? '#991b1b' : '#92400e' }};">{{ (!empty($isEqualSearch)) ? 'Ruta de vuelo no válida' : 'Completa tu búsqueda' }}</strong>
+            <p style="color: {{ (!empty($isEqualSearch)) ? '#b91c1c' : '#b45309' }};">{{ $avisoBusqueda }}</p>
           </div>
         </div>
       </div>

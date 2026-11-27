@@ -153,7 +153,7 @@
     <!-- CABECERA -->
     <header class="res-detail__header">
 
-        <h1>Reserva #{{ $reserva->id }}</h1>
+        <h1>Reserva {{ $reserva->id }}</h1>
 
         <p>
             Consulta los datos y administra el estado
@@ -182,7 +182,7 @@
 
                 <div class="res-detail__field">
                     <span>Número de reserva</span>
-                    <strong>#{{ $reserva->id }}</strong>
+                    <strong>{{ $reserva->id }}</strong>
                 </div>
 
                 <div class="res-detail__field">

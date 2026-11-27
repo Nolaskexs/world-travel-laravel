@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Oferta;
 use App\Models\Paquete;
 use App\Models\Reserva;
 use App\Models\ReservaPasajero;
@@ -86,6 +87,7 @@ class AsientoController extends Controller
         else {
             $vueloId = $request->query('vuelo_id');
             $paqueteId = $request->query('paquete_id');
+            $ofertaId = $request->query('oferta_id');
             $adultos = max(1, (int) $request->query('adultos', 1));
             $menores = max(0, (int) $request->query('menores', 0));
             $infantes = max(0, (int) $request->query('infantes', 0));
@@ -99,6 +101,9 @@ class AsientoController extends Controller
             $paqueteObj = null;
             if ($paqueteId) {
                 $paqueteObj = Paquete::find($paqueteId);
+            } elseif ($ofertaId) {
+                $ofertaObj = Oferta::with('paquete')->find($ofertaId);
+                $paqueteObj = $ofertaObj?->paquete;
             }
 
             // Prioridad 1: parámetros explícitos enviados desde el buscador/reserva
@@ -216,6 +221,19 @@ class AsientoController extends Controller
 
         // ACCIÓN 2: Continuar al paso final de Confirmación y Pago
         $paqueteId = $request->input('paquete_id');
+        $ofertaId = $request->input('oferta_id');
+
+        // Las ofertas continúan en su propio formulario de confirmación
+        if (! empty($ofertaId)) {
+            $params = [
+                'oferta_id' => $ofertaId,
+                'fecha_viaje' => $request->input('fecha_viaje'),
+                'num_pasajeros' => $request->input('num_pasajeros', count($asientos) ?: 1),
+                'asientos' => $asientosStr,
+            ];
+
+            return redirect()->route('reservas.confirmar.ofertas', array_filter($params));
+        }
 
         // Los paquetes conservan su ruta original de confirmación.
         if (! empty($paqueteId)) {

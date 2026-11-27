@@ -366,6 +366,49 @@
                 margin: 0 auto 1.5rem;
             }
 
+            /* Píldoras de Categorías */
+            .dash-cat-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 18px;
+                border-radius: 999px;
+                background: #f1f5f9;
+                border: 1px solid #e2e8f0;
+                color: #475569;
+                font-size: 13.5px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+                white-space: nowrap;
+            }
+            .dash-cat-btn:hover {
+                background: #e2e8f0;
+                color: #0f172a;
+            }
+            .dash-cat-btn.is-active {
+                background: #0284c7;
+                border-color: #0284c7;
+                color: #fff;
+                box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+            }
+            .dash-cat-badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 18px;
+                height: 18px;
+                padding: 0 5px;
+                border-radius: 999px;
+                background: rgba(0, 0, 0, 0.08);
+                font-size: 11px;
+                font-weight: 700;
+            }
+            .dash-cat-btn.is-active .dash-cat-badge {
+                background: rgba(255, 255, 255, 0.25);
+                color: #fff;
+            }
+
             @media (max-width: 900px) {
                 .user-metrics {
                     grid-template-columns: 1fr;
@@ -484,6 +527,12 @@
                                     <span>·</span>
                                     <span>{{ $viaje['nota'] }}</span>
                                 </p>
+                                @if (!empty($viaje['asientos_texto']))
+                                    <div style="margin: 4px 0 0; font-size: 11.5px; color: #0284c7; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                                        <svg class="i" style="width: 13px; height: 13px; fill: currentColor;"><use href="#i-check"/></svg>
+                                        <span>Asientos: {{ $viaje['asientos_texto'] }}</span>
+                                    </div>
+                                @endif
                                 <div class="user-trip-card__footer">
                                     <div class="user-trip-card__price">
                                         <small>Monto total</small>
@@ -509,63 +558,409 @@
             @endif
         </section>
 
-        {{-- Tramos de Vuelo y Asientos Asignados --}}
-        @if (!empty($historial))
-            <section class="user-section" id="tramos">
-                <div class="user-section-head">
-                    <div>
-                        <h2>Tramos de Vuelo y Asientos</h2>
-                        <p>Detalle de pasajeros y asignación de asientos por tramo reservado.</p>
-                    </div>
+        {{-- Reservas por Categorías del Header: Vuelos, Alojamientos, Paquetes, Ofertas --}}
+        <section class="user-section" id="categorias-reservas">
+            <div class="user-section-head">
+                <div>
+                    <h2>Tus Reservas por Categoría</h2>
+                    <p>Organizadas conforme a los servicios de World Travel: Vuelos, Alojamientos, Paquetes y Ofertas.</p>
                 </div>
+            </div>
 
-                <div class="user-table-card">
-                    <table class="user-table">
-                        <thead>
-                            <tr>
-                                <th>Pasajero</th>
-                                <th>Fecha de Viaje</th>
-                                <th>Tipo</th>
-                                <th>Ruta</th>
-                                <th>Asiento Asignado</th>
-                                <th>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($historial as $tramo)
+            <!-- Botones de Categoría estilo Header -->
+            <div style="display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none;">
+                <button type="button" class="dash-cat-btn is-active" data-target="cat-panel-vuelos">
+                    <svg class="i" style="width: 15px; height: 15px;"><use href="#i-plane"/></svg>
+                    <span>Vuelos</span>
+                    <span class="dash-cat-badge">{{ count($categoriasReservas['vuelos'] ?? []) }}</span>
+                </button>
+                <button type="button" class="dash-cat-btn" data-target="cat-panel-alojamientos">
+                    <svg class="i" style="width: 15px; height: 15px;"><use href="#i-suit"/></svg>
+                    <span>Alojamientos</span>
+                    <span class="dash-cat-badge">{{ count($categoriasReservas['alojamientos'] ?? []) }}</span>
+                </button>
+                <button type="button" class="dash-cat-btn" data-target="cat-panel-paquetes">
+                    <svg class="i" style="width: 15px; height: 15px;"><use href="#i-bag"/></svg>
+                    <span>Paquetes</span>
+                    <span class="dash-cat-badge">{{ count($categoriasReservas['paquetes'] ?? []) }}</span>
+                </button>
+                <button type="button" class="dash-cat-btn" data-target="cat-panel-ofertas">
+                    <svg class="i" style="width: 15px; height: 15px;"><use href="#i-star"/></svg>
+                    <span>Ofertas</span>
+                    <span class="dash-cat-badge">{{ count($categoriasReservas['ofertas'] ?? []) }}</span>
+                </button>
+            </div>
+
+            <!-- PANEL 1: VUELOS -->
+            <div id="cat-panel-vuelos" class="dash-cat-panel is-active">
+                @if (($categoriasReservas['vuelos'] ?? collect())->isEmpty())
+                    <div class="user-empty" style="padding: 35px 20px;">
+                        <h3>No tienes reservas de vuelos</h3>
+                        <p>Busca tus pasajes aéreos nacionales e internacionales con las mejores tarifas.</p>
+                        <a href="{{ route('inicio') }}" class="btn-dark" style="display: inline-block; padding: 8px 16px; border-radius: 8px;">Buscar Vuelos</a>
+                    </div>
+                @else
+                    <div class="user-table-card">
+                        <table class="user-table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <strong>{{ $tramo['pasajero'] }}</strong>
-                                    </td>
-                                    <td>{{ $tramo['fecha'] }}</td>
-                                    <td>{{ $tramo['tipo'] }}</td>
-                                    <td>
-                                        <span>{{ $tramo['origen_ciudad'] }} ({{ $tramo['origen'] }})</span>
-                                        <span style="color: #64748b; margin: 0 4px;">→</span>
-                                        <strong>{{ $tramo['destino_ciudad'] }} ({{ $tramo['destino'] }})</strong>
-                                    </td>
-                                    <td>
-                                        @if (!empty($tramo['asiento']))
-                                            <span class="seat-pill">
-                                                <svg class="i" style="width: 12px; height: 12px;"><use href="#i-check"/></svg>
-                                                Asiento {{ $tramo['asiento'] }}
-                                            </span>
-                                        @else
-                                            <span class="seat-unassigned">Pendiente de selección</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ $tramo['accion_url'] ?? '#' }}" class="btn-dark" style="padding: 6px 12px; border-radius: 7px; font-size: 12px;">
-                                            {{ $tramo['accion_label'] }}
-                                        </a>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Vuelo / Ruta</th>
+                                    <th>Fecha</th>
+                                    <th>Pasajeros</th>
+                                    <th>Asientos Asignados</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        @endif
+                            </thead>
+                            <tbody>
+                                @foreach ($categoriasReservas['vuelos'] as $res)
+                                    @php
+                                        $esNac = ($res->paquete && ($res->paquete->pais === 'Perú' || strtolower($res->paquete->continente ?? '') === 'nacional'))
+                                            || ($res->vuelo && $res->vuelo->origen?->pais === 'Perú' && $res->vuelo->destino?->pais === 'Perú');
+                                    @endphp
+                                    <tr>
+                                        <td style="font-weight: 700; color: #0284c7;">{{ $res->id }}</td>
+                                        <td>
+                                            <strong>{{ $res->detalle_servicio ?: ($res->vuelo ? $res->vuelo->codigo_vuelo : 'Vuelo Comercial') }}</strong>
+                                            <div style="margin-top: 3px;">
+                                                <span style="display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; background: #e0f2fe; color: #0369a1;">
+                                                    {{ $esNac ? 'Nacional' : 'Internacional' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>{{ $res->fecha_viaje ? \Carbon\Carbon::parse($res->fecha_viaje)->format('d/m/Y') : '—' }}</td>
+                                        <td>
+                                            @if ($res->pasajeros->isNotEmpty())
+                                                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 130px;">
+                                                    @foreach ($res->pasajeros as $p)
+                                                        <span style="font-size: 13px; font-weight: 600; color: #1e293b;">{{ $p->nombre }}</span>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span>{{ $res->num_pasajeros }} {{ $res->num_pasajeros == 1 ? 'persona' : 'personas' }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($res->pasajeros->isNotEmpty())
+                                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                                    @foreach ($res->pasajeros as $p)
+                                                        <div>
+                                                            @if ($p->asiento)
+                                                                <span class="seat-pill" style="font-size: 11px; padding: 2px 8px;">
+                                                                    <svg class="i" style="width: 11px; height: 11px;"><use href="#i-check"/></svg>
+                                                                    Asiento {{ $p->asiento }}
+                                                                </span>
+                                                            @else
+                                                                <span class="seat-unassigned" style="font-size: 11px;">Pendiente</span>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span class="seat-unassigned">Pendiente de selección</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <strong>US$ {{ number_format((float) $res->total, 2) }}</strong>
+                                            <small style="display: block; font-size: 11px; color: #64748b;">aprox. S/ {{ number_format((float) $res->total * 3.51, 2) }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="user-trip-card__badge badge--{{ $res->estado }}" style="display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">
+                                                {{ ucfirst($res->estado) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('asientos.checkin', $res->id) }}" class="btn-dark" style="padding: 5px 10px; border-radius: 6px; font-size: 11.5px; white-space: nowrap;">
+                                                Check-in / Asientos
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <!-- PANEL 2: ALOJAMIENTOS -->
+            <div id="cat-panel-alojamientos" class="dash-cat-panel" style="display: none;">
+                @if (($categoriasReservas['alojamientos'] ?? collect())->isEmpty())
+                    <div class="user-empty" style="padding: 35px 20px;">
+                        <h3>No tienes reservas de alojamientos</h3>
+                        <p>Descubre hoteles exclusivos, resorts frente al mar y estancias boutique.</p>
+                        <a href="{{ route('alojamientos') }}" class="btn-dark" style="display: inline-block; padding: 8px 16px; border-radius: 8px;">Ver Alojamientos</a>
+                    </div>
+                @else
+                    <div class="user-table-card">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Alojamiento</th>
+                                    <th>Entrada / Salida</th>
+                                    <th>Noches</th>
+                                    <th>Huéspedes</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($categoriasReservas['alojamientos'] as $res)
+                                    <tr>
+                                        <td style="font-weight: 700; color: #0284c7;">{{ $res->id }}</td>
+                                        <td>
+                                            <strong>{{ $res->alojamiento->nombre ?? ($res->detalle_servicio ?: 'Hotel / Hospedaje') }}</strong>
+                                            <small style="display: block; color: #64748b;">{{ $res->alojamiento->ubicacion ?? '' }}</small>
+                                        </td>
+                                        <td>
+                                            {{ $res->fecha_entrada ? \Carbon\Carbon::parse($res->fecha_entrada)->format('d/m/Y') : ($res->fecha_viaje ? \Carbon\Carbon::parse($res->fecha_viaje)->format('d/m/Y') : '—') }}
+                                            @if ($res->fecha_salida)
+                                                <span style="color: #64748b;">al</span> {{ \Carbon\Carbon::parse($res->fecha_salida)->format('d/m/Y') }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $res->noches ?? 1 }} {{ ($res->noches ?? 1) == 1 ? 'noche' : 'noches' }}</td>
+                                        <td>{{ $res->num_pasajeros }} {{ $res->num_pasajeros == 1 ? 'huésped' : 'huéspedes' }}</td>
+                                        <td>
+                                            <strong>US$ {{ number_format((float) $res->total, 2) }}</strong>
+                                            <small style="display: block; font-size: 11px; color: #64748b;">aprox. S/ {{ number_format((float) $res->total * 3.51, 2) }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="user-trip-card__badge badge--{{ $res->estado }}" style="display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">
+                                                {{ ucfirst($res->estado) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if ($res->estado === 'pendiente')
+                                                <a href="{{ route('pagos.show', $res->id) }}" class="btn-dark" style="padding: 5px 10px; border-radius: 6px; font-size: 11.5px; background: #0284c7;">
+                                                    Pagar
+                                                </a>
+                                            @else
+                                                <a href="{{ route('alojamientos') }}" class="btn-ghost" style="padding: 5px 10px; border-radius: 6px; font-size: 11.5px;">
+                                                    Ver Catálogo
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <!-- PANEL 3: PAQUETES -->
+            <div id="cat-panel-paquetes" class="dash-cat-panel" style="display: none;">
+                @if (($categoriasReservas['paquetes'] ?? collect())->isEmpty())
+                    <div class="user-empty" style="padding: 35px 20px;">
+                        <h3>No tienes reservas de paquetes</h3>
+                        <p>Descubre paquetes turísticos completos con hotel, vuelos y tours incluidos.</p>
+                        <a href="{{ route('paquetes') }}" class="btn-dark" style="display: inline-block; padding: 8px 16px; border-radius: 8px;">Explorar Paquetes</a>
+                    </div>
+                @else
+                    <div class="user-table-card">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Paquete / Destino</th>
+                                    <th>Fecha</th>
+                                    <th>Viajeros</th>
+                                    <th>Asientos Asignados</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($categoriasReservas['paquetes'] as $res)
+                                    @php
+                                        $asientosList = $res->pasajeros->pluck('asiento')->filter()->values();
+                                    @endphp
+                                    <tr>
+                                        <td style="font-weight: 700; color: #0284c7;">{{ $res->id }}</td>
+                                        <td>
+                                            <strong>{{ $res->paquete->titulo ?? ($res->detalle_servicio ?: 'Paquete Turístico') }}</strong>
+                                            <small style="display: block; color: #64748b;">{{ $res->paquete->destino ?? 'Mundo' }}, {{ $res->paquete->pais ?? '' }}</small>
+                                        </td>
+                                        <td>{{ $res->fecha_viaje ? \Carbon\Carbon::parse($res->fecha_viaje)->format('d/m/Y') : '—' }}</td>
+                                        <td>
+                                            @if ($res->pasajeros->isNotEmpty())
+                                                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 130px;">
+                                                    @foreach ($res->pasajeros as $p)
+                                                        <span style="font-size: 13px; font-weight: 600; color: #1e293b;">{{ $p->nombre }}</span>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span>{{ $res->num_pasajeros }} {{ $res->num_pasajeros == 1 ? 'persona' : 'personas' }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($res->pasajeros->isNotEmpty())
+                                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                                    @foreach ($res->pasajeros as $p)
+                                                        <div>
+                                                            @if ($p->asiento)
+                                                                <span class="seat-pill" style="font-size: 11px; padding: 2px 8px;">
+                                                                    <svg class="i" style="width: 11px; height: 11px;"><use href="#i-check"/></svg>
+                                                                    Asiento {{ $p->asiento }}
+                                                                </span>
+                                                            @else
+                                                                <span class="seat-unassigned" style="font-size: 11px;">Pendiente</span>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span class="seat-unassigned">Pendiente de selección</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <strong>US$ {{ number_format((float) $res->total, 2) }}</strong>
+                                            <small style="display: block; font-size: 11px; color: #64748b;">aprox. S/ {{ number_format((float) $res->total * 3.51, 2) }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="user-trip-card__badge badge--{{ $res->estado }}" style="display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">
+                                                {{ ucfirst($res->estado) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('asientos.checkin', $res->id) }}" class="btn-dark" style="padding: 5px 10px; border-radius: 6px; font-size: 11.5px;">
+                                                Check-in / Asientos
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <!-- PANEL 4: OFERTAS -->
+            <div id="cat-panel-ofertas" class="dash-cat-panel" style="display: none;">
+                @if (($categoriasReservas['ofertas'] ?? collect())->isEmpty())
+                    <div class="user-empty" style="padding: 35px 20px;">
+                        <h3>No tienes reservas de ofertas</h3>
+                        <p>Aprovecha los descuentos de temporada y reserva tus próximas vacaciones.</p>
+                        <a href="{{ route('ofertas') }}" class="btn-dark" style="display: inline-block; padding: 8px 16px; border-radius: 8px;">Ver Ofertas Especiales</a>
+                    </div>
+                @else
+                    <div class="user-table-card">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Oferta Promocional</th>
+                                    <th>Fecha</th>
+                                    <th>Viajeros</th>
+                                    <th>Asientos Asignados</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($categoriasReservas['ofertas'] as $res)
+                                    @php
+                                        $asientosList = $res->pasajeros->pluck('asiento')->filter()->values();
+                                    @endphp
+                                    <tr>
+                                        <td style="font-weight: 700; color: #0284c7;">{{ $res->id }}</td>
+                                        <td>
+                                            <strong>{{ $res->oferta->titulo ?? ($res->detalle_servicio ?: 'Oferta Promocional') }}</strong>
+                                            @if ($res->oferta?->descuento_porcentaje)
+                                                <small style="display: inline-block; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 10.5px;">
+                                                    -{{ $res->oferta->descuento_porcentaje }}% OFF
+                                                </small>
+                                            @endif
+                                        </td>
+                                        <td>{{ $res->fecha_viaje ? \Carbon\Carbon::parse($res->fecha_viaje)->format('d/m/Y') : '—' }}</td>
+                                        <td>
+                                            @if ($res->pasajeros->isNotEmpty())
+                                                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 130px;">
+                                                    @foreach ($res->pasajeros as $p)
+                                                        <span style="font-size: 13px; font-weight: 600; color: #1e293b;">{{ $p->nombre }}</span>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span>{{ $res->num_pasajeros }} {{ $res->num_pasajeros == 1 ? 'persona' : 'personas' }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($res->pasajeros->isNotEmpty())
+                                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                                    @foreach ($res->pasajeros as $p)
+                                                        <div>
+                                                            @if ($p->asiento)
+                                                                <span class="seat-pill" style="font-size: 11px; padding: 2px 8px;">
+                                                                    <svg class="i" style="width: 11px; height: 11px;"><use href="#i-check"/></svg>
+                                                                    Asiento {{ $p->asiento }}
+                                                                </span>
+                                                            @else
+                                                                <span class="seat-unassigned" style="font-size: 11px;">Pendiente</span>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <span class="seat-unassigned">Pendiente de selección</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <strong>US$ {{ number_format((float) $res->total, 2) }}</strong>
+                                            <small style="display: block; font-size: 11px; color: #64748b;">aprox. S/ {{ number_format((float) $res->total * 3.51, 2) }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="user-trip-card__badge badge--{{ $res->estado }}" style="display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">
+                                                {{ ucfirst($res->estado) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if ($res->estado === 'pendiente')
+                                                <a href="{{ route('pagos.show', $res->id) }}" class="btn-dark" style="padding: 5px 10px; border-radius: 6px; font-size: 11.5px; background: #0284c7;">
+                                                    Pagar Reserva
+                                                </a>
+                                            @else
+                                                <a href="{{ route('asientos.checkin', $res->id) }}" class="btn-dark" style="padding: 5px 10px; border-radius: 6px; font-size: 11.5px;">
+                                                    Check-in / Asientos
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const buttons = document.querySelectorAll('.dash-cat-btn');
+                const panels = document.querySelectorAll('.dash-cat-panel');
+
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const targetId = btn.getAttribute('data-target');
+
+                        buttons.forEach(b => b.classList.remove('is-active'));
+                        btn.classList.add('is-active');
+
+                        panels.forEach(panel => {
+                            if (panel.id === targetId) {
+                                panel.style.display = 'block';
+                            } else {
+                                panel.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
 
         {{-- Soporte y Reclamaciones --}}
         <section class="user-section" style="background: #fff; border-radius: 18px; border: 1px solid #e2e8f0; padding: 1.75rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">

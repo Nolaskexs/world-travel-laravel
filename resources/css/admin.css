@@ -24,11 +24,11 @@ a{color:inherit;text-decoration:none}ul,ol{padding:0;list-style:none}
 .img-wrap.has-img img{opacity:1}.img-wrap.has-img .ph-text{display:none}
 
 /* Layout con barra superior de administración (arriba, ordenado como el home) */
-.admin{display:flex;flex-direction:column;min-height:100dvh;width:100%}
-.content{display:flex;flex-direction:column;gap:1.5rem;min-width:0;width:100%;max-width:1440px;margin:0 auto;padding:1.5rem 1.5rem 3rem}
+.admin{display:flex;flex-direction:column;min-height:100dvh;width:100%;max-width:100vw;overflow-x:hidden}
+.content{display:flex;flex-direction:column;gap:1.5rem;min-width:0;width:100%;max-width:1440px;margin:0 auto;padding:1.5rem 1.5rem 3rem;box-sizing:border-box}
 
-.admin-topbar-nav{position:sticky;top:0;z-index:100;background:var(--ink);color:#fff;box-shadow:0 4px 20px rgba(12,27,38,.16)}
-.admin-topbar-nav__top{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.75rem;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:.75rem}
+.admin-topbar-nav{position:sticky;top:0;z-index:100;background:var(--ink);color:#fff;box-shadow:0 4px 20px rgba(12,27,38,.16);width:100%;max-width:100vw;overflow-x:hidden}
+.admin-topbar-nav__top{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.75rem;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:.75rem;max-width:100%;box-sizing:border-box}
 .admin-brand-group{display:flex;align-items:center;gap:1rem}
 .admin-brand{display:flex;align-items:center;gap:.75rem;font-weight:700;font-size:1.15rem;color:#fff;letter-spacing:.02em}
 .logo{width:40px;height:40px;flex:none;border-radius:var(--r-sm);background:var(--ink-2);display:flex;align-items:center;justify-content:center;padding:4px;overflow:hidden}
@@ -47,11 +47,11 @@ a{color:inherit;text-decoration:none}ul,ol{padding:0;list-style:none}
 .admin-btn-logout{display:inline-flex;align-items:center;gap:.4rem;font-size:12px;font-weight:600;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);padding:6px 12px;border-radius:var(--r-sm);cursor:pointer;transition:background .2s}
 .admin-btn-logout:hover{background:rgba(239,68,68,.22)}
 
-.admin-menu-bar{display:flex;align-items:center;gap:6px;padding:.35rem .75rem;background:rgba(0,0,0,.25);border-top:1px solid rgba(255,255,255,.05);position:relative}
-.admin-menu-arrow{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#cbd5e1;cursor:pointer;flex-shrink:0;transition:all .2s}
-.admin-menu-arrow:hover{background:#0284c7;border-color:#0284c7;color:#fff}
-.admin-menu-arrow .i{width:14px;height:14px}
-.admin-menu-bar__scroll{display:flex;align-items:center;justify-content:space-between;gap:.75rem;overflow-x:auto;scrollbar-width:none;flex:1;scroll-behavior:smooth}
+.admin-menu-bar{display:flex;align-items:center;gap:8px;padding:.4rem .75rem;background:rgba(0,0,0,.28);border-top:1px solid rgba(255,255,255,.05);position:relative;width:100%;max-width:100vw;box-sizing:border-box}
+.admin-menu-arrow{display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:#0284c7;border:1px solid rgba(255,255,255,.3);color:#fff;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:all .2s;z-index:2}
+.admin-menu-arrow:hover{background:#0369a1;color:#fff;transform:scale(1.05)}
+.admin-menu-arrow .i{width:16px;height:16px;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;display:block}
+.admin-menu-bar__scroll{display:flex;align-items:center;justify-content:space-between;gap:.75rem;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 .admin-menu-bar__scroll::-webkit-scrollbar{display:none}
 .admin-nav-tabs{display:flex;align-items:center;gap:.3rem;list-style:none;margin:0;padding:0;white-space:nowrap}
 .admin-tab{display:inline-flex;align-items:center;gap:.45rem;padding:.48rem .75rem;border-radius:9px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.75);transition:all .2s;white-space:nowrap}
@@ -96,19 +96,49 @@ a{color:inherit;text-decoration:none}ul,ol{padding:0;list-style:none}
 .dest__n{color:var(--slate);font-size:.85rem}
 .dest__pct{display:inline-flex;align-items:center;gap:.15rem;min-width:3.5rem;font-weight:600}
 
+/* Contenedores y tablas responsivas para todos los módulos de admin */
+.wt-admin, .reservas-page, .rec-page, .clientes-page, .destinos-page, .facturacion-page, .ajustes-page{
+  width:100%;max-width:100%;box-sizing:border-box;
+}
+.wt-admin__card, .reservas-panel, .rec-panel, .clientes-panel, .destinos-panel, .facturacion-panel, .table-card, .table-wrap, .rec-table-wrap{
+  width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+
 /* Responsivo */
-@media(max-width:1199px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1199px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:1023px){
   .admin-topbar-nav__top{padding:.75rem 1rem}
-  .admin-menu-bar{padding:.45rem 1rem}
-  .content{padding:1rem 1rem 2rem}
+  .admin-menu-bar{padding:.4rem .5rem}
+  .content{padding:1rem .75rem 2rem}
   .geo{grid-template-columns:1fr}
 }
+@media(max-width:768px){
+  .admin-topbar-nav__top{flex-direction:column;align-items:stretch;gap:.65rem;padding:.75rem .85rem}
+  .admin-brand-group{width:100%;justify-content:space-between}
+  .admin-user-group{width:100%;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+  .admin-link-site span{display:none}
+  .top{flex-direction:column;align-items:flex-start;gap:.75rem}
+  .search{width:100%}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .rec-stats, .reservas-stats, .alojamiento-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .wt-admin, .reservas-page, .rec-page{padding:1rem .65rem 2.5rem!important}
+  .res-detail__grid{grid-template-columns:1fr!important}
+  .res-card{padding:1.25rem!important}
+}
 @media(max-width:639px){
-  .stats{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr!important}
+  .rec-stats, .reservas-stats, .alojamiento-stats{grid-template-columns:1fr!important}
   .chart{height:240px}
   .geo__map{min-height:220px}
   .admin-user-details{display:none}
+  .rec-toolbar, .alojamiento-filter-form, .reservas-filter{flex-direction:column;align-items:stretch!important}
+  .rec-search-input, .alojamiento-filter-group, .alojamiento-input, .alojamiento-select{min-width:100%!important;width:100%!important}
 }
-@media(max-width:480px){.dest{grid-template-columns:auto minmax(0,1fr) auto}.dest__n{display:none}}
+@media(max-width:480px){
+  .dest{grid-template-columns:auto minmax(0,1fr) auto}.dest__n{display:none}
+  .content{padding:.75rem .5rem 1.5rem}
+  .rec-page, .wt-admin, .reservas-page{padding:12px 8px 30px!important}
+}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}

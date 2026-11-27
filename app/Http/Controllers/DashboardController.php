@@ -95,6 +95,9 @@ class DashboardController extends Controller
                 $img = 'icons/'.$img;
             }
 
+            $asientosTodos = $reserva->pasajeros->pluck('asiento')->filter()->values()->all();
+            $asientosTexto = ! empty($asientosTodos) ? implode(', ', $asientosTodos) : ($reserva->asientos ?? null);
+
             return [
                 'id' => $reserva->id,
                 'titulo' => $titulo,
@@ -104,6 +107,7 @@ class DashboardController extends Controller
                 'destacado' => 'US$ '.number_format($reserva->total, 2),
                 'total_num' => (float) $reserva->total,
                 'nota' => $reserva->num_pasajeros.' '.($reserva->num_pasajeros === 1 ? 'pasajero' : 'pasajeros'),
+                'asientos_texto' => $asientosTexto,
                 'imagen' => $img,
                 'checkin_url' => route('asientos.checkin', $reserva->id),
             ];
@@ -112,16 +116,28 @@ class DashboardController extends Controller
         // 6. Historial de tramos / vuelos a partir de las reservas y sus pasajeros
         $historial = [];
         foreach ($reservas as $reserva) {
+            if ($reserva->tipo_servicio === 'alojamiento' || (! empty($reserva->alojamiento_id) && empty($reserva->vuelo_id) && empty($reserva->paquete_id))) {
+                continue;
+            }
+
             $paquete = $reserva->paquete;
-            $esNacional = $paquete && ($paquete->pais === 'Perú' || strtolower($paquete->continente ?? '') === 'nacional');
+            $vuelo = $reserva->vuelo;
+            $oferta = $reserva->oferta;
+
+            $esNacional = ($paquete && ($paquete->pais === 'Perú' || strtolower($paquete->continente ?? '') === 'nacional'))
+                || ($vuelo && $vuelo->origen?->pais === 'Perú' && $vuelo->destino?->pais === 'Perú');
             $tipo = $esNacional ? 'Nacional' : 'Internacional';
-            $destinoCiudad = $paquete ? $paquete->destino : 'Destino';
-            $destinoCode = strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $destinoCiudad) ?: 'VIA', 0, 3));
+
+            $destinoCiudad = $paquete?->destino ?: ($vuelo?->destino?->nombre ?: ($oferta?->paquete?->destino ?: 'Destino'));
+            $destinoCode = $vuelo?->destino?->codigo_iata ?: strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $destinoCiudad) ?: 'DES', 0, 3));
+            $origenCiudad = $vuelo?->origen?->nombre ?: 'Lima';
+            $origenCode = $vuelo?->origen?->codigo_iata ?: 'LIM';
 
             $pasajerosLista = $reserva->pasajeros;
             if ($pasajerosLista->isEmpty()) {
                 $pasajerosLista = collect([(object) [
                     'nombre' => $user->name,
+                    'asiento' => $reserva->asiento ?? null,
                 ]]);
             }
 
@@ -135,8 +151,8 @@ class DashboardController extends Controller
                     'avatar' => 'img/avatars/jair.jpg',
                     'fecha' => $reserva->fecha_viaje ? $reserva->fecha_viaje->format('d/m/Y') : now()->format('d/m/Y'),
                     'tipo' => $tipo,
-                    'origen' => 'LIM',
-                    'origen_ciudad' => 'Lima',
+                    'origen' => $origenCode,
+                    'origen_ciudad' => $origenCiudad,
                     'destino' => $destinoCode,
                     'destino_ciudad' => $destinoCiudad,
                     'asiento' => $p->asiento ?? null,
@@ -197,8 +213,16 @@ class DashboardController extends Controller
             ['nombre' => 'Asistencia en Aeropuerto', 'iniciales' => 'AA', 'avatar' => 'img/avatars/piloto-2.jpg', 'rol' => 'Aeropuerto', 'accion' => 'Seguir'],
         ];
 
+        // 10. Reservas organizadas por categorías del header: Vuelos, Alojamientos, Paquetes, Ofertas
+        $categoriasReservas = [
+            'vuelos' => $reservas->filter(fn ($r) => $r->tipo_servicio === 'vuelo' || (! empty($r->vuelo_id) && empty($r->paquete_id) && empty($r->oferta_id)))->values(),
+            'alojamientos' => $reservas->filter(fn ($r) => $r->tipo_servicio === 'alojamiento' || (! empty($r->alojamiento_id) && empty($r->paquete_id)))->values(),
+            'paquetes' => $reservas->filter(fn ($r) => $r->tipo_servicio === 'paquete' || (! empty($r->paquete_id) && empty($r->oferta_id)))->values(),
+            'ofertas' => $reservas->filter(fn ($r) => $r->tipo_servicio === 'oferta' || ! empty($r->oferta_id))->values(),
+        ];
+
         return view('dashboard', compact(
-            'usuario', 'metricas', 'viajes', 'historial', 'frecuentes', 'millas', 'tripulacion'
+            'usuario', 'metricas', 'viajes', 'historial', 'frecuentes', 'millas', 'tripulacion', 'categoriasReservas'
         ));
     }
 }

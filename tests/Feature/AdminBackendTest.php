@@ -68,7 +68,7 @@ class AdminBackendTest extends TestCase
 
         $detalleResponse = $this->actingAs($this->admin)->get(route('admin.reservas.show', $reserva->id));
         $detalleResponse->assertOk();
-        $detalleResponse->assertSee("Reserva #{$reserva->id}");
+        $detalleResponse->assertSee("Reserva {$reserva->id}");
     }
 
     public function test_admin_puede_actualizar_estado_de_reserva(): void

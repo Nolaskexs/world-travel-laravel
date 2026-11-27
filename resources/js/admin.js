@@ -32,11 +32,44 @@ const btnMenuPrev = document.getElementById('adminMenuPrev');
 const btnMenuNext = document.getElementById('adminMenuNext');
 
 if (menuScroll && btnMenuPrev && btnMenuNext) {
+  const updateMenuArrows = () => {
+    // Si la pantalla es lo suficientemente ancha y no hay desborde, ocultar ambas flechas
+    const hasOverflow = menuScroll.scrollWidth > (menuScroll.clientWidth + 8);
+    if (!hasOverflow) {
+      btnMenuPrev.style.display = 'none';
+      btnMenuNext.style.display = 'none';
+      return;
+    }
+
+    // Solo se muestran cuando se achica o hay desbordamiento horizontal
+    btnMenuPrev.style.display = 'inline-flex';
+    btnMenuNext.style.display = 'inline-flex';
+
+    const atStart = menuScroll.scrollLeft <= 5;
+    const atEnd = (menuScroll.scrollLeft + menuScroll.clientWidth) >= (menuScroll.scrollWidth - 6);
+
+    btnMenuPrev.style.opacity = atStart ? '0.3' : '1';
+    btnMenuPrev.style.pointerEvents = atStart ? 'none' : 'auto';
+    btnMenuPrev.style.cursor = atStart ? 'default' : 'pointer';
+
+    btnMenuNext.style.opacity = atEnd ? '0.3' : '1';
+    btnMenuNext.style.pointerEvents = atEnd ? 'none' : 'auto';
+    btnMenuNext.style.cursor = atEnd ? 'default' : 'pointer';
+  };
+
+  updateMenuArrows();
+  window.addEventListener('resize', updateMenuArrows);
+  window.addEventListener('orientationchange', updateMenuArrows);
+  menuScroll.addEventListener('scroll', updateMenuArrows);
+  document.addEventListener('DOMContentLoaded', updateMenuArrows);
+
   btnMenuPrev.addEventListener('click', () => {
-    menuScroll.scrollBy({ left: -240, behavior: 'smooth' });
+    menuScroll.scrollBy({ left: -220, behavior: 'smooth' });
+    setTimeout(updateMenuArrows, 260);
   });
 
   btnMenuNext.addEventListener('click', () => {
-    menuScroll.scrollBy({ left: 240, behavior: 'smooth' });
+    menuScroll.scrollBy({ left: 220, behavior: 'smooth' });
+    setTimeout(updateMenuArrows, 260);
   });
 }

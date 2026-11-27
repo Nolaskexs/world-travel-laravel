@@ -166,6 +166,12 @@
         <circle cx="12" cy="12" r="1.5"/>
         <circle cx="19" cy="12" r="1.5"/>
     </symbol>
+    <symbol id="i-left" viewBox="0 0 24 24">
+        <polyline points="15 18 9 12 15 6"/>
+    </symbol>
+    <symbol id="i-right" viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6"/>
+    </symbol>
 </svg>
 
 <!-- PANEL DE ADMINISTRACIÓN CON NAVEGACIÓN SUPERIOR (ARRIBA, COMO EL HOME) -->
@@ -215,7 +221,7 @@
 
         <!-- Fila de Opciones / Menú Horizontal Ordenado con Flechas Interactivas -->
         <nav class="admin-menu-bar" aria-label="Secciones del panel de administración">
-            <button type="button" class="admin-menu-arrow admin-menu-arrow--left" id="adminMenuPrev" aria-label="Desplazar menú a la izquierda">
+            <button type="button" class="admin-menu-arrow admin-menu-arrow--left" id="adminMenuPrev" title="Desplazar menú a la izquierda" aria-label="Desplazar menú a la izquierda">
                 <svg class="i"><use href="#i-left"/></svg>
             </button>
 
@@ -241,7 +247,7 @@
                 </div>
             </div>
 
-            <button type="button" class="admin-menu-arrow admin-menu-arrow--right" id="adminMenuNext" aria-label="Desplazar menú a la derecha">
+            <button type="button" class="admin-menu-arrow admin-menu-arrow--right" id="adminMenuNext" title="Desplazar menú a la derecha" aria-label="Desplazar menú a la derecha">
                 <svg class="i"><use href="#i-right"/></svg>
             </button>
         </nav>

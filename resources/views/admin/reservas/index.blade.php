@@ -367,7 +367,7 @@
                         <tr>
 
                             <td>
-                                #{{ $reserva->id }}
+                                {{ $reserva->id }}
                             </td>
 
                             <td>

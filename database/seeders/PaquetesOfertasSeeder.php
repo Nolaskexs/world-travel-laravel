@@ -28,7 +28,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Recorre la Ciudad Blanca, sus miradores y la arquitectura del sur peruano.',
                 'duracion_dias' => 3, 'precio' => 225,
                 'imagen_url' => 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -46,7 +46,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Disfruta de playas cálidas, mar y experiencias costeras.',
                 'duracion_dias' => 4, 'precio' => 329,
                 'imagen_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => false, 'destacado' => false,
             ],
             [
@@ -55,7 +55,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Tradiciones del altiplano y una experiencia en el lago Titicaca.',
                 'duracion_dias' => 3, 'precio' => 269,
                 'imagen_url' => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -73,7 +73,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Playas de aguas turquesas, cultura maya y días de descanso en el Caribe.',
                 'duracion_dias' => 7, 'precio' => 1290,
                 'imagen_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -82,7 +82,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Descubre museos, plazas históricas, gastronomía y barrios llenos de vida.',
                 'duracion_dias' => 5, 'precio' => 820,
                 'imagen_url' => 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -91,7 +91,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Calles coloridas, historia colonial y una escapada al mar Caribe.',
                 'duracion_dias' => 5, 'precio' => 760,
                 'imagen_url' => 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -100,7 +100,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Explora barrios históricos, arte, tango y gastronomía argentina.',
                 'duracion_dias' => 6, 'precio' => 980,
                 'imagen_url' => 'https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -109,7 +109,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Playas icónicas, miradores y paisajes que unen montaña y océano.',
                 'duracion_dias' => 6, 'precio' => 1130,
                 'imagen_url' => 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -118,7 +118,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Experiencias urbanas, gastronomía y vistas de la cordillera.',
                 'duracion_dias' => 4, 'precio' => 699,
                 'imagen_url' => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -127,7 +127,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Playas, arquitectura art déco y una ciudad vibrante.',
                 'duracion_dias' => 6, 'precio' => 1450,
                 'imagen_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => false, 'destacado' => false,
             ],
             [
@@ -136,7 +136,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Rascacielos, museos, parques y las luces de Manhattan.',
                 'duracion_dias' => 6, 'precio' => 1790,
                 'imagen_url' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -145,7 +145,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Arquitectura, museos, barrios y sabores de la capital española.',
                 'duracion_dias' => 7, 'precio' => 1650,
                 'imagen_url' => 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -154,7 +154,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Recorre la Torre Eiffel, museos y los rincones de la Ciudad de la Luz.',
                 'duracion_dias' => 7, 'precio' => 1890,
                 'imagen_url' => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -163,7 +163,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Arte, historia antigua y experiencias gastronómicas en Roma.',
                 'duracion_dias' => 7, 'precio' => 1680,
                 'imagen_url' => 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -172,7 +172,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Museos, barrios y monumentos de la capital británica.',
                 'duracion_dias' => 6, 'precio' => 1990,
                 'imagen_url' => 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -181,7 +181,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Pueblos blancos, terrazas y atardeceres frente al mar Egeo.',
                 'duracion_dias' => 7, 'precio' => 2160,
                 'imagen_url' => 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -190,7 +190,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Templos, tecnología, gastronomía y barrios únicos de Japón.',
                 'duracion_dias' => 8, 'precio' => 2590,
                 'imagen_url' => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -199,7 +199,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Arrozales, templos, playas y descanso en una isla tropical.',
                 'duracion_dias' => 8, 'precio' => 2080,
                 'imagen_url' => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -208,7 +208,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Mercados, templos, canales y gastronomía tailandesa.',
                 'duracion_dias' => 7, 'precio' => 1790,
                 'imagen_url' => 'https://images.unsplash.com/photo-1508004680771-708b02aabdc0?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -217,7 +217,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Arquitectura moderna, experiencias en el desierto y vida urbana.',
                 'duracion_dias' => 6, 'precio' => 1980,
                 'imagen_url' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -226,7 +226,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Historia antigua, museos y monumentos emblemáticos de Egipto.',
                 'duracion_dias' => 7, 'precio' => 1770,
                 'imagen_url' => 'https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -235,7 +235,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Mercados, palacios y paisajes del norte de África.',
                 'duracion_dias' => 7, 'precio' => 1490,
                 'imagen_url' => 'https://images.unsplash.com/photo-1597212720158-74c05b6be801?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => false,
             ],
             [
@@ -244,7 +244,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Recorre la bahía, playas y los principales barrios de Sídney.',
                 'duracion_dias' => 8, 'precio' => 2850,
                 'imagen_url' => 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
             [
@@ -263,7 +263,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Escapada corta por los templos de Ubud y playas tropicales de Bali.',
                 'duracion_dias' => 3, 'precio' => 420,
                 'imagen_url' => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
             ],
             [
                 'titulo' => 'Playas de Bali y Seminyak', 'destino' => 'Bali',
@@ -271,7 +271,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Cinco días de descanso en las mejores costas y clubes de playa balineses.',
                 'duracion_dias' => 5, 'precio' => 890,
                 'imagen_url' => 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
             ],
             [
                 'titulo' => 'Ruta de templos y cascadas en Bali', 'destino' => 'Bali',
@@ -279,7 +279,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Una semana completa recorriendo terrazas de arroz, volcanes y templos sagrados.',
                 'duracion_dias' => 7, 'precio' => 1390,
                 'imagen_url' => 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
             ],
             [
                 'titulo' => 'Gran expedición a Bali e islas Gili', 'destino' => 'Bali',
@@ -295,7 +295,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Escapada rápida para conocer los barrios más vibrantes y modernos de Tokio.',
                 'duracion_dias' => 3, 'precio' => 480,
                 'imagen_url' => 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
             ],
             [
                 'titulo' => 'Descubre Tokio y Kioto esencial', 'destino' => 'Tokio',
@@ -303,7 +303,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Cinco días entre la tecnología de Tokio y los templos antiguos de Kioto.',
                 'duracion_dias' => 5, 'precio' => 990,
                 'imagen_url' => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
             ],
             [
                 'titulo' => 'Ruta clásica por Japón', 'destino' => 'Tokio',
@@ -311,7 +311,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Siete días explorando Tokio, Monte Fuji y Nara en tren bala.',
                 'duracion_dias' => 7, 'precio' => 1480,
                 'imagen_url' => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
             ],
             [
                 'titulo' => 'Escapada caribeña a Cancún', 'destino' => 'Cancún',
@@ -319,7 +319,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Tres días de sol y playa frente a las aguas turquesas del Caribe mexicano.',
                 'duracion_dias' => 3, 'precio' => 380,
                 'imagen_url' => 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
             ],
             [
                 'titulo' => 'Cancún y cenotes de la Riviera Maya', 'destino' => 'Cancún',
@@ -327,7 +327,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Cinco días combinando resorts caribeños con la magia de los cenotes sagrados.',
                 'duracion_dias' => 5, 'precio' => 790,
                 'imagen_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
             ],
             [
                 'titulo' => 'Escapada romana de fin de semana', 'destino' => 'Roma',
@@ -335,7 +335,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Tres días recorriendo el Coliseo, la Fontana di Trevi y callejones con encanto.',
                 'duracion_dias' => 3, 'precio' => 450,
                 'imagen_url' => 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
             ],
             [
                 'titulo' => 'Roma y el Vaticano esencial', 'destino' => 'Roma',
@@ -343,7 +343,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Cinco días con accesos preferenciales a los Museos Vaticanos y monumentos históricos.',
                 'duracion_dias' => 5, 'precio' => 890,
                 'imagen_url' => 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
             ],
             [
                 'titulo' => 'Fin de semana en París', 'destino' => 'París',
@@ -351,7 +351,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Tres días descubriendo la Torre Eiffel, Montmartre y la gastronomía parisina.',
                 'duracion_dias' => 3, 'precio' => 490,
                 'imagen_url' => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
             ],
             [
                 'titulo' => 'París cultural y el Sena', 'destino' => 'París',
@@ -359,7 +359,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Cinco días con paseos en barco por el Sena y visitas guiadas al Louvre.',
                 'duracion_dias' => 5, 'precio' => 950,
                 'imagen_url' => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
             ],
             [
                 'titulo' => 'Cusco fin de semana y Valle Sagrado', 'destino' => 'Cusco',
@@ -367,7 +367,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Tres días ideales para escaparse a la ciudad imperial y los mercados artesanales.',
                 'duracion_dias' => 3, 'precio' => 290,
                 'imagen_url' => 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
             ],
             [
                 'titulo' => 'Cusco, Machu Picchu y Laguna Humantay', 'destino' => 'Cusco',
@@ -383,7 +383,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Cuatro días esenciales para admirar el Taj Mahal y los fuertes históricos de la India.',
                 'duracion_dias' => 4, 'precio' => 680,
                 'imagen_url' => '/icons/india.jpg',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
             ],
             [
                 'titulo' => 'India mágica, templos y Rajastán', 'destino' => 'India',
@@ -391,7 +391,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Siete días de historia, palacios reales de Jaipur y arquitectura mogola.',
                 'duracion_dias' => 7, 'precio' => 1350,
                 'imagen_url' => '/icons/india.jpg',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
             ],
             [
                 'titulo' => 'Escapada a Dubái y Compras', 'destino' => 'Dubái',
@@ -399,7 +399,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Cuatro días de rascacielos imponentes, compras exclusivas y miradores espectaculares.',
                 'duracion_dias' => 4, 'precio' => 850,
                 'imagen_url' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
             ],
             [
                 'titulo' => 'Dubái, Safari y Abu Dabi', 'destino' => 'Dubái',
@@ -407,7 +407,7 @@ class PaquetesOfertasSeeder extends Seeder
                 'descripcion' => 'Siete días de safari 4x4 por las dunas, visita a la mezquita Sheikh Zayed y vida de lujo.',
                 'duracion_dias' => 7, 'precio' => 1490,
                 'imagen_url' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=85',
-                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
             ],
         ];
 

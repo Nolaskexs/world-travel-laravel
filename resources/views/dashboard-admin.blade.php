@@ -286,7 +286,7 @@
             <tbody>
                 @forelse ($ultimasReservas ?? [] as $res)
                     <tr style="border-bottom: 1px solid #f1f5f9; transition: background .15s ease;">
-                        <td style="padding: 12px; font-weight: 700; color: #0284c7;">#{{ $res->id }}</td>
+                        <td style="padding: 12px; font-weight: 700; color: #0284c7;">{{ $res->id }}</td>
                         <td style="padding: 12px;">
                             <strong style="display: block; color: #0f172a;">{{ $res->user->name ?? 'Usuario Demo' }}</strong>
                             <small style="color: #64748b; font-size: 0.8rem;">{{ $res->user->email ?? 'cliente@worldtravel.com' }}</small>

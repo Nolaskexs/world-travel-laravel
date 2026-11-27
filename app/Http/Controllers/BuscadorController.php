@@ -121,10 +121,24 @@ class BuscadorController extends Controller
         $destinoIata = $destinoDestino?->codigo_iata ?? ($catalogoIata[$keyDest]['iata'] ?? strtoupper(substr($destination, 0, 3)));
         $destinoAero = $destinoDestino?->aeropuerto ?? ($catalogoIata[$keyDest]['aeropuerto'] ?? "Aeropuerto de {$destinoNom}");
 
+        // Detectar si origen y destino son iguales
+        $isEqualSearch = false;
+        if (! $busquedaIncompleta) {
+            $isEqualSearch = (strcasecmp($originRaw, $destinationRaw) === 0)
+                || ($origenDestino && $destinoDestino && $origenDestino->id === $destinoDestino->id)
+                || (! empty($origenIata) && ! empty($destinoIata) && strcasecmp($origenIata, $destinoIata) === 0)
+                || (! empty($origenNom) && ! empty($destinoNom) && strcasecmp($origenNom, $destinoNom) === 0);
+        }
+
+        if ($isEqualSearch) {
+            $busquedaIncompleta = true;
+            $avisoBusqueda = 'El origen y el destino no pueden ser iguales. Por favor, selecciona una ciudad de destino diferente para encontrar vuelos disponibles.';
+        }
+
         // Intentar consultar vuelos existentes en MySQL
         $vuelosBd = collect();
         try {
-            if (Schema::hasTable('vuelos')) {
+            if (! $isEqualSearch && Schema::hasTable('vuelos')) {
                 $q = Vuelo::with(['origen', 'destino', 'escalas.origen', 'escalas.llegada'])->where('activo', true);
 
                 if ($origenDestino) {
@@ -231,6 +245,7 @@ class BuscadorController extends Controller
             'infants' => $infants,
             'totalPax' => $totalPax,
             'busquedaIncompleta' => $busquedaIncompleta,
+            'isEqualSearch' => $isEqualSearch,
             'avisoBusqueda' => $avisoBusqueda,
         ];
 
@@ -257,6 +272,7 @@ class BuscadorController extends Controller
             'infants',
             'totalPax',
             'busquedaIncompleta',
+            'isEqualSearch',
             'avisoBusqueda'
         ));
     }

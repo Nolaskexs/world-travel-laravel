@@ -87,6 +87,7 @@
         @else
             <input type="hidden" name="vuelo_id" value="{{ request('vuelo_id') ?? data_get($vuelo, 'id') }}">
             <input type="hidden" name="paquete_id" value="{{ request('paquete_id') }}">
+            <input type="hidden" name="oferta_id" value="{{ request('oferta_id') }}">
             <input type="hidden" name="fecha_viaje" value="{{ request('fecha_viaje') }}">
             <input type="hidden" name="num_pasajeros" value="{{ count($pasajeros) }}">
             <input type="hidden" name="origin" value="{{ request('origin') }}">
