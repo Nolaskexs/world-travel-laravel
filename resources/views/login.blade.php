@@ -60,8 +60,7 @@
                 </div>
             </div>
 
-          <a class="forgot" href="#">¿Olvidaste tú contraseña?</a>
-          <button class="btn btn--primary" type="submit">Iniciar sesión</button>
+          <button class="btn btn--primary" type="submit" style="margin-top: 1rem;">Iniciar sesión</button>
         </form>
 
         <div class="or" role="separator"><span>o</span></div>

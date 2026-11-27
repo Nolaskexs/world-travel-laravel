@@ -38,20 +38,41 @@ class ReservaController extends Controller
                 '=',
                 'reservas.paquete_id'
             )
+            ->leftJoin(
+                'alojamientos',
+                'alojamientos.id',
+                '=',
+                'reservas.alojamiento_id'
+            )
+            ->leftJoin(
+                'vuelos',
+                'vuelos.id',
+                '=',
+                'reservas.vuelo_id'
+            )
+            ->leftJoin(
+                'ofertas',
+                'ofertas.id',
+                '=',
+                'reservas.oferta_id'
+            )
             ->select(
                 'reservas.*',
                 DB::raw('COALESCE(users.name, "Cliente Registrado") as cliente_nombre'),
                 DB::raw('COALESCE(users.email, "cliente@worldtravel.com") as cliente_email'),
-                DB::raw('COALESCE(paquetes.titulo, "Viaje Turístico / Vuelo") as paquete_titulo')
+                DB::raw('COALESCE(paquetes.titulo, alojamientos.nombre, vuelos.codigo_vuelo, ofertas.titulo, "Viaje Turístico / Vuelo") as paquete_titulo')
             );
 
-        // Buscar por cliente, correo, paquete o ID.
+        // Buscar por cliente, correo, paquete, hotel, vuelo o ID.
         if ($busqueda !== '') {
             $consulta->where(function ($query) use ($busqueda) {
                 $query
                     ->where('users.name', 'like', "%{$busqueda}%")
                     ->orWhere('users.email', 'like', "%{$busqueda}%")
-                    ->orWhere('paquetes.titulo', 'like', "%{$busqueda}%");
+                    ->orWhere('paquetes.titulo', 'like', "%{$busqueda}%")
+                    ->orWhere('alojamientos.nombre', 'like', "%{$busqueda}%")
+                    ->orWhere('ofertas.titulo', 'like', "%{$busqueda}%")
+                    ->orWhere('vuelos.codigo_vuelo', 'like', "%{$busqueda}%");
 
                 if (ctype_digit($busqueda)) {
                     $query->orWhere(
@@ -86,7 +107,7 @@ class ReservaController extends Controller
             $asientosLista = isset($pasajerosPorReserva[$r->id])
                 ? $pasajerosPorReserva[$r->id]->pluck('asiento')->all()
                 : [];
-            $r->asientos_texto = !empty($asientosLista) ? implode(', ', $asientosLista) : null;
+            $r->asientos_texto = ! empty($asientosLista) ? implode(', ', $asientosLista) : null;
         }
 
         // Estadísticas reales desde MySQL.
@@ -133,18 +154,36 @@ class ReservaController extends Controller
                 '=',
                 'reservas.paquete_id'
             )
+            ->leftJoin(
+                'alojamientos',
+                'alojamientos.id',
+                '=',
+                'reservas.alojamiento_id'
+            )
+            ->leftJoin(
+                'vuelos',
+                'vuelos.id',
+                '=',
+                'reservas.vuelo_id'
+            )
+            ->leftJoin(
+                'ofertas',
+                'ofertas.id',
+                '=',
+                'reservas.oferta_id'
+            )
             ->select(
                 'reservas.*',
                 DB::raw('COALESCE(users.name, "Cliente Registrado") as cliente_nombre'),
                 DB::raw('COALESCE(users.email, "cliente@worldtravel.com") as cliente_email'),
-                DB::raw('COALESCE(paquetes.titulo, "Viaje Turístico / Vuelo") as paquete_titulo'),
-                DB::raw('COALESCE(paquetes.destino, "Destino") as paquete_destino'),
+                DB::raw('COALESCE(paquetes.titulo, alojamientos.nombre, vuelos.codigo_vuelo, ofertas.titulo, "Viaje Turístico / Vuelo") as paquete_titulo'),
+                DB::raw('COALESCE(paquetes.destino, alojamientos.ubicacion, ofertas.titulo, "Destino") as paquete_destino'),
                 DB::raw('COALESCE(paquetes.pais, "Mundo") as paquete_pais')
             )
             ->where('reservas.id', $reserva)
             ->first();
 
-        abort_if(!$reservaData, 404);
+        abort_if(! $reservaData, 404);
 
         $pasajeros = DB::table('reserva_pasajeros')
             ->where('reserva_id', $reserva)

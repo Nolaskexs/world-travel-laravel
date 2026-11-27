@@ -25,7 +25,8 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(LoginResponse::class, function () {
-            return new class implements LoginResponse {
+            return new class implements LoginResponse
+            {
                 public function toResponse($request)
                 {
                     $user = auth()->user();
@@ -39,7 +40,8 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(RegisterResponse::class, function () {
-            return new class implements RegisterResponse {
+            return new class implements RegisterResponse
+            {
                 public function toResponse($request)
                 {
                     $user = auth()->user();
@@ -53,7 +55,8 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(TwoFactorLoginResponse::class, function () {
-            return new class implements TwoFactorLoginResponse {
+            return new class implements TwoFactorLoginResponse
+            {
                 public function toResponse($request)
                 {
                     $user = auth()->user();
@@ -73,7 +76,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::loginView(fn () => view('login'));
-        Fortify::registerView(fn () => view('register'));    
+        Fortify::registerView(fn () => view('register'));
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);

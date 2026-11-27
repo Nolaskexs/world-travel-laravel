@@ -25,12 +25,12 @@ class CreateNewUser implements CreatesNewUsers
     {
         // 1. Unificar nombre completo si vienen firstName y lastName por separado
         if (empty($input['name'])) {
-            $nombres = trim(($input['firstName'] ?? '') . ' ' . ($input['lastName'] ?? ''));
+            $nombres = trim(($input['firstName'] ?? '').' '.($input['lastName'] ?? ''));
             $input['name'] = $nombres !== '' ? $nombres : 'Usuario';
         }
 
         // 2. Mapear confirmación de password si viene como 'confirm'
-        if (empty($input['password_confirmation']) && !empty($input['confirm'])) {
+        if (empty($input['password_confirmation']) && ! empty($input['confirm'])) {
             $input['password_confirmation'] = $input['confirm'];
         }
 
@@ -42,11 +42,11 @@ class CreateNewUser implements CreatesNewUsers
 
         // 4. Mapear Teléfono
         $telefono = null;
-        if (!empty($input['phone'])) {
+        if (! empty($input['phone'])) {
             $dial = trim((string) ($input['dial'] ?? ''));
             $phone = trim((string) $input['phone']);
             $telefono = trim("{$dial} {$phone}");
-        } elseif (!empty($input['telefono'])) {
+        } elseif (! empty($input['telefono'])) {
             $telefono = trim((string) $input['telefono']);
         }
 

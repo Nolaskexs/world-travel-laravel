@@ -33,4 +33,12 @@ class Destino extends Model
     {
         return $this->hasMany(Paquete::class, 'destino', 'nombre');
     }
+
+    /**
+     * Alojamientos y hoteles ubicados en este destino.
+     */
+    public function alojamientos(): HasMany
+    {
+        return $this->hasMany(Alojamiento::class);
+    }
 }

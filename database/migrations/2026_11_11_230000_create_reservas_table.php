@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->string('estado')->default('pendiente'); // pendiente, confirmada, cancelada
             $table->timestamps();
-    });
+        });
     }
 
     /**

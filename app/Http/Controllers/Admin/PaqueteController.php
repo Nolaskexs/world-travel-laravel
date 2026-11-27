@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Destino;
 use App\Models\Paquete;
-use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\QueryException;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class PaqueteController extends Controller
 {
@@ -28,6 +28,7 @@ class PaqueteController extends Controller
     public function create(): View
     {
         $destinos = Destino::orderBy('nombre')->get();
+
         return view('admin.paquetes.create', compact('destinos'));
     }
 
@@ -47,6 +48,7 @@ class PaqueteController extends Controller
     public function edit(Paquete $paquete): View
     {
         $destinos = Destino::orderBy('nombre')->get();
+
         return view('admin.paquetes.edit', compact('paquete', 'destinos'));
     }
 
@@ -136,10 +138,9 @@ class PaqueteController extends Controller
         return $datos;
     }
 
-
-/**
- * DELETE: Eliminar un paquete turístico.
- */
+    /**
+     * DELETE: Eliminar un paquete turístico.
+     */
     public function destroy(Paquete $paquete): RedirectResponse
     {
         // No eliminar paquetes que tengan ofertas relacionadas.
@@ -189,6 +190,4 @@ class PaqueteController extends Controller
                 'Paquete turístico eliminado correctamente.'
             );
     }
-
-    
 }

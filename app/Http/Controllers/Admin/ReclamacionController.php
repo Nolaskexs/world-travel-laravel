@@ -15,9 +15,9 @@ class ReclamacionController extends Controller
      */
     public function index(Request $request): View
     {
-        $q       = trim((string) $request->query('q', ''));
-        $estado  = (string) $request->query('estado', '');
-        $tipo    = (string) $request->query('tipo', '');
+        $q = trim((string) $request->query('q', ''));
+        $estado = (string) $request->query('estado', '');
+        $tipo = (string) $request->query('tipo', '');
 
         $query = Reclamacion::query()->latest();
 
@@ -44,10 +44,10 @@ class ReclamacionController extends Controller
 
         // Métricas globales
         $stats = [
-            'total'       => Reclamacion::count(),
-            'pendientes'  => Reclamacion::where('estado', 'pendiente')->count(),
-            'en_proceso'  => Reclamacion::where('estado', 'en_proceso')->count(),
-            'atendidos'   => Reclamacion::where('estado', 'atendido')->count(),
+            'total' => Reclamacion::count(),
+            'pendientes' => Reclamacion::where('estado', 'pendiente')->count(),
+            'en_proceso' => Reclamacion::where('estado', 'en_proceso')->count(),
+            'atendidos' => Reclamacion::where('estado', 'atendido')->count(),
         ];
 
         return view('admin.reclamaciones.index', compact('reclamaciones', 'stats', 'q', 'estado', 'tipo'));
@@ -71,13 +71,13 @@ class ReclamacionController extends Controller
         $reclamacion = Reclamacion::findOrFail($id);
 
         $validated = $request->validate([
-            'estado'    => ['required', 'in:pendiente,en_proceso,atendido,archivado'],
+            'estado' => ['required', 'in:pendiente,en_proceso,atendido,archivado'],
             'respuesta' => ['nullable', 'string', 'max:5000'],
         ]);
 
         $reclamacion->estado = $validated['estado'];
 
-        if (!empty($validated['respuesta'])) {
+        if (! empty($validated['respuesta'])) {
             $reclamacion->respuesta = $validated['respuesta'];
             $reclamacion->respondido_por = auth()->id();
             $reclamacion->fecha_respuesta = now();
@@ -87,6 +87,6 @@ class ReclamacionController extends Controller
 
         return redirect()
             ->route('admin.reclamaciones.show', $reclamacion->id)
-            ->with('success', '¡El reclamo ' . $reclamacion->codigo . ' ha sido actualizado exitosamente!');
+            ->with('success', '¡El reclamo '.$reclamacion->codigo.' ha sido actualizado exitosamente!');
     }
 }

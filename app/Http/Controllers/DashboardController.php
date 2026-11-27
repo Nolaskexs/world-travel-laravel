@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Reserva;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -23,21 +22,21 @@ class DashboardController extends Controller
         $primerNombre = $partes[0] ?? $nombreCompleto;
         $iniciales = '';
         if (count($partes) >= 2) {
-            $iniciales = mb_strtoupper(mb_substr($partes[0], 0, 1) . mb_substr($partes[1], 0, 1));
+            $iniciales = mb_strtoupper(mb_substr($partes[0], 0, 1).mb_substr($partes[1], 0, 1));
         } else {
             $iniciales = mb_strtoupper(mb_substr($primerNombre, 0, 2));
         }
 
         $usuario = [
-            'nombre'        => $nombreCompleto,
+            'nombre' => $nombreCompleto,
             'primer_nombre' => $primerNombre,
-            'iniciales'     => $iniciales ?: 'WT',
-            'avatar'        => 'img/avatars/jair.jpg',
-            'progreso'      => $user->email_verified_at ? 100 : 85,
+            'iniciales' => $iniciales ?: 'WT',
+            'avatar' => 'img/avatars/jair.jpg',
+            'progreso' => $user->email_verified_at ? 100 : 85,
         ];
 
         // 3. Consultar las reservas del cliente desde la base de datos con relaciones
-        $reservas = Reserva::with(['paquete', 'pasajeros'])
+        $reservas = Reserva::with(['paquete', 'alojamiento', 'vuelo', 'oferta', 'pasajeros'])
             ->where('user_id', $user->id)
             ->orderBy('fecha_viaje')
             ->get();
@@ -71,9 +70,9 @@ class DashboardController extends Controller
 
             $estadoLabel = match ($estado) {
                 'confirmada' => 'Confirmado',
-                'pendiente'  => 'Pendiente de pago',
-                'cancelada'  => 'Cancelada',
-                default      => ucfirst($estado),
+                'pendiente' => 'Pendiente de pago',
+                'cancelada' => 'Cancelada',
+                default => ucfirst($estado),
             };
 
             // Si está dentro de los 3 días de viaje, mostrar check-in disponible
@@ -82,22 +81,31 @@ class DashboardController extends Controller
                 $estadoLabel = 'Check-in Disponible';
             }
 
-            $img = $paquete?->imagen_url ?: 'img/viajes/roma.jpg';
-            if (!str_starts_with($img, 'http') && !str_starts_with($img, 'img/')) {
-                $img = 'img/viajes/' . $img;
+            $titulo = $reserva->detalle_servicio
+                ?: ($paquete ? ($paquete->titulo ?? "Viaje a {$paquete->destino}")
+                : ($reserva->alojamiento ? $reserva->alojamiento->nombre
+                : ($reserva->vuelo ? "Vuelo {$reserva->vuelo->numero_vuelo}"
+                : ($reserva->oferta ? $reserva->oferta->titulo : "Reserva #{$reserva->id}"))));
+
+            $img = $paquete?->imagen_url
+                ?: ($reserva->alojamiento ? $reserva->alojamiento->imagen_url
+                : 'icons/roma.jpg');
+
+            if (! str_starts_with($img, 'http') && ! str_starts_with($img, 'img/') && ! str_starts_with($img, 'icons/')) {
+                $img = 'icons/'.$img;
             }
 
             return [
-                'id'           => $reserva->id,
-                'titulo'       => $paquete ? ($paquete->titulo ?? "Viaje a {$paquete->destino}") : "Reserva #{$reserva->id}",
-                'fecha'        => $reserva->fecha_viaje ? $reserva->fecha_viaje->translatedFormat('d M Y') : 'Fecha pendiente',
-                'estado'       => $estado,
+                'id' => $reserva->id,
+                'titulo' => $titulo,
+                'fecha' => $reserva->fecha_viaje ? $reserva->fecha_viaje->translatedFormat('d M Y') : ($reserva->fecha_entrada ? $reserva->fecha_entrada->translatedFormat('d M Y') : 'Fecha pendiente'),
+                'estado' => $estado,
                 'estado_label' => $estadoLabel,
-                'destacado'    => 'US$ ' . number_format($reserva->total, 2),
-                'total_num'    => (float) $reserva->total,
-                'nota'         => $reserva->num_pasajeros . ' ' . ($reserva->num_pasajeros === 1 ? 'pasajero' : 'pasajeros'),
-                'imagen'       => $img,
-                'checkin_url'  => route('asientos.checkin', $reserva->id),
+                'destacado' => 'US$ '.number_format($reserva->total, 2),
+                'total_num' => (float) $reserva->total,
+                'nota' => $reserva->num_pasajeros.' '.($reserva->num_pasajeros === 1 ? 'pasajero' : 'pasajeros'),
+                'imagen' => $img,
+                'checkin_url' => route('asientos.checkin', $reserva->id),
             ];
         })->values()->all();
 
@@ -112,28 +120,28 @@ class DashboardController extends Controller
 
             $pasajerosLista = $reserva->pasajeros;
             if ($pasajerosLista->isEmpty()) {
-                $pasajerosLista = collect([(object)[
+                $pasajerosLista = collect([(object) [
                     'nombre' => $user->name,
                 ]]);
             }
 
             foreach ($pasajerosLista as $p) {
                 $pPartes = preg_split('/\s+/', trim($p->nombre)) ?: [$p->nombre];
-                $pInit = mb_strtoupper(mb_substr($pPartes[0] ?? 'V', 0, 1) . mb_substr($pPartes[1] ?? '', 0, 1));
+                $pInit = mb_strtoupper(mb_substr($pPartes[0] ?? 'V', 0, 1).mb_substr($pPartes[1] ?? '', 0, 1));
 
                 $historial[] = [
-                    'pasajero'       => $p->nombre,
-                    'iniciales'      => $pInit ?: 'WT',
-                    'avatar'         => 'img/avatars/jair.jpg',
-                    'fecha'          => $reserva->fecha_viaje ? $reserva->fecha_viaje->format('d/m/Y') : now()->format('d/m/Y'),
-                    'tipo'           => $tipo,
-                    'origen'         => 'LIM',
-                    'origen_ciudad'  => 'Lima',
-                    'destino'        => $destinoCode,
+                    'pasajero' => $p->nombre,
+                    'iniciales' => $pInit ?: 'WT',
+                    'avatar' => 'img/avatars/jair.jpg',
+                    'fecha' => $reserva->fecha_viaje ? $reserva->fecha_viaje->format('d/m/Y') : now()->format('d/m/Y'),
+                    'tipo' => $tipo,
+                    'origen' => 'LIM',
+                    'origen_ciudad' => 'Lima',
+                    'destino' => $destinoCode,
                     'destino_ciudad' => $destinoCiudad,
-                    'asiento'        => $p->asiento ?? null,
-                    'accion_label'   => $reserva->estado === 'confirmada' ? 'Check-in / Asientos' : 'Detalles',
-                    'accion_url'     => route('asientos.checkin', $reserva->id),
+                    'asiento' => $p->asiento ?? null,
+                    'accion_label' => $reserva->estado === 'confirmada' ? 'Check-in / Asientos' : 'Detalles',
+                    'accion_url' => route('asientos.checkin', $reserva->id),
                 ];
             }
         }
@@ -150,12 +158,13 @@ class DashboardController extends Controller
 
         $frecuentes = $nombresFrecuentes->map(function ($nom) {
             $partesP = preg_split('/\s+/', trim($nom)) ?: [$nom];
-            $init = mb_strtoupper(mb_substr($partesP[0] ?? 'V', 0, 1) . mb_substr($partesP[1] ?? '', 0, 1));
+            $init = mb_strtoupper(mb_substr($partesP[0] ?? 'V', 0, 1).mb_substr($partesP[1] ?? '', 0, 1));
+
             return [
-                'nombre'    => $nom,
+                'nombre' => $nom,
                 'iniciales' => $init ?: 'WT',
-                'avatar'    => 'img/avatars/jair.jpg',
-                'estado'    => 'Viajero registrado',
+                'avatar' => 'img/avatars/jair.jpg',
+                'estado' => 'Viajero registrado',
             ];
         })->take(5)->all();
 
@@ -176,8 +185,8 @@ class DashboardController extends Controller
                 ->count() * 800 + 500;
 
             $millas[] = [
-                'mes'           => $nombreMes,
-                'nacional'      => $millasNac + ($i * 150),
+                'mes' => $nombreMes,
+                'nacional' => $millasNac + ($i * 150),
                 'internacional' => $millasInt + ($i * 200),
             ];
         }

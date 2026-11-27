@@ -85,10 +85,13 @@
               @endif
             </a>
             <a href="{{ route('admin.paquetes.create') }}" class="admin-topbar__link admin-topbar__link--btn">
-              + Nuevo Paquete
+              + Paquete
+            </a>
+            <a href="{{ route('admin.alojamientos.create') }}" class="admin-topbar__link admin-topbar__link--btn">
+              + Alojamiento
             </a>
             <a href="{{ route('admin.destinos.create') }}" class="admin-topbar__link admin-topbar__link--btn">
-              + Nuevo Destino
+              + Destino
             </a>
           </div>
 

@@ -139,19 +139,8 @@
     </div>
   </section>
 
-  <!-- partial: contacto, app y newsletter -->
-  <section class="wrap">
-    <div class="contact">
-      <img src="{{ asset('icons/support2.jpg') }}" class="ph contact__img">
-      <div><h3>Contáctanos</h3>
-        <div class="socials">
-          <img class="ph soc" src="{{ asset('icons/2023_Facebook_icon.svg.png') }}" aria-label="Facebook" href="#">
-          <img class="ph soc" src="{{ asset('icons/instagram-circle-icon.png') }}" aria-label="Instagram" href="#">
-          <img class="ph soc" src="{{ asset('icons/x-icon.jpg') }}" aria-label="X" href="#">
-          <img class="ph soc" src="{{ asset('icons/what.png') }}" aria-label="WhatsApp" href="#">
-        </div>
-      </div>
-    </div>
+  <!-- partial: app y newsletter -->
+  <section class="wrap" style="margin-top: 2.75rem;">
     <h2 class="app-title">Recibe ofertas y descubre el mundo</h2>
     <div class="app">
       <img class="ph app__phone" src="{{ asset('icons/icon-extends-black.png') }}" alt="App World Travel">

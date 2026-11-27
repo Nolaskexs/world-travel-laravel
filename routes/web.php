@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AjustesController;
+use App\Http\Controllers\Admin\AlojamientoController as AdminAlojamientoController;
 use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DestinoController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ItinerarioController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ReclamacionController;
 use App\Http\Controllers\ReservaClienteController;
+use App\Models\Paquete;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -132,7 +134,7 @@ Route::prefix('admin')
 
 /*
 |--------------------------------------------------------------------------
-| 6. Alojamientos
+| 6. Alojamientos (Catálogo público y detalle desde MySQL)
 |--------------------------------------------------------------------------
 */
 
@@ -258,8 +260,27 @@ if (app()->environment('local')) {
 
     Route::get('/vista-previa-itinerarios', function () {
 
+        $catalogoDestinos = Paquete::where('activo', true)
+            ->select('destino as ciudad', 'pais', 'precio as costo_referencial', 'imagen_url')
+            ->orderBy('destino')
+            ->get()
+            ->map(function ($p) {
+                $img = $p->imagen_url;
+                $url = ! empty($img) ? (str_starts_with($img, 'http') ? $img : asset(ltrim($img, '/'))) : asset('icons/MachuPicchu1-Carrusel.jpg');
+
+                return [
+                    'ciudad' => $p->ciudad,
+                    'pais' => $p->pais,
+                    'costo' => (float) $p->costo_referencial,
+                    'imagen' => $url,
+                ];
+            })
+            ->unique('ciudad')
+            ->values();
+
         return view('itinerarios', [
             'itinerarios' => collect(),
+            'catalogoDestinos' => $catalogoDestinos,
         ]);
 
     })->name('itinerarios.preview');
@@ -315,8 +336,8 @@ Route::middleware(['auth', 'can:administrar'])
         Route::put('/destinos/{destino}', [DestinoController::class, 'update'])->name('destinos.update');
         Route::delete('/destinos/{destino}', [DestinoController::class, 'destroy'])->name('destinos.destroy');
 
-        // FACTURACIÓN: Listado y balance financiero
-        Route::get('/facturacion', [FacturacionController::class, 'index'])->name('facturacion.index');
+        // ALOJAMIENTOS: CRUD completo de hoteles
+        Route::resource('alojamientos', AdminAlojamientoController::class);
 
         // FACTURACIÓN: Listado y balance financiero
         Route::get('/facturacion', [

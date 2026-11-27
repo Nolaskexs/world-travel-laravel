@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Paquete;
+use App\Models\Reserva;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -63,7 +65,7 @@ class LoginRedirectTest extends TestCase
     public function test_cliente_con_reservas_accediendo_a_dashboard_entra_con_exito(): void
     {
         $cliente = User::factory()->create(['rol' => 'cliente']);
-        $paquete = \App\Models\Paquete::create([
+        $paquete = Paquete::create([
             'titulo' => 'Vuelo a Roma',
             'descripcion' => 'Paquete turístico de prueba en Roma con vuelos y hotel.',
             'destino' => 'Roma',
@@ -74,7 +76,7 @@ class LoginRedirectTest extends TestCase
             'destacado' => true,
             'activo' => true,
         ]);
-        \App\Models\Reserva::create([
+        Reserva::create([
             'user_id' => $cliente->id,
             'paquete_id' => $paquete->id,
             'fecha_viaje' => now()->addDays(5),

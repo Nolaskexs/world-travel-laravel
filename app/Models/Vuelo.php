@@ -45,6 +45,11 @@ class Vuelo extends Model
         return $this->hasMany(Reserva::class);
     }
 
+    public function getNumeroVueloAttribute(): string
+    {
+        return (string) $this->codigo_vuelo;
+    }
+
     // Helper para mostrar "51h 45m" automáticamente en Blade: {{ $vuelo->duracion_formateada }}
     public function getDuracionFormateadaAttribute(): string
     {

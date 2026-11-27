@@ -13,5 +13,14 @@
     "Vuelos": "Vuelos",
     "Alojamientos": "Alojamientos",
     "Paquetes": "Paquetes",
-    "Ofertas": "Ofertas"
+    "Ofertas": "Ofertas",
+    "This action is unauthorized.": "Esta acción no está autorizada.",
+    "Forbidden": "Acceso denegado",
+    "Unauthorized": "No autorizado",
+    "Payment Required": "Pago requerido",
+    "Not Found": "Página no encontrada",
+    "Page Expired": "Página expirada",
+    "Too Many Requests": "Demasiadas solicitudes",
+    "Server Error": "Error en el servidor",
+    "Service Unavailable": "Servicio no disponible"
 }

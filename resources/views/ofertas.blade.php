@@ -11,7 +11,6 @@
                 <h1>Más destinos.<br><em>Menos límites.</em></h1>
                 <p>Descubre promociones internacionales con precios expresados en dólares estadounidenses (USD).</p>
                 <div class="wt-hero__actions">
-                    <a class="wt-button wt-button--white" href="#ofertas-vigentes">Ver promociones <span aria-hidden="true">→</span></a>
                     <a class="wt-hero__quiet" href="{{ route('paquetes') }}">Todos los paquetes <span aria-hidden="true">↗</span></a>
                 </div>
             </div>

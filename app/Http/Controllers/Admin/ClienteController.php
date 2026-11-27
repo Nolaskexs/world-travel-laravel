@@ -21,8 +21,8 @@ class ClienteController extends Controller
 
         if ($busqueda !== '') {
             $consulta->where(function ($query) use ($busqueda) {
-                $query->where('name', 'like', '%' . $busqueda . '%')
-                    ->orWhere('email', 'like', '%' . $busqueda . '%');
+                $query->where('name', 'like', '%'.$busqueda.'%')
+                    ->orWhere('email', 'like', '%'.$busqueda.'%');
             });
         }
 

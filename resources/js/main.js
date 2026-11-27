@@ -249,7 +249,7 @@
   function initPassengers() {
     const p = $('#dd-pax'), label = $('#paxLabel'), MAX = 9;
     if (!p || !label) return;
-    const initAdults = Number($('#inputAdults')?.value) || (label.dataset.mode === 'hotel' ? 2 : 1);
+    const initAdults = Number($('#inputAdults')?.value) || 1;
     const initKids = Number($('#inputKids')?.value) || 0;
     const initInfants = Number($('#inputInfants')?.value) || 0;
     let applied = { adults: initAdults, kids: initKids, infants: initInfants }, draft = { ...applied };
@@ -270,7 +270,7 @@
         const n = total(applied);
         const isHotel = label.dataset.mode === 'hotel';
         label.textContent = isHotel
-          ? `${n} huésped${n > 1 ? 'es' : ''}`
+          ? (n === 1 ? '1 persona' : `${n} huéspedes`)
           : `${n} pasajero${n > 1 ? 's' : ''}`;
         if ($('#inputAdults')) $('#inputAdults').value = applied.adults;
         if ($('#inputKids')) $('#inputKids').value = applied.kids;

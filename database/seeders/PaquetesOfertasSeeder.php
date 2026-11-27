@@ -256,6 +256,159 @@ class PaquetesOfertasSeeder extends Seeder
                 'incluye_vuelo' => true, 'incluye_hotel' => true,
                 'incluye_tour' => true, 'destacado' => true,
             ],
+            // Nuevas opciones para enriquecer filtros de presupuesto y duración
+            [
+                'titulo' => 'Escapada express a Bali y Ubud', 'destino' => 'Bali',
+                'pais' => 'Indonesia', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Escapada corta por los templos de Ubud y playas tropicales de Bali.',
+                'duracion_dias' => 3, 'precio' => 420,
+                'imagen_url' => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Playas de Bali y Seminyak', 'destino' => 'Bali',
+                'pais' => 'Indonesia', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Cinco días de descanso en las mejores costas y clubes de playa balineses.',
+                'duracion_dias' => 5, 'precio' => 890,
+                'imagen_url' => 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Ruta de templos y cascadas en Bali', 'destino' => 'Bali',
+                'pais' => 'Indonesia', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Una semana completa recorriendo terrazas de arroz, volcanes y templos sagrados.',
+                'duracion_dias' => 7, 'precio' => 1390,
+                'imagen_url' => 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
+            [
+                'titulo' => 'Gran expedición a Bali e islas Gili', 'destino' => 'Bali',
+                'pais' => 'Indonesia', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Doce días inolvidables entre la cultura balinesa y las aguas cristalinas de las islas Gili.',
+                'duracion_dias' => 12, 'precio' => 2650,
+                'imagen_url' => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Tokio express y Shibuya', 'destino' => 'Tokio',
+                'pais' => 'Japón', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Escapada rápida para conocer los barrios más vibrantes y modernos de Tokio.',
+                'duracion_dias' => 3, 'precio' => 480,
+                'imagen_url' => 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Descubre Tokio y Kioto esencial', 'destino' => 'Tokio',
+                'pais' => 'Japón', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Cinco días entre la tecnología de Tokio y los templos antiguos de Kioto.',
+                'duracion_dias' => 5, 'precio' => 990,
+                'imagen_url' => 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
+            [
+                'titulo' => 'Ruta clásica por Japón', 'destino' => 'Tokio',
+                'pais' => 'Japón', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Siete días explorando Tokio, Monte Fuji y Nara en tren bala.',
+                'duracion_dias' => 7, 'precio' => 1480,
+                'imagen_url' => 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Escapada caribeña a Cancún', 'destino' => 'Cancún',
+                'pais' => 'México', 'continente' => 'America', 'moneda' => 'USD',
+                'descripcion' => 'Tres días de sol y playa frente a las aguas turquesas del Caribe mexicano.',
+                'duracion_dias' => 3, 'precio' => 380,
+                'imagen_url' => 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Cancún y cenotes de la Riviera Maya', 'destino' => 'Cancún',
+                'pais' => 'México', 'continente' => 'America', 'moneda' => 'USD',
+                'descripcion' => 'Cinco días combinando resorts caribeños con la magia de los cenotes sagrados.',
+                'duracion_dias' => 5, 'precio' => 790,
+                'imagen_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
+            [
+                'titulo' => 'Escapada romana de fin de semana', 'destino' => 'Roma',
+                'pais' => 'Italia', 'continente' => 'Europa', 'moneda' => 'USD',
+                'descripcion' => 'Tres días recorriendo el Coliseo, la Fontana di Trevi y callejones con encanto.',
+                'duracion_dias' => 3, 'precio' => 450,
+                'imagen_url' => 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Roma y el Vaticano esencial', 'destino' => 'Roma',
+                'pais' => 'Italia', 'continente' => 'Europa', 'moneda' => 'USD',
+                'descripcion' => 'Cinco días con accesos preferenciales a los Museos Vaticanos y monumentos históricos.',
+                'duracion_dias' => 5, 'precio' => 890,
+                'imagen_url' => 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
+            [
+                'titulo' => 'Fin de semana en París', 'destino' => 'París',
+                'pais' => 'Francia', 'continente' => 'Europa', 'moneda' => 'USD',
+                'descripcion' => 'Tres días descubriendo la Torre Eiffel, Montmartre y la gastronomía parisina.',
+                'duracion_dias' => 3, 'precio' => 490,
+                'imagen_url' => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'París cultural y el Sena', 'destino' => 'París',
+                'pais' => 'Francia', 'continente' => 'Europa', 'moneda' => 'USD',
+                'descripcion' => 'Cinco días con paseos en barco por el Sena y visitas guiadas al Louvre.',
+                'duracion_dias' => 5, 'precio' => 950,
+                'imagen_url' => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
+            [
+                'titulo' => 'Cusco fin de semana y Valle Sagrado', 'destino' => 'Cusco',
+                'pais' => 'Perú', 'continente' => 'America', 'moneda' => 'USD',
+                'descripcion' => 'Tres días ideales para escaparse a la ciudad imperial y los mercados artesanales.',
+                'duracion_dias' => 3, 'precio' => 290,
+                'imagen_url' => 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Cusco, Machu Picchu y Laguna Humantay', 'destino' => 'Cusco',
+                'pais' => 'Perú', 'continente' => 'America', 'moneda' => 'USD',
+                'descripcion' => 'Siete días completos con tren panorámico, ciudadela inca y trekking a la laguna.',
+                'duracion_dias' => 7, 'precio' => 890,
+                'imagen_url' => 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => true, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
+            [
+                'titulo' => 'Triángulo Dorado Express (Delhi y Agra)', 'destino' => 'India',
+                'pais' => 'India', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Cuatro días esenciales para admirar el Taj Mahal y los fuertes históricos de la India.',
+                'duracion_dias' => 4, 'precio' => 680,
+                'imagen_url' => '/icons/india.jpg',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'India mágica, templos y Rajastán', 'destino' => 'India',
+                'pais' => 'India', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Siete días de historia, palacios reales de Jaipur y arquitectura mogola.',
+                'duracion_dias' => 7, 'precio' => 1350,
+                'imagen_url' => '/icons/india.jpg',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
+            [
+                'titulo' => 'Escapada a Dubái y Compras', 'destino' => 'Dubái',
+                'pais' => 'Emiratos Árabes Unidos', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Cuatro días de rascacielos imponentes, compras exclusivas y miradores espectaculares.',
+                'duracion_dias' => 4, 'precio' => 850,
+                'imagen_url' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => false, 'destacado' => false,
+            ],
+            [
+                'titulo' => 'Dubái, Safari y Abu Dabi', 'destino' => 'Dubái',
+                'pais' => 'Emiratos Árabes Unidos', 'continente' => 'Asia', 'moneda' => 'USD',
+                'descripcion' => 'Siete días de safari 4x4 por las dunas, visita a la mezquita Sheikh Zayed y vida de lujo.',
+                'duracion_dias' => 7, 'precio' => 1490,
+                'imagen_url' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=85',
+                'incluye_vuelo' => false, 'incluye_hotel' => true, 'incluye_tour' => true, 'destacado' => true,
+            ],
         ];
 
         $ids = [];
@@ -264,7 +417,9 @@ class PaquetesOfertasSeeder extends Seeder
                 ['titulo' => $datos['titulo']],
                 $datos + ['activo' => true]
             );
-            $ids[$datos['destino']] = $paquete->id;
+            if (! isset($ids[$datos['destino']])) {
+                $ids[$datos['destino']] = $paquete->id;
+            }
         }
 
         // Descuentos de demostración. Se aplican sobre el precio USD del paquete.

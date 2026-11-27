@@ -86,10 +86,8 @@
                                 if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
                                     return $url;
                                 }
-                                if (str_starts_with($url, 'icons/')) {
-                                    return asset($url);
-                                }
-                                return asset('icons/' . ltrim($url, '/'));
+                                $limpio = ltrim($url, '/');
+                                return asset($limpio);
                             }
                             if (isset($pkg->destino) && stripos($pkg->destino, 'cusco') !== false) {
                                 return asset('icons/MachuPicchu1-Carrusel.jpg');

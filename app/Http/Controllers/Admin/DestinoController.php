@@ -23,8 +23,8 @@ class DestinoController extends Controller
         if ($busqueda !== '') {
             $consulta->where(function ($q) use ($busqueda) {
                 $q->where('nombre', 'like', "%{$busqueda}%")
-                  ->orWhere('pais', 'like', "%{$busqueda}%")
-                  ->orWhere('descripcion', 'like', "%{$busqueda}%");
+                    ->orWhere('pais', 'like', "%{$busqueda}%")
+                    ->orWhere('descripcion', 'like', "%{$busqueda}%");
             });
         }
 
@@ -58,10 +58,10 @@ class DestinoController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $datos = $request->validate([
-            'nombre'      => 'required|string|max:100|unique:destinos,nombre',
-            'pais'        => 'required|string|max:100',
+            'nombre' => 'required|string|max:100|unique:destinos,nombre',
+            'pais' => 'required|string|max:100',
             'descripcion' => 'nullable|string|max:2000',
-            'imagen'      => 'nullable|string|max:500',
+            'imagen' => 'nullable|string|max:500',
         ]);
 
         Destino::create($datos);
@@ -85,10 +85,10 @@ class DestinoController extends Controller
     public function update(Request $request, Destino $destino): RedirectResponse
     {
         $datos = $request->validate([
-            'nombre'      => 'required|string|max:100|unique:destinos,nombre,' . $destino->id,
-            'pais'        => 'required|string|max:100',
+            'nombre' => 'required|string|max:100|unique:destinos,nombre,'.$destino->id,
+            'pais' => 'required|string|max:100',
             'descripcion' => 'nullable|string|max:2000',
-            'imagen'      => 'nullable|string|max:500',
+            'imagen' => 'nullable|string|max:500',
         ]);
 
         $destino->update($datos);
@@ -116,7 +116,7 @@ class DestinoController extends Controller
                     ->orWhere('destino_id', $destino->id)
                     ->update([
                         'destino_id' => null,
-                        'destino'    => 'Destino por definir',
+                        'destino' => 'Destino por definir',
                     ]);
 
                 $destino->delete();

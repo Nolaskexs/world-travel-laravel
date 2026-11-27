@@ -38,9 +38,61 @@
             }
             .wt-search-grid {
                 display: grid;
-                grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)) auto;
+                grid-template-columns: minmax(0, 1.8fr) repeat(3, minmax(0, 1fr)) auto;
                 gap: 0.65rem;
                 align-items: center;
+            }
+            .wt-dd-destinations {
+                width: 100%;
+                min-width: 290px;
+                max-height: 320px;
+                overflow-y: auto;
+                box-shadow: 0 10px 25px rgba(15, 30, 45, 0.12);
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 6px;
+                background: #fff;
+                z-index: 50;
+            }
+            .wt-dd-destinations .opt {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 9px 14px;
+                border-radius: 8px;
+                width: 100%;
+                border: 0;
+                background: transparent;
+                cursor: pointer;
+                text-align: left;
+                transition: background .15s ease;
+            }
+            .wt-dd-destinations .opt:hover {
+                background: #f1f5f9;
+            }
+            .wt-dd-destinations .opt .i {
+                width: 16px;
+                height: 16px;
+                color: #106d9f;
+                flex-shrink: 0;
+            }
+            .wt-dd-destinations .opt span {
+                display: flex;
+                flex-direction: column;
+                font-size: 13px;
+                font-weight: 700;
+                color: #0f172a;
+            }
+            .wt-dd-destinations .opt small {
+                font-size: 11px;
+                color: #64748b;
+                font-weight: 500;
+                margin-top: 2px;
+            }
+            .wt-dd-destinations .opt--all {
+                border-bottom: 1px solid #f1f5f9;
+                margin-bottom: 4px;
+                border-radius: 6px;
             }
             .wt-chip {
                 display: flex;
@@ -86,7 +138,7 @@
                 max-width: 100%;
             }
             .wt-dd-menu {
-                min-width: 190px;
+                min-width: 220px;
                 width: max-content;
                 max-width: calc(100vw - 2rem);
             }
@@ -94,7 +146,7 @@
                 .wt-search-grid {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
-                .wt-search-grid > .field {
+                .wt-search-grid > .dd-wrap--dest {
                     grid-column: span 2;
                 }
                 .wt-search-grid > .go {
@@ -105,7 +157,7 @@
                 .wt-search-grid {
                     grid-template-columns: 1fr;
                 }
-                .wt-search-grid > .field,
+                .wt-search-grid > .dd-wrap--dest,
                 .wt-search-grid > .go {
                     grid-column: span 1;
                 }
@@ -121,7 +173,6 @@
                 <h1>Tu próximo destino<br><em>está más cerca.</em></h1>
                 <p>Encuentra experiencias que combinan alojamiento, actividades y mucho más. Descubre América, Europa, Asia, África y Oceanía. Elige cómo quieres viajar.</p>
                 <div class="wt-hero__actions">
-                    <a class="hero__btn" href="#explorar-paquetes" style="display: inline-flex; align-items: center; background: #fff; color: #0b2535; padding: .65rem 1.4rem; border-radius: 10px; font-weight: 700; font-size: .95rem; text-decoration: none; transition: transform .2s;">Explorar paquetes</a>
                     <a class="wt-hero__quiet" href="{{ route('ofertas') }}">Ver ofertas especiales <span aria-hidden="true">↗</span></a>
                 </div>
                 <div class="wt-hero__trust">Destinos seleccionados <span class="wt-trust-divider">·</span> Precios en dólares estadounidenses (USD) · por persona</div>
@@ -131,42 +182,60 @@
         <section class="wt-container wt-search-wrap" aria-label="Buscar paquetes">
             <form class="wt-search-panel--unified" action="{{ route('paquetes') }}" method="GET">
                 <div class="wt-search-header">
-                    <strong>Encuentra el viaje perfecto</strong>
-                    <span>Filtra según tus preferencias</span>
+                    <div>
+                        <strong>Encuentra el viaje perfecto</strong>
+                        <span>Filtra según tus preferencias de destino, presupuesto y días</span>
+                    </div>
+                    @if(!empty($filtros['q']) || !empty($filtros['maximo']) || !empty($filtros['duracion']) || (!empty($filtros['orden']) && $filtros['orden'] !== 'destacados'))
+                        <a href="{{ route('paquetes') }}" style="color: #106d9f; font-size: 13px; font-weight: 600; text-decoration: none;">
+                            Limpiar filtros
+                        </a>
+                    @endif
                 </div>
                 <div class="wt-search-grid">
-                    <label class="field" style="min-height: 48px; margin: 0;">
-                        <svg class="i" style="width: 18px; height: 18px; color: #64748b; flex-shrink: 0;"><use href="#i-pin"/></svg>
-                        <input type="search" name="q" value="{{ $filtros['q'] ?? '' }}" maxlength="100" placeholder="¿A dónde quieres viajar? (ej. Cusco, Cancún, Roma)">
-                    </label>
-
-                    {{-- Región --}}
-                    <div class="dd-wrap">
-                        <button type="button" class="chip wt-chip" data-dd="continente" aria-expanded="false">
-                            <span class="wt-chip-label">Región</span>
-                            <strong id="label-continente">{{ !empty($filtros['continente']) ? (['America'=>'América','Europa'=>'Europa','Asia'=>'Asia','Africa'=>'África','Oceania'=>'Oceanía'][$filtros['continente']] ?? 'Todos') : 'Todos los continentes' }}</strong>
-                        </button>
-                        <div class="dd dd--list wt-dd-menu dd--custom-select" id="dd-continente" data-name="continente" hidden>
-                            <button type="button" class="opt" data-val="">Todos los continentes</button>
-                            <button type="button" class="opt" data-val="America">América</button>
-                            <button type="button" class="opt" data-val="Europa">Europa</button>
-                            <button type="button" class="opt" data-val="Asia">Asia</button>
-                            <button type="button" class="opt" data-val="Africa">África</button>
-                            <button type="button" class="opt" data-val="Oceania">Oceanía</button>
+                    {{-- Destino con cinta de opciones como en Home --}}
+                    <div class="dd-wrap dd-wrap--dest" style="position: relative;">
+                        <label class="field" style="min-height: 48px; margin: 0; width: 100%;">
+                            <svg class="i" style="width: 18px; height: 18px; color: #64748b; flex-shrink: 0;"><use href="#i-pin"/></svg>
+                            <input id="paquete-destination" name="q" value="{{ $filtros['q'] ?? '' }}" placeholder="¿A dónde quieres viajar? (ej. Cusco, Cancún, Roma)" aria-label="Destino" data-dd="paquete-destination" autocomplete="off">
+                        </label>
+                        <div class="dd dd--list wt-dd-destinations" id="dd-paquete-destination" hidden>
+                            <button type="button" class="opt opt--all" data-city="">
+                                <svg class="i"><use href="#i-pin"/></svg>
+                                <span>Todos los destinos <small>Explorar paquetes en todo el mundo</small></span>
+                            </button>
+                            @if(isset($destinosDisponibles))
+                                @foreach($destinosDisponibles as $dest)
+                                    <button type="button" class="opt" data-city="{{ $dest->destino }}">
+                                        <svg class="i"><use href="#i-plane"/></svg>
+                                        <span>{{ $dest->destino }} <small>{{ $dest->pais }}</small></span>
+                                    </button>
+                                @endforeach
+                            @endif
                         </div>
-                        <input type="hidden" name="continente" id="input-continente" value="{{ $filtros['continente'] ?? '' }}">
                     </div>
 
                     {{-- Presupuesto --}}
                     <div class="dd-wrap">
                         <button type="button" class="chip wt-chip" data-dd="maximo" aria-expanded="false">
                             <span class="wt-chip-label">Presupuesto</span>
-                            <strong id="label-maximo">{{ !empty($filtros['maximo']) ? 'Hasta US$ ' . number_format($filtros['maximo'], 0, '.', ',') : 'Sin límite' }}</strong>
+                            <strong id="label-maximo">
+                                @if(!empty($filtros['maximo']))
+                                    Hasta US$ {{ number_format($filtros['maximo'], 0, '.', ',') }}
+                                    <small style="display:block; font-size:10px; color:#64748b; font-weight:500;">aprox. S/ {{ number_format($filtros['maximo'] * 3.51, 0, '.', ',') }}</small>
+                                @else
+                                    Sin límite
+                                @endif
+                            </strong>
                         </button>
                         <div class="dd dd--list wt-dd-menu dd--custom-select" id="dd-maximo" data-name="maximo" hidden>
-                            <button type="button" class="opt" data-val="">Sin límite</button>
-                            @foreach ([300, 600, 900, 1200, 1800, 2500, 3500] as $monto)
-                                <button type="button" class="opt" data-val="{{ $monto }}">Hasta US$ {{ number_format($monto, 0, '.', ',') }}</button>
+                            <button type="button" class="opt" data-val="" data-sub="">
+                                <span>Sin límite <small>Cualquier presupuesto</small></span>
+                            </button>
+                            @foreach ([500, 1000, 1500, 2000, 3000] as $monto)
+                                <button type="button" class="opt" data-val="{{ $monto }}" data-sub="aprox. S/ {{ number_format($monto * 3.51, 0, '.', ',') }}">
+                                    <span>Hasta US$ {{ number_format($monto, 0, '.', ',') }} <small>aprox. S/ {{ number_format($monto * 3.51, 0, '.', ',') }}</small></span>
+                                </button>
                             @endforeach
                         </div>
                         <input type="hidden" name="maximo" id="input-maximo" value="{{ $filtros['maximo'] ?? '' }}">
@@ -176,13 +245,30 @@
                     <div class="dd-wrap">
                         <button type="button" class="chip wt-chip" data-dd="duracion" aria-expanded="false">
                             <span class="wt-chip-label">Duración</span>
-                            <strong id="label-duracion">{{ !empty($filtros['duracion']) ? 'Hasta ' . $filtros['duracion'] . ' días' : 'Cualquier duración' }}</strong>
+                            <strong id="label-duracion">
+                                @if(!empty($filtros['duracion']))
+                                    Hasta {{ $filtros['duracion'] }} días
+                                @else
+                                    Cualquier duración
+                                @endif
+                            </strong>
                         </button>
                         <div class="dd dd--list wt-dd-menu dd--custom-select" id="dd-duracion" data-name="duracion" hidden>
-                            <button type="button" class="opt" data-val="">Cualquier duración</button>
-                            @foreach ([3, 5, 7, 10, 14] as $dias)
-                                <button type="button" class="opt" data-val="{{ $dias }}">Hasta {{ $dias }} días</button>
-                            @endforeach
+                            <button type="button" class="opt" data-val="">
+                                <span>Cualquier duración <small>Todas las opciones</small></span>
+                            </button>
+                            <button type="button" class="opt" data-val="3">
+                                <span>Hasta 3 días <small>Escapadas y fines de semana</small></span>
+                            </button>
+                            <button type="button" class="opt" data-val="5">
+                                <span>Hasta 5 días <small>Viajes cortos</small></span>
+                            </button>
+                            <button type="button" class="opt" data-val="7">
+                                <span>Hasta 7 días <small>1 semana completa</small></span>
+                            </button>
+                            <button type="button" class="opt" data-val="10">
+                                <span>Hasta 10 días <small>Vacaciones extendidas</small></span>
+                            </button>
                         </div>
                         <input type="hidden" name="duracion" id="input-duracion" value="{{ $filtros['duracion'] ?? '' }}">
                     </div>
@@ -204,10 +290,18 @@
                             </strong>
                         </button>
                         <div class="dd dd--list wt-dd-menu dd--custom-select" id="dd-orden" data-name="orden" hidden>
-                            <button type="button" class="opt" data-val="destacados">Destacados</button>
-                            <button type="button" class="opt" data-val="precio_asc">Menor precio</button>
-                            <button type="button" class="opt" data-val="precio_desc">Mayor precio</button>
-                            <button type="button" class="opt" data-val="duracion">Menor duración</button>
+                            <button type="button" class="opt" data-val="destacados">
+                                <span>Destacados <small>Recomendados por World Travel</small></span>
+                            </button>
+                            <button type="button" class="opt" data-val="precio_asc">
+                                <span>Menor precio <small>De más económico a premium</small></span>
+                            </button>
+                            <button type="button" class="opt" data-val="precio_desc">
+                                <span>Mayor precio <small>Experiencias exclusivas</small></span>
+                            </button>
+                            <button type="button" class="opt" data-val="duracion">
+                                <span>Menor duración <small>Menos días de viaje</small></span>
+                            </button>
                         </div>
                         <input type="hidden" name="orden" id="input-orden" value="{{ $filtros['orden'] ?? 'destacados' }}">
                     </div>
@@ -303,17 +397,60 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Cinta de opciones para el destino (como en Home)
+            const destInput = document.getElementById('paquete-destination');
+            const destDd = document.getElementById('dd-paquete-destination');
+
+            if (destInput && destDd) {
+                destInput.addEventListener('focus', () => {
+                    destDd.hidden = false;
+                });
+                destInput.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    destDd.hidden = false;
+                });
+                destInput.addEventListener('input', () => {
+                    const q = destInput.value.toLowerCase().trim();
+                    destDd.hidden = false;
+                    destDd.querySelectorAll('.opt').forEach(btn => {
+                        const city = (btn.dataset.city || '').toLowerCase();
+                        const text = btn.textContent.toLowerCase();
+                        btn.style.display = (!q || city.includes(q) || text.includes(q)) ? 'flex' : 'none';
+                    });
+                });
+                destDd.addEventListener('click', (e) => {
+                    const btn = e.target.closest('.opt');
+                    if (!btn) return;
+                    destInput.value = btn.dataset.city || '';
+                    destDd.hidden = true;
+                });
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.dd-wrap--dest')) {
+                        destDd.hidden = true;
+                    }
+                });
+            }
+
+            // Selectores personalizados para Presupuesto, Duración y Orden
             document.querySelectorAll('.dd--custom-select').forEach(dd => {
                 dd.addEventListener('click', (e) => {
                     const opt = e.target.closest('.opt');
                     if (!opt) return;
                     const name = dd.dataset.name;
                     const val = opt.dataset.val;
-                    const text = opt.textContent.trim();
                     const input = document.getElementById('input-' + name);
                     const label = document.getElementById('label-' + name);
                     if (input) input.value = val;
-                    if (label) label.textContent = text;
+                    if (label) {
+                        const titleSpan = opt.querySelector('span');
+                        const mainTitle = titleSpan ? titleSpan.childNodes[0].textContent.trim() : opt.textContent.trim();
+                        const sub = opt.dataset.sub;
+                        if (sub) {
+                            label.innerHTML = mainTitle + `<small style="display:block; font-size:10px; color:#64748b; font-weight:500; margin-top:2px;">${sub}</small>`;
+                        } else {
+                            label.textContent = mainTitle;
+                        }
+                    }
                     dd.hidden = true;
                     const btn = document.querySelector(`[data-dd="${name}"]`);
                     if (btn) btn.setAttribute('aria-expanded', 'false');

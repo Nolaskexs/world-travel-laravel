@@ -25,3 +25,18 @@ document.querySelectorAll('img[data-fallback]').forEach((img) => {
   const ok = () => img.naturalWidth && img.parentElement.classList.add('has-img');
   img.complete ? ok() : img.addEventListener('load', ok);
 });
+
+// Flechas de desplazamiento para la barra de navegación del administrador
+const menuScroll = document.getElementById('adminMenuBarScroll');
+const btnMenuPrev = document.getElementById('adminMenuPrev');
+const btnMenuNext = document.getElementById('adminMenuNext');
+
+if (menuScroll && btnMenuPrev && btnMenuNext) {
+  btnMenuPrev.addEventListener('click', () => {
+    menuScroll.scrollBy({ left: -240, behavior: 'smooth' });
+  });
+
+  btnMenuNext.addEventListener('click', () => {
+    menuScroll.scrollBy({ left: 240, behavior: 'smooth' });
+  });
+}

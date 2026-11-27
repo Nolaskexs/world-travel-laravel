@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Itinerario;
-use Illuminate\Http\Request;
+use App\Models\Paquete;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -20,7 +21,33 @@ class ItinerarioController extends Controller
             ->latest()
             ->get();
 
-        return view('itinerarios', compact('itinerarios'));
+        $catalogoDestinos = Paquete::where('activo', true)
+            ->select('destino as ciudad', 'pais', 'precio as costo_referencial', 'imagen_url')
+            ->orderBy('destino')
+            ->get()
+            ->map(function ($p) {
+                $img = $p->imagen_url;
+                if (! empty($img)) {
+                    if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://')) {
+                        $url = $img;
+                    } else {
+                        $url = asset(ltrim($img, '/'));
+                    }
+                } else {
+                    $url = asset('icons/MachuPicchu1-Carrusel.jpg');
+                }
+
+                return [
+                    'ciudad' => $p->ciudad,
+                    'pais' => $p->pais,
+                    'costo' => (float) $p->costo_referencial,
+                    'imagen' => $url,
+                ];
+            })
+            ->unique('ciudad')
+            ->values();
+
+        return view('itinerarios', compact('itinerarios', 'catalogoDestinos'));
     }
 
     // Guardar un nuevo itinerario internacional.
@@ -49,8 +76,7 @@ class ItinerarioController extends Controller
         foreach ($datos['destinos'] as $indice => $destino) {
             if ($destino['fecha_salida'] < $destino['fecha_llegada']) {
                 throw ValidationException::withMessages([
-                    "destinos.$indice.fecha_salida" =>
-                        'La salida no puede ser anterior a la llegada.',
+                    "destinos.$indice.fecha_salida" => 'La salida no puede ser anterior a la llegada.',
                 ]);
             }
 
@@ -59,8 +85,7 @@ class ItinerarioController extends Controller
                 $destino['fecha_salida'] > $datos['fecha_fin']
             ) {
                 throw ValidationException::withMessages([
-                    "destinos.$indice.fecha_llegada" =>
-                        'Las fechas del destino deben estar dentro del viaje.',
+                    "destinos.$indice.fecha_llegada" => 'Las fechas del destino deben estar dentro del viaje.',
                 ]);
             }
 
@@ -69,8 +94,7 @@ class ItinerarioController extends Controller
                 $destino['fecha_llegada'] < $salidaAnterior
             ) {
                 throw ValidationException::withMessages([
-                    "destinos.$indice.fecha_llegada" =>
-                        'Las paradas deben estar ordenadas y no superponerse.',
+                    "destinos.$indice.fecha_llegada" => 'Las paradas deben estar ordenadas y no superponerse.',
                 ]);
             }
 

@@ -13,19 +13,43 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reservas', function (Blueprint $table): void {
-            $table->string('tipo_servicio', 30)->default('paquete')->after('paquete_id');
-            $table->foreignId('vuelo_id')->nullable()->constrained('vuelos')->nullOnDelete()->after('tipo_servicio');
-            $table->foreignId('alojamiento_id')->nullable()->constrained('alojamientos')->nullOnDelete()->after('vuelo_id');
-            $table->foreignId('oferta_id')->nullable()->constrained('ofertas')->nullOnDelete()->after('alojamiento_id');
+            if (! Schema::hasColumn('reservas', 'tipo_servicio')) {
+                $table->string('tipo_servicio', 30)->default('paquete')->after('paquete_id');
+            }
+            if (! Schema::hasColumn('reservas', 'vuelo_id')) {
+                $table->foreignId('vuelo_id')->nullable()->constrained('vuelos')->nullOnDelete()->after('tipo_servicio');
+            }
+            if (! Schema::hasColumn('reservas', 'alojamiento_id')) {
+                $table->foreignId('alojamiento_id')->nullable()->constrained('alojamientos')->nullOnDelete();
+            }
+            if (! Schema::hasColumn('reservas', 'oferta_id')) {
+                $table->foreignId('oferta_id')->nullable()->constrained('ofertas')->nullOnDelete();
+            }
 
-            $table->date('fecha_entrada')->nullable()->after('fecha_viaje');
-            $table->date('fecha_salida')->nullable()->after('fecha_entrada');
-            $table->unsignedSmallInteger('noches')->nullable()->after('fecha_salida');
-            $table->string('moneda', 5)->default('USD')->after('noches');
-            $table->decimal('cotizacion', 10, 2)->nullable()->after('moneda');
-            $table->string('detalle_servicio', 255)->nullable()->after('total');
-            $table->json('detalle_snapshot')->nullable()->after('detalle_servicio');
-            $table->string('asientos', 255)->nullable()->after('detalle_snapshot');
+            if (! Schema::hasColumn('reservas', 'fecha_entrada')) {
+                $table->date('fecha_entrada')->nullable()->after('fecha_viaje');
+            }
+            if (! Schema::hasColumn('reservas', 'fecha_salida')) {
+                $table->date('fecha_salida')->nullable()->after('fecha_entrada');
+            }
+            if (! Schema::hasColumn('reservas', 'noches')) {
+                $table->unsignedSmallInteger('noches')->nullable()->after('fecha_salida');
+            }
+            if (! Schema::hasColumn('reservas', 'moneda')) {
+                $table->string('moneda', 5)->default('USD')->after('noches');
+            }
+            if (! Schema::hasColumn('reservas', 'cotizacion')) {
+                $table->decimal('cotizacion', 10, 2)->nullable()->after('moneda');
+            }
+            if (! Schema::hasColumn('reservas', 'detalle_servicio')) {
+                $table->string('detalle_servicio', 255)->nullable()->after('total');
+            }
+            if (! Schema::hasColumn('reservas', 'detalle_snapshot')) {
+                $table->json('detalle_snapshot')->nullable()->after('detalle_servicio');
+            }
+            if (! Schema::hasColumn('reservas', 'asientos')) {
+                $table->string('asientos', 255)->nullable()->after('detalle_snapshot');
+            }
 
             $table->foreignId('paquete_id')->nullable()->change();
         });

@@ -54,4 +54,21 @@ class Alojamiento extends Model
     {
         return $this->hasMany(Reserva::class);
     }
+
+    public function getImagenUrlAttribute(): string
+    {
+        $img = $this->imagen_tarjeta ?: $this->imagen ?: 'icons/hotel1.jpg';
+
+        return str_starts_with($img, 'http') ? $img : asset(ltrim($img, '/'));
+    }
+
+    public function getPrecioNocheAttribute(): float
+    {
+        return (float) $this->precio;
+    }
+
+    public function getDireccionAttribute(): ?string
+    {
+        return $this->ubicacion;
+    }
 }

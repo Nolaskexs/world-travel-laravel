@@ -16,25 +16,30 @@
         </section>
 
         <section class="hotel-container" style="position: relative; z-index: 20;">
-            <form class="sf sf--hotel" id="formHoteles" autocomplete="off" style="margin-top: -38px; position: relative;">
-                <input type="hidden" name="entrada" id="inputStart" value="">
-                <input type="hidden" name="salida" id="inputEnd" value="">
-                <input type="hidden" name="huespedes" id="inputAdults" value="2">
-                <input type="hidden" name="kids" id="inputKids" value="0">
-                <input type="hidden" name="infants" id="inputInfants" value="0">
+            <form class="sf sf--hotel" id="formHoteles" method="GET" action="{{ route('alojamientos') }}" autocomplete="off" style="margin-top: -38px; position: relative;">
+                <input type="hidden" name="entrada" id="inputStart" value="{{ request('entrada', '') }}">
+                <input type="hidden" name="salida" id="inputEnd" value="{{ request('salida', '') }}">
+                <input type="hidden" name="huespedes" id="inputAdults" value="{{ request('huespedes', '1') }}">
+                <input type="hidden" name="kids" id="inputKids" value="{{ request('kids', '0') }}">
+                <input type="hidden" name="infants" id="inputInfants" value="{{ request('infants', '0') }}">
 
-                <div class="sf__top" style="justify-content: flex-end; margin-bottom: 0.35rem;">
+                <div class="sf__top" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <strong style="font-size: 16px; font-weight: 700; color: #0c1b26; display: block;">Encuentra tu alojamiento ideal</strong>
+                        <span style="font-size: 13px; color: #64748b; font-weight: 500;">Filtra y reserva entre los mejores hoteles y hospedajes</span>
+                    </div>
+
                     <div class="dd-wrap">
                         <button type="button" class="chip" data-dd="pax" aria-expanded="false">
                             <svg class="i"><use href="#i-user"/></svg>
-                            <span id="paxLabel" data-mode="hotel">2 huéspedes</span>
+                            <span id="paxLabel" data-mode="hotel">{{ request('huespedes', 1) == 1 ? '1 persona' : request('huespedes', 1) . ' huéspedes' }}</span>
                         </button>
                         <div class="dd dd--pax" id="dd-pax" hidden>
                             <div class="prow" data-pax="adults">
                                 <div><strong>Adultos</strong><small>Mayores de 12 años</small></div>
                                 <div class="cnt">
                                     <button type="button" data-step="-1" aria-label="Quitar adulto"><svg class="i"><use href="#i-minus"/></svg></button>
-                                    <output>2</output>
+                                    <output>{{ request('huespedes', 1) }}</output>
                                     <button type="button" data-step="1" aria-label="Agregar adulto"><svg class="i"><use href="#i-plus"/></svg></button>
                                 </div>
                             </div>
@@ -42,7 +47,7 @@
                                 <div><strong>Menores</strong><small>De 2 a 11 años</small></div>
                                 <div class="cnt">
                                     <button type="button" data-step="-1" aria-label="Quitar menor"><svg class="i"><use href="#i-minus"/></svg></button>
-                                    <output>0</output>
+                                    <output>{{ request('kids', 0) }}</output>
                                     <button type="button" data-step="1" aria-label="Agregar menor"><svg class="i"><use href="#i-plus"/></svg></button>
                                 </div>
                             </div>
@@ -58,7 +63,7 @@
                     <div class="dd-wrap" style="flex: 1.4; min-width: 220px;">
                         <label class="field" style="width: 100%;">
                             <svg class="i"><use href="#i-pin"/></svg>
-                            <input id="destination" name="q" value="{{ $filtros['q'] ?? '' }}" placeholder="¿A dónde viajas? (ej. Tokio, Madrid, Cusco...)" aria-label="Destino" data-dd="destination" autocomplete="off">
+                            <input id="destination" name="q" value="{{ $filtros['q'] ?? request('destination', '') }}" placeholder="¿A dónde viajas? (ej. Tokio, Madrid, Cusco...)" aria-label="Destino" data-dd="destination" autocomplete="off">
                         </label>
                         <div class="dd dd--list" id="dd-destination" hidden></div>
                     </div>
@@ -66,11 +71,11 @@
                     <div class="dates dd-wrap" style="flex: 1.6; min-width: 260px;">
                         <button type="button" class="field" id="startBtn" data-dd="cal" data-field="start" aria-expanded="false" style="flex: 1;">
                             <svg class="i"><use href="#i-cal"/></svg>
-                            <span id="startLabel" data-label="Entrada">Entrada</span>
+                            <span id="startLabel" data-label="Entrada">{{ request('entrada') ?: 'Entrada' }}</span>
                         </button>
                         <button type="button" class="field" id="endBtn" data-dd="cal" data-field="end" aria-expanded="false" style="flex: 1;">
                             <svg class="i"><use href="#i-cal"/></svg>
-                            <span id="endLabel" data-label="Salida">Salida</span>
+                            <span id="endLabel" data-label="Salida">{{ request('salida') ?: 'Salida' }}</span>
                         </button>
                         <div class="dd dd--cal" id="dd-cal" data-field="start" hidden>
                             <div class="cal">
@@ -95,39 +100,31 @@
                 <div>
                     <span class="hotel-etiqueta texto-azul">EXPLORA Y DESCUBRE</span>
                     <h2>Alojamientos destacados</h2>
-                    <p>Opciones para disfrutar de tu próximo destino.</p>
-                </div>
-
-                <div class="hotel-filtro">
-                    <label for="tipoHotel">Tipo de alojamiento</label>
-                    <select id="tipoHotel" name="tipo">
-                        <option value="todos" {{ ($filtros['tipo'] ?? 'todos') === 'todos' ? 'selected' : '' }}>Todos</option>
-                        <option value="hotel" {{ ($filtros['tipo'] ?? '') === 'hotel' ? 'selected' : '' }}>Hoteles</option>
-                        <option value="resort" {{ ($filtros['tipo'] ?? '') === 'resort' ? 'selected' : '' }}>Resorts</option>
-                        <option value="hostal" {{ ($filtros['tipo'] ?? '') === 'hostal' ? 'selected' : '' }}>Hostales</option>
-                    </select>
+                    <p>Opciones reales conectadas a nuestra base de datos MySQL.</p>
                 </div>
             </div>
 
             <p id="hotelContador" class="hotel-contador">
-                {{ $alojamientos->count() }} alojamientos disponibles en esta demostración
+                {{ $alojamientos->count() }} {{ $alojamientos->count() === 1 ? 'alojamiento encontrado' : 'alojamientos encontrados' }} en nuestra base de datos
             </p>
 
             <div class="hotel-grid" id="listaHoteles">
-                @foreach ($alojamientos as $alojamiento)
+                @forelse ($alojamientos as $alojamiento)
                     @php
-                        $esSoles = $alojamiento->moneda_simbolo === 'S/';
+                        $esSoles = ($alojamiento->moneda_simbolo ?? 'US$') === 'S/';
                         $precioUsd = $esSoles ? round((float) $alojamiento->precio / 3.51) : (float) $alojamiento->precio;
-                        $precioSoles = $esSoles ? (float) $alojamiento->precio : (float) $alojamiento->precio * 3.51;
-                        $imagenTarjeta = $alojamiento->imagen_tarjeta ?: $alojamiento->imagen;
+                        $precioSoles = $esSoles ? (float) $alojamiento->precio : round((float) $alojamiento->precio * 3.51, 2);
+                        $imagenTarjeta = $alojamiento->imagen_tarjeta ?: $alojamiento->imagen ?: 'icons/hotel1.jpg';
+                        $imgSrc = str_starts_with($imagenTarjeta, 'http') ? $imagenTarjeta : asset(ltrim($imagenTarjeta, '/'));
                     @endphp
 
                     <article class="hotel-card"
-                             data-destino="{{ $alojamiento->palabras_clave }}"
-                             data-tipo="{{ $alojamiento->categoria }}">
-                        <img src="{{ str_starts_with($imagenTarjeta, 'http') ? $imagenTarjeta : asset($imagenTarjeta) }}"
+                             data-destino="{{ strtolower($alojamiento->palabras_clave ?? $alojamiento->ubicacion ?? $alojamiento->nombre) }}"
+                             data-tipo="{{ strtolower($alojamiento->categoria ?? $alojamiento->tipo ?? 'hotel') }}">
+                        <img src="{{ $imgSrc }}"
                              alt="{{ $alojamiento->nombre }}"
-                             loading="lazy">
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='{{ asset('icons/hotel1.jpg') }}';">
 
                         <div class="hotel-info">
                             <span class="hotel-tipo">{{ strtoupper($alojamiento->tipo) }}</span>
@@ -138,8 +135,13 @@
                             <div class="hotel-footer">
                                 <div>
                                     <small>Precio referencial / noche</small>
-                                    <strong>US$ {{ number_format($precioUsd, 0, '.', ',') }}</strong>
-                                    <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ {{ number_format($precioSoles, 2, '.', ',') }}</small>
+                                    @if($esSoles)
+                                        <strong>S/ {{ number_format($precioSoles, 0, '.', ',') }}</strong>
+                                        <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. US$ {{ number_format($precioUsd, 2, '.', ',') }}</small>
+                                    @else
+                                        <strong>US$ {{ number_format($precioUsd, 0, '.', ',') }}</strong>
+                                        <small style="display:block; font-size:11px; color:#64748b; font-weight:500;">aprox. S/ {{ number_format($precioSoles, 2, '.', ',') }}</small>
+                                    @endif
                                 </div>
 
                                 <a href="{{ route('alojamientos.detalle', ['codigo' => $alojamiento->codigo]) }}"
@@ -149,8 +151,11 @@
                             </div>
                         </div>
                     </article>
-                @endforeach
-
+                @empty
+                    <p class="hotel-vacio" style="grid-column: 1 / -1; display: block; text-align: center; padding: 40px 20px;">
+                        No encontramos alojamientos registrados que coincidan con la búsqueda.
+                    </p>
+                @endforelse
             </div>
             <p id="hotelVacio" class="hotel-vacio" hidden>
                 No encontramos alojamientos para ese destino o tipo.
@@ -401,33 +406,25 @@
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('formHoteles');
             const destino = document.getElementById('destination');
-            const tipo = document.getElementById('tipoHotel');
             const tarjetas = [...document.querySelectorAll('.hotel-card')];
             const contador = document.getElementById('hotelContador');
             const vacio = document.getElementById('hotelVacio');
 
             function filtrar() {
                 const ciudad = (destino ? destino.value : '').trim().toLowerCase();
-                const categoria = tipo ? tipo.value : 'todos';
                 let visibles = 0;
 
                 tarjetas.forEach(tarjeta => {
                     const coincideCiudad =
                         !ciudad || (tarjeta.dataset.destino || '').toLowerCase().includes(ciudad);
 
-                    const coincideTipo =
-                        categoria === 'todos' ||
-                        tarjeta.dataset.tipo === categoria;
-
-                    const mostrar = coincideCiudad && coincideTipo;
-                    tarjeta.hidden = !mostrar;
-
-                    if (mostrar) visibles++;
+                    tarjeta.hidden = !coincideCiudad;
+                    if (coincideCiudad) visibles++;
                 });
 
                 if (contador) {
                     contador.textContent =
-                        visibles + ' alojamientos encontrados (demostración)';
+                        visibles + (visibles === 1 ? ' alojamiento disponible' : ' alojamientos disponibles');
                 }
 
                 if (vacio) {
@@ -450,10 +447,6 @@
                         setTimeout(filtrar, 50);
                     });
                 }
-            }
-
-            if (tipo) {
-                tipo.addEventListener('change', filtrar);
             }
         });
     </script>

@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use App\Models\Destino;
 use App\Models\Vuelo;
 use App\Models\VueloEscala;
-use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class VueloSeeder extends Seeder
 {
@@ -19,7 +19,7 @@ class VueloSeeder extends Seeder
         $cuz = Destino::where('codigo_iata', 'CUZ')->orWhere('nombre', 'Cusco')->first();
         $mad = Destino::where('codigo_iata', 'MAD')->orWhere('nombre', 'Madrid')->first();
 
-        if (!$fuk || !$lim) {
+        if (! $fuk || ! $lim) {
             return;
         }
 

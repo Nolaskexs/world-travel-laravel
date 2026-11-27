@@ -13,16 +13,19 @@ class CatalogoViajesController extends Controller
     {
         $filtros = $request->validate([
             'q' => ['nullable', 'string', 'max:100'],
+            'destination' => ['nullable', 'string', 'max:100'],
             'maximo' => ['nullable', 'numeric', 'min:1', 'max:999999'],
             'continente' => ['nullable', 'in:America,Europa,Asia,Africa,Oceania'],
             'duracion' => ['nullable', 'integer', 'min:1', 'max:30'],
             'orden' => ['nullable', 'in:destacados,precio_asc,precio_desc,duracion'],
         ]);
 
+        $busqueda = trim((string) ($filtros['q'] ?? $filtros['destination'] ?? ''));
+        $filtros['q'] = $busqueda;
+
         $consulta = Paquete::query()->where('activo', true);
 
-        if (! empty($filtros['q'])) {
-            $busqueda = $filtros['q'];
+        if (! empty($busqueda)) {
             $consulta->where(function ($q) use ($busqueda) {
                 $q->where('titulo', 'like', "%{$busqueda}%")
                     ->orWhere('destino', 'like', "%{$busqueda}%")
@@ -56,9 +59,17 @@ class CatalogoViajesController extends Controller
                 $consulta->orderByDesc('destacado')->latest();
         }
 
+        $destinosDisponibles = Paquete::query()
+            ->where('activo', true)
+            ->select('destino', 'pais', 'continente')
+            ->distinct()
+            ->orderBy('destino')
+            ->get();
+
         return view('paquetes', [
             'paquetes' => $consulta->paginate(9)->withQueryString(),
             'filtros' => $filtros,
+            'destinosDisponibles' => $destinosDisponibles,
         ]);
     }
 

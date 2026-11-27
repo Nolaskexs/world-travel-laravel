@@ -53,6 +53,12 @@
             'href' => route('admin.paquetes.index')
         ],
         [
+            'key' => 'alojamientos',
+            'label' => 'Alojamientos',
+            'icon' => 'hotel',
+            'href' => route('admin.alojamientos.index')
+        ],
+        [
             'key' => 'destinos',
             'label' => 'Destinos',
             'icon' => 'pin',
@@ -99,6 +105,10 @@
     </symbol>
     <symbol id="i-package" viewBox="0 0 24 24">
         <path d="m7.5 4.3 9 5.2M21 8v8a2 2 0 0 1-1 1.7l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.7l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8zM3.3 7 12 12l8.7-5M12 22V12"/>
+    </symbol>
+    <symbol id="i-hotel" viewBox="0 0 24 24">
+        <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/>
+        <path d="M8 6h2M14 6h2M8 10h2M14 10h2M8 14h2M14 14h2M10 22v-4h4v4"/>
     </symbol>
     <symbol id="i-user-plus" viewBox="0 0 24 24">
         <circle cx="9" cy="8" r="4"/>
@@ -203,9 +213,13 @@
             </div>
         </div>
 
-        <!-- Fila de Opciones / Menú Horizontal Ordenado -->
+        <!-- Fila de Opciones / Menú Horizontal Ordenado con Flechas Interactivas -->
         <nav class="admin-menu-bar" aria-label="Secciones del panel de administración">
-            <div class="admin-menu-bar__scroll">
+            <button type="button" class="admin-menu-arrow admin-menu-arrow--left" id="adminMenuPrev" aria-label="Desplazar menú a la izquierda">
+                <svg class="i"><use href="#i-left"/></svg>
+            </button>
+
+            <div class="admin-menu-bar__scroll" id="adminMenuBarScroll">
                 <ul class="admin-nav-tabs">
                     @foreach ($menuItems as $it)
                         <li>
@@ -221,10 +235,15 @@
                 </ul>
 
                 <div class="admin-quick-actions">
-                    <a href="{{ route('admin.paquetes.create') }}" class="admin-quick-btn">+ Nuevo Paquete</a>
-                    <a href="{{ route('admin.destinos.create') }}" class="admin-quick-btn">+ Nuevo Destino</a>
+                    <a href="{{ route('admin.paquetes.create') }}" class="admin-quick-btn">+ Paquete</a>
+                    <a href="{{ route('admin.alojamientos.create') }}" class="admin-quick-btn">+ Alojamiento</a>
+                    <a href="{{ route('admin.destinos.create') }}" class="admin-quick-btn">+ Destino</a>
                 </div>
             </div>
+
+            <button type="button" class="admin-menu-arrow admin-menu-arrow--right" id="adminMenuNext" aria-label="Desplazar menú a la derecha">
+                <svg class="i"><use href="#i-right"/></svg>
+            </button>
         </nav>
 
     </header>

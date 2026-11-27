@@ -10,6 +10,7 @@ use Tests\TestCase;
 class LocalizationTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_la_aplicacion_usa_el_idioma_espanol_por_defecto(): void
     {
         $this->assertEquals('es', App::getLocale());
@@ -61,7 +62,7 @@ class LocalizationTest extends TestCase
         $response = $this->post('/login', []);
 
         $response->assertSessionHasErrors([
-            'email' => 'El campo correo electrónico es obligatorio.'
+            'email' => 'El campo correo electrónico es obligatorio.',
         ]);
     }
 
@@ -73,7 +74,52 @@ class LocalizationTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'email' => 'Estas credenciales no coinciden con nuestros registros.'
+            'email' => 'Estas credenciales no coinciden con nuestros registros.',
         ]);
+    }
+
+    public function test_mensajes_de_error_http_en_espanol(): void
+    {
+        $this->assertEquals('Esta acción no está autorizada.', __('This action is unauthorized.'));
+        $this->assertEquals('Acceso denegado', __('Forbidden'));
+        $this->assertEquals('Página no encontrada', __('Not Found'));
+
+        $response404 = $this->get('/ruta-inexistente-404-prueba');
+        $response404->assertStatus(404);
+        $response404->assertSee('404');
+        $response404->assertSee('Página no encontrada');
+        $response404->assertSee('Volver al inicio');
+    }
+
+    public function test_vista_login_no_muestra_olvidaste_contrasena(): void
+    {
+        $response = $this->get('/login');
+        $response->assertStatus(200);
+        $response->assertDontSee('¿Olvidaste tú contraseña?');
+        $response->assertDontSee('¿Olvidaste tu contraseña?');
+    }
+
+    public function test_vista_ayuda_tiene_categorias_y_preguntas_ampliadas(): void
+    {
+        $response = $this->get('/ayuda');
+        $response->assertStatus(200);
+        $response->assertSee('¿En qué podemos ayudarte?');
+        $response->assertSee('Reservas y Vuelos');
+        $response->assertSee('Pagos y Facturación');
+        $response->assertSee('Cambios y Cancelaciones');
+        $response->assertSee('Equipaje y Check-in');
+        $response->assertSee('Alojamientos y Hoteles');
+        $response->assertSee('¿Cómo reservo un vuelo o paquete turístico?');
+    }
+
+    public function test_vistas_paquetes_y_ofertas_no_contienen_botones_blancos_redundantes(): void
+    {
+        $responsePaquetes = $this->get('/paquetes');
+        $responsePaquetes->assertStatus(200);
+        $responsePaquetes->assertDontSee('Explorar paquetes</a>', false);
+
+        $responseOfertas = $this->get('/ofertas');
+        $responseOfertas->assertStatus(200);
+        $responseOfertas->assertDontSee('Ver promociones');
     }
 }

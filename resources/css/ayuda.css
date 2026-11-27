@@ -1,32 +1,250 @@
-.ayuda{max-width:820px;margin:32px auto;padding:0 16px}
-.ayuda__title{font-size:clamp(24px,4vw,36px);margin:0 0 6px}
-.ayuda__sub{color:#6b7580;margin:0 0 20px}
-
-.ayuda__search{
-  width:100%;padding:14px 16px;border:1px solid #d5d9de;border-radius:12px;
-  background:#fff;font-size:16px;margin-bottom:18px
+.ayuda {
+  max-width: 860px;
+  margin: 36px auto;
+  padding: 0 16px;
+}
+.ayuda__header {
+  margin-bottom: 24px;
+}
+.ayuda__title {
+  font-size: clamp(24px, 4vw, 36px);
+  margin: 0 0 6px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+.ayuda__sub {
+  color: #64748b;
+  margin: 0;
+  font-size: 15px;
 }
 
-.faq{background:#fff;border:1px solid #e3e6ea;border-radius:14px;margin-bottom:10px;overflow:hidden}
-.faq__q{
-  width:100%;text-align:left;background:none;border:0;cursor:pointer;
-  padding:16px 44px 16px 18px;font-size:16px;font-weight:600;color:#0d1b2a;position:relative
+.ayuda__search-wrap {
+  margin-bottom: 24px;
 }
-.faq__q::after{content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:22px;transition:transform .2s}
-.faq__q[aria-expanded="true"]::after{content:"–"}
-.faq__a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 18px}
-.faq__a p{margin:0 0 16px;line-height:1.55;color:#3b4755}
-.faq.open .faq__a{max-height:300px}
 
-.ayuda__vacio{color:#6b7580;text-align:center;padding:16px}
+.ayuda__search-box {
+  position: relative;
+  width: 100%;
+  margin-bottom: 14px;
+}
+.ayuda__search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+.ayuda__search {
+  width: 100%;
+  padding: 14px 16px 14px 46px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  font-size: 15px;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.ayuda__search:focus {
+  border-color: #0f172a;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+}
 
-.ayuda__contacto{
-  margin-top:28px;padding:24px;border-radius:16px;background:#0d1b2a;color:#fff;text-align:center
+/* Categorias de ayuda */
+.ayuda__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
-.ayuda__contacto h2{margin:0 0 6px}
-.ayuda__contacto p{margin:0 0 16px;opacity:.85}
-.ayuda__btn{
-  display:inline-block;margin:4px;padding:12px 22px;border-radius:10px;
-  background:#fff;color:#0d1b2a;font-weight:700;text-decoration:none
+.ayuda__cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
 }
-.ayuda__btn--sec{background:transparent;color:#fff;border:2px solid #fff}
+.ayuda__cat-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+.ayuda__cat-btn.active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+}
+.ayuda__cat-count {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 10px;
+  background: #e2e8f0;
+  color: #475569;
+}
+.ayuda__cat-btn.active .ayuda__cat-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* FAQ Items */
+.faq {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.faq:hover {
+  border-color: #cbd5e1;
+}
+.faq.open {
+  border-color: #94a3b8;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+.faq__q {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 16px 46px 16px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.faq__q-text {
+  flex: 1;
+}
+.faq__tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.faq__q::after {
+  content: "+";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  font-weight: 400;
+  color: #64748b;
+  transition: transform 0.2s;
+}
+.faq__q[aria-expanded="true"]::after {
+  content: "–";
+}
+.faq__a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding: 0 18px;
+}
+.faq__a p {
+  margin: 0 0 16px;
+  line-height: 1.6;
+  color: #334155;
+  font-size: 14px;
+}
+.faq.open .faq__a {
+  max-height: 400px;
+}
+
+/* Vacio */
+.ayuda__vacio {
+  color: #64748b;
+  text-align: center;
+  padding: 32px 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+  margin: 16px 0;
+}
+.ayuda__vacio p {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.ayuda__reset-btn {
+  background: #0f172a;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ayuda__reset-btn:hover {
+  background: #1e293b;
+}
+
+/* Contacto */
+.ayuda__contacto {
+  margin-top: 36px;
+  padding: 28px 24px;
+  border-radius: 16px;
+  background: #0c1b26;
+  color: #ffffff;
+  text-align: center;
+}
+.ayuda__contacto h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 700;
+}
+.ayuda__contacto p {
+  margin: 0 0 18px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+.ayuda__btn {
+  display: inline-block;
+  margin: 4px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0c1b26;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: transform 0.2s, background 0.2s;
+}
+.ayuda__btn:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+.ayuda__btn--sec {
+  background: transparent;
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+.ayuda__btn--sec:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}

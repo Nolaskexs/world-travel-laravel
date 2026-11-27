@@ -38,6 +38,6 @@ class Itinerario extends Model
     public function destinos(): HasMany
     {
         return $this->hasMany(ItinerarioDestino::class)
-                    ->orderBy('orden');
+            ->orderBy('orden');
     }
 }

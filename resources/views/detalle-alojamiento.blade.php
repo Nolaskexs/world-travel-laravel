@@ -9,26 +9,25 @@
     </x-slot:recursos>
 
     @php
+        $img = $alojamiento->imagen_tarjeta ?: $alojamiento->imagen ?: 'icons/hotel1.jpg';
+        $imgHotel = str_starts_with($img, 'http') ? $img : asset(ltrim($img, '/'));
+
         $hotel = [
             'codigo' => $alojamiento->codigo,
             'nombre' => $alojamiento->nombre,
             'tipo' => $alojamiento->tipo,
             'ubicacion' => $alojamiento->ubicacion,
-            'precio' => $alojamiento->precio,
-            'precio_anterior' => $alojamiento->precio_anterior,
-            'moneda_simbolo' => $alojamiento->moneda_simbolo,
+            'precio' => (float) $alojamiento->precio,
+            'precio_anterior' => (float) $alojamiento->precio_anterior,
+            'moneda_simbolo' => $alojamiento->moneda_simbolo ?? 'US$',
             'puntuacion' => $alojamiento->puntuacion,
             'estrellas' => $alojamiento->estrellas,
             'habitacion' => $alojamiento->habitacion,
             'estadia' => $alojamiento->categoria,
-            'imagen' => $alojamiento->imagen,
+            'imagen' => $imgHotel,
             'descripcion' => $alojamiento->descripcion,
-            'servicios' => $alojamiento->servicios ?? [],
+            'servicios' => is_array($alojamiento->servicios) ? $alojamiento->servicios : [],
         ];
-
-        $imgHotel = str_starts_with($hotel['imagen'], 'http')
-            ? $hotel['imagen']
-            : asset($hotel['imagen']);
     @endphp
 <div class="detalle-alojamiento">
         <div class="detalle-contenedor">
@@ -47,7 +46,8 @@
 
                 <img class="detalle-imagen"
                      src="{{ $imgHotel }}"
-                     alt="{{ $hotel['nombre'] }}">
+                     alt="{{ $hotel['nombre'] }}"
+                     onerror="this.onerror=null; this.src='{{ asset('icons/hotel1.jpg') }}';">
 
                 <div class="detalle-columnas">
                     

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Destino;
 use App\Models\Paquete;
 use App\Models\Reserva;
+use App\Models\ReservaPasajero;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +15,9 @@ class EndToEndReservaFlowTest extends TestCase
     use RefreshDatabase;
 
     protected Paquete $paquete;
+
     protected User $cliente;
+
     protected User $admin;
 
     protected function setUp(): void
@@ -175,7 +178,7 @@ class EndToEndReservaFlowTest extends TestCase
         $response->assertStatus(200);
 
         // Verifica que el admin vea la reserva en la tabla de Últimas Reservas
-        $response->assertSee('#' . $reserva->id);
+        $response->assertSee('#'.$reserva->id);
         $response->assertSee('Carlos Viajero');
         $response->assertSee('carlos@example.com');
         $response->assertSee('Descubre Tokio y Kioto');
@@ -226,14 +229,14 @@ class EndToEndReservaFlowTest extends TestCase
             'estado' => 'confirmada',
         ]);
 
-        \App\Models\ReservaPasajero::create([
+        ReservaPasajero::create([
             'reserva_id' => $reserva->id,
             'nombre' => 'Carlos Titular',
             'documento' => '78945612',
             'asiento' => '18A',
         ]);
 
-        \App\Models\ReservaPasajero::create([
+        ReservaPasajero::create([
             'reserva_id' => $reserva->id,
             'nombre' => 'Acompañante Dos',
             'documento' => '87654321',
@@ -272,7 +275,7 @@ class EndToEndReservaFlowTest extends TestCase
         $reserva = Reserva::where('user_id', $this->cliente->id)->latest('id')->first();
         $this->assertNotNull($reserva);
 
-        $pasajeros = \App\Models\ReservaPasajero::where('reserva_id', $reserva->id)->get();
+        $pasajeros = ReservaPasajero::where('reserva_id', $reserva->id)->get();
         $this->assertCount(2, $pasajeros);
 
         // Cada pasajero debe tener un asiento real asignado automáticamente (no nulo ni vacío)

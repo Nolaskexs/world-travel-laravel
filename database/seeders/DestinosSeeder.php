@@ -40,6 +40,7 @@ class DestinosSeeder extends Seeder
             ['nombre' => 'El Cairo', 'codigo_iata' => 'CAI', 'aeropuerto' => 'Aeropuerto Internacional de El Cairo', 'pais' => 'Egipto', 'descripcion' => 'Las legendarias pirámides de Guiza, la Esfinge y el río Nilo.', 'imagen' => 'elcairo.jpg'],
             ['nombre' => 'Marrakech', 'codigo_iata' => 'RAK', 'aeropuerto' => 'Aeropuerto de Marrakech-Menara', 'pais' => 'Marruecos', 'descripcion' => 'Zocos llenos de color, palacios históricos y la plaza Jemaa el-Fna.', 'imagen' => 'marrakech.jpg'],
             ['nombre' => 'Sídney', 'codigo_iata' => 'SYD', 'aeropuerto' => 'Aeropuerto Internacional Kingsford Smith', 'pais' => 'Australia', 'descripcion' => 'La mundialmente famosa Ópera de Sídney y playas como Bondi Beach.', 'imagen' => 'sidney.jpg'],
+            ['nombre' => 'India', 'codigo_iata' => 'DEL', 'aeropuerto' => 'Aeropuerto Internacional Indira Gandhi', 'pais' => 'India', 'descripcion' => 'Cultura milenaria, templos sagrados y la majestuosidad del Taj Mahal.', 'imagen' => 'india.jpg'],
         ];
 
         // 2. Registrar o actualizar los destinos

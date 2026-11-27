@@ -78,7 +78,7 @@ class ReclamacionTest extends TestCase
         $responseIndex->assertSee('REC-2026-9999');
         $responseIndex->assertSee('Pedro Castillo');
 
-        $responseShow = $this->actingAs($admin)->get('/admin/reclamaciones/' . $rec->id);
+        $responseShow = $this->actingAs($admin)->get('/admin/reclamaciones/'.$rec->id);
         $responseShow->assertStatus(200);
         $responseShow->assertSee('REC-2026-9999');
         $responseShow->assertSee('Detalle de prueba para reclamo.');
@@ -106,12 +106,12 @@ class ReclamacionTest extends TestCase
             'estado' => 'pendiente',
         ]);
 
-        $response = $this->actingAs($admin)->put('/admin/reclamaciones/' . $rec->id, [
+        $response = $this->actingAs($admin)->put('/admin/reclamaciones/'.$rec->id, [
             'estado' => 'atendido',
             'respuesta' => 'Estimada Lucía, hemos tomado las medidas correctivas con el personal correspondiente.',
         ]);
 
-        $response->assertRedirect('/admin/reclamaciones/' . $rec->id);
+        $response->assertRedirect('/admin/reclamaciones/'.$rec->id);
 
         $this->assertDatabaseHas('reclamaciones', [
             'id' => $rec->id,

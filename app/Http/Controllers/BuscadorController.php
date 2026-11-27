@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Destino;
 use App\Models\Vuelo;
-use App\Models\VueloEscala;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use Carbon\Carbon;
 
 class BuscadorController extends Controller
 {
@@ -95,19 +94,20 @@ class BuscadorController extends Controller
                     ->orderBy('nombre')
                     ->get();
 
-                if (!empty($origin) && strtolower($origin) !== 'origen') {
+                if (! empty($origin) && strtolower($origin) !== 'origen') {
                     $origenDestino = Destino::where('nombre', 'like', "%{$origin}%")
                         ->orWhere('codigo_iata', 'like', "%{$origin}%")
                         ->first();
                 }
 
-                if (!empty($destination) && strtolower($destination) !== 'destino') {
+                if (! empty($destination) && strtolower($destination) !== 'destino') {
                     $destinoDestino = Destino::where('nombre', 'like', "%{$destination}%")
                         ->orWhere('codigo_iata', 'like', "%{$destination}%")
                         ->first();
                 }
             }
-        } catch (\Throwable $e) {}
+        } catch (\Throwable $e) {
+        }
 
         // Resolver IATA y nombres formales de origen y destino
         $keyOrig = strtolower($origin);
@@ -136,7 +136,8 @@ class BuscadorController extends Controller
 
                 $vuelosBd = $q->orderBy('precio_final', 'asc')->get();
             }
-        } catch (\Throwable $e) {}
+        } catch (\Throwable $e) {
+        }
 
         // Si la búsqueda está incompleta (sin origen y/o sin destino), no generar vuelos ficticios
         if ($busquedaIncompleta) {
@@ -212,7 +213,7 @@ class BuscadorController extends Controller
 
         // Formato para JavaScript (CITIES)
         $destinosData = $destinos->isNotEmpty()
-            ? $destinos->map(fn($d) => [$d->nombre, $d->codigo_iata ?: strtoupper(substr($d->nombre, 0, 3)), $d->pais, $d->aeropuerto ?: $d->nombre])
+            ? $destinos->map(fn ($d) => [$d->nombre, $d->codigo_iata ?: strtoupper(substr($d->nombre, 0, 3)), $d->pais, $d->aeropuerto ?: $d->nombre])
             : collect();
 
         $searchParams = [
@@ -640,7 +641,7 @@ class BuscadorController extends Controller
             $llegada = $salida->copy()->addMinutes($p['duracion']);
             $horas = intdiv($p['duracion'], 60);
             $minutos = $p['duracion'] % 60;
-            $duracionFormateada = "{$horas}h " . str_pad((string) $minutos, 2, '0', STR_PAD_LEFT) . "m";
+            $duracionFormateada = "{$horas}h ".str_pad((string) $minutos, 2, '0', STR_PAD_LEFT).'m';
 
             $escalasList = [];
             if ($p['escalas'] > 0 && isset($p['escala_ciudad'])) {
@@ -664,7 +665,7 @@ class BuscadorController extends Controller
                     ],
                     [
                         'orden' => 2,
-                        'numero_vuelo' => substr($p['codigo'], 0, 3) . rand(100, 999),
+                        'numero_vuelo' => substr($p['codigo'], 0, 3).rand(100, 999),
                         'aerolinea_operadora' => $p['aerolinea'],
                         'origen' => $p['escala_ciudad'],
                         'origen_iata' => $p['escala_iata'],
@@ -692,7 +693,7 @@ class BuscadorController extends Controller
                         'duracion_tramo_minutos' => $p['duracion'],
                         'tiempo_espera_minutos' => null,
                         'cambio_avion' => false,
-                    ]
+                    ],
                 ];
             }
 
