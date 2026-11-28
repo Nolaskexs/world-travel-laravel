@@ -1,4 +1,3 @@
-
 @extends('admin')
 
 @section('title', 'Gestión de reservas')
@@ -25,14 +24,13 @@
 
     .reservas-header p {
         color: var(--slate, #64748b);
+        margin: 0;
+        line-height: 1.6;
     }
 
     .reservas-stats {
         display: grid;
-        grid-template-columns: repeat(
-            4,
-            minmax(0, 1fr)
-        );
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 16px;
         margin-bottom: 25px;
     }
@@ -42,6 +40,7 @@
         border: 1px solid #dae5ec;
         border-radius: 13px;
         padding: 22px;
+        box-shadow: 0 4px 15px rgba(20, 50, 75, .03);
     }
 
     .reservas-stat span {
@@ -56,175 +55,118 @@
         font-weight: 800;
     }
 
-    .reservas-panel {
+    .reservas-services-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 16px;
+    }
+
+    .reservas-services {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .reservas-service-card {
         background: var(--surface, white);
         border: 1px solid #dae5ec;
         border-radius: 15px;
-        overflow: hidden;
+        padding: 24px;
+        box-shadow: 0 8px 30px rgba(20, 50, 75, .05);
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
 
-    .reservas-toolbar {
-        padding: 22px;
+    .reservas-service-card:hover {
+        transform: translateY(-2px);
+        border-color: #9dc7df;
+        box-shadow: 0 12px 34px rgba(20, 50, 75, .09);
+    }
+
+    .reservas-service-card__top {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        flex-wrap: wrap;
-        gap: 15px;
+        gap: 14px;
+        margin-bottom: 14px;
     }
 
-    .reservas-toolbar h2 {
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .reservas-search {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 9px;
-    }
-
-    .reservas-search input,
-    .reservas-search select {
-        padding: 11px 13px;
-        border: 1px solid #cbd8e0;
-        border-radius: 8px;
-        background: var(--surface, white);
-        color: var(--ink, #16354a);
-        font: inherit;
-    }
-
-    .reservas-search input {
-        min-width: 220px;
-    }
-
-    .reservas-btn {
-        background: #106d9f;
-        color: #fff;
-        padding: 11px 17px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .reservas-btn:hover {
-        background: #095478;
-    }
-
-    .reservas-clear {
-        align-self: center;
-        color: #1377ae;
-        text-decoration: none;
-    }
-
-    .reservas-scroll {
-        overflow-x: auto;
-    }
-
-    .reservas-table {
-        width: 100%;
-        min-width: 850px;
-        border-collapse: collapse;
-    }
-
-    .reservas-table th {
-        background: rgba(128,155,172,.09);
-        padding: 15px;
-        color: var(--slate, #64748b);
-        text-align: left;
-        text-transform: uppercase;
-        font-size: 11px;
-    }
-
-    .reservas-table td {
-        padding: 17px 15px;
-        border-top: 1px solid #e6edf2;
-        font-size: 13px;
-    }
-
-    .reservas-name {
-        font-weight: 700;
-    }
-
-    .reservas-sub {
-        color: var(--slate, #64748b);
-        font-size: 12px;
-        margin-top: 5px;
-    }
-
-    .reservas-price {
-        font-weight: 800;
-        white-space: nowrap;
-    }
-
-    .reservas-badge {
-        display: inline-block;
-        padding: 7px 11px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: capitalize;
-    }
-
-    .reservas-badge--pendiente {
-        background: #fff2d8;
-        color: #976300;
-    }
-
-    .reservas-badge--confirmada {
-        background: #e4f7ed;
-        color: #177344;
-    }
-
-    .reservas-badge--cancelada {
-        background: #fde9e8;
-        color: #b42318;
-    }
-
-    .reservas-link {
-        color: #1377ae;
-        font-weight: 700;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-
-    .reservas-link:hover {
-        text-decoration: underline;
-    }
-
-    .reservas-empty {
-        text-align: center;
-        padding: 45px 20px;
-        color: var(--slate, #64748b);
-    }
-
-    .reservas-pagination {
-        display: flex;
+    .reservas-service-card__icon {
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 18px;
-        padding: 22px;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: #e0f2fe;
+        color: #0369a1;
+        flex-shrink: 0;
     }
 
-    .reservas-pagination a {
-        color: #1377ae;
+    .reservas-service-card h3 {
+        font-size: 18px;
         font-weight: 700;
+        margin: 0;
+    }
+
+    .reservas-service-card p {
+        color: var(--slate, #64748b);
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0 0 18px;
+    }
+
+    .reservas-service-card__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .reservas-service-card__count {
+        font-size: 13px;
+        font-weight: 700;
+        color: #475569;
+    }
+
+    .reservas-service-card__count strong {
+        color: #106d9f;
+        font-size: 20px;
+        margin-right: 4px;
+    }
+
+    .reservas-service-card__link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #106d9f;
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
         text-decoration: none;
+        transition: background .2s ease;
+    }
+
+    .reservas-service-card__link:hover {
+        background: #084e74;
     }
 
     @media (max-width: 850px) {
-        .reservas-stats {
+        .reservas-stats,
+        .reservas-services {
             grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    @media (max-width: 450px) {
-        .reservas-stats {
-            grid-template-columns: 1fr;
+    @media (max-width: 560px) {
+        .reservas-page {
+            padding: 25px 15px 50px;
         }
 
-        .reservas-search input {
-            min-width: 100%;
+        .reservas-stats,
+        .reservas-services {
+            grid-template-columns: 1fr;
         }
     }
 </style>
@@ -234,21 +176,15 @@
 
 <main class="reservas-page">
 
-    <!-- CABECERA -->
     <header class="reservas-header">
-
         <h1>Gestión de reservas</h1>
-
         <p>
-            Consulta y administra las reservas
-            realizadas en World Travel.
+            Consulta las reservas por servicio: vuelos, alojamientos,
+            paquetes turísticos y ofertas.
         </p>
-
     </header>
 
-    <!-- ESTADÍSTICAS -->
-    <section class="reservas-stats">
-
+    <section class="reservas-stats" aria-label="Resumen general de reservas">
         <article class="reservas-stat">
             <span>Total de reservas</span>
             <strong>{{ $totalReservas }}</strong>
@@ -268,215 +204,40 @@
             <span>Canceladas</span>
             <strong>{{ $canceladas }}</strong>
         </article>
-
     </section>
 
-    <!-- LISTADO -->
-    <section class="reservas-panel">
+    <h2 class="reservas-services-title">Selecciona una subsección</h2>
 
-        <div class="reservas-toolbar">
+    <section class="reservas-services">
 
-            <h2>Lista de reservas</h2>
+        @foreach ($servicios as $clave => $servicio)
+            <article class="reservas-service-card">
+                <div class="reservas-service-card__top">
+                    <span class="reservas-service-card__icon">
+                        <svg class="i" aria-hidden="true">
+                            <use href="#i-{{ $servicio['icono'] ?? 'cal-check' }}"/>
+                        </svg>
+                    </span>
+                    <h3>Reservas de {{ $servicio['plural'] }}</h3>
+                </div>
 
-            <!-- FILTROS -->
-            <form
-                class="reservas-search"
-                method="GET"
-                action="{{ route('admin.reservas.index') }}"
-            >
+                <p>{{ $servicio['descripcion'] }}</p>
 
-                <input
-                    type="search"
-                    name="q"
-                    value="{{ $busqueda }}"
-                    placeholder="Cliente, correo, paquete o ID"
-                    aria-label="Buscar reservas"
-                >
+                <div class="reservas-service-card__footer">
+                    <span class="reservas-service-card__count">
+                        <strong>{{ $servicio['total'] }}</strong>
+                        {{ $servicio['total'] === 1 ? 'reserva' : 'reservas' }}
+                    </span>
 
-                <select
-                    name="estado"
-                    aria-label="Filtrar por estado"
-                >
-
-                    <option value="">
-                        Todos los estados
-                    </option>
-
-                    <option
-                        value="pendiente"
-                        @selected($estado === 'pendiente')
+                    <a
+                        class="reservas-service-card__link"
+                        href="{{ $servicio['ruta'] }}"
                     >
-                        Pendientes
-                    </option>
-
-                    <option
-                        value="confirmada"
-                        @selected($estado === 'confirmada')
-                    >
-                        Confirmadas
-                    </option>
-
-                    <option
-                        value="cancelada"
-                        @selected($estado === 'cancelada')
-                    >
-                        Canceladas
-                    </option>
-
-                </select>
-
-                <button
-                    class="reservas-btn"
-                    type="submit"
-                >
-                    Buscar
-                </button>
-
-                <a
-                    class="reservas-clear"
-                    href="{{ route('admin.reservas.index') }}"
-                >
-                    Limpiar
-                </a>
-
-            </form>
-
-        </div>
-
-        <div class="reservas-scroll">
-
-            <table class="reservas-table">
-
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Paquete</th>
-                        <th>Fecha de viaje</th>
-                        <th>Pasajeros</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    @forelse ($reservas as $reserva)
-
-                        <tr>
-
-                            <td>
-                                {{ $reserva->id }}
-                            </td>
-
-                            <td>
-
-                                <div class="reservas-name">
-                                    {{ $reserva->cliente_nombre }}
-                                </div>
-
-                                <div class="reservas-sub">
-                                    {{ $reserva->cliente_email }}
-                                </div>
-
-                            </td>
-
-                            <td>
-                                {{ $reserva->paquete_titulo }}
-                            </td>
-
-                            <td>
-                                {{ \Illuminate\Support\Carbon::parse($reserva->fecha_viaje)->format('d/m/Y') }}
-                            </td>
-
-                            <td>
-                                <div>{{ $reserva->num_pasajeros }} {{ $reserva->num_pasajeros == 1 ? 'persona' : 'personas' }}</div>
-                                @if(!empty($reserva->asientos_texto))
-                                    <small style="display: block; color: #0284c7; font-weight: 600; font-size: 11px; margin-top: 3px;">
-                                        Asientos: {{ $reserva->asientos_texto }}
-                                    </small>
-                                @endif
-                            </td>
-
-                            <td class="reservas-price">
-                                <div>US$ {{ number_format((float) $reserva->total, 2) }}</div>
-                                <small style="display: block; font-size: 11px; color: #64748b; font-weight: 500;">aprox. S/ {{ number_format((float) $reserva->total * 3.51, 2) }}</small>
-                            </td>
-
-                            <td>
-
-                                <span class="reservas-badge reservas-badge--{{ $reserva->estado }}">
-                                    {{ ucfirst($reserva->estado) }}
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <a
-                                    class="reservas-link"
-                                    href="{{ route('admin.reservas.show', $reserva->id) }}"
-                                >
-                                    Ver detalles
-                                </a>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-                            <td colspan="8">
-
-                                <div class="reservas-empty">
-
-                                    @if ($busqueda !== '' || $estado !== '')
-                                        No se encontraron reservas
-                                        con los filtros seleccionados.
-                                    @else
-                                        Todavía no existen reservas registradas.
-                                    @endif
-
-                                </div>
-
-                            </td>
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <!-- PAGINACIÓN -->
-        @if ($reservas->hasPages())
-
-            <nav class="reservas-pagination">
-
-                @if ($reservas->previousPageUrl())
-                    <a href="{{ $reservas->previousPageUrl() }}">
-                        Anterior
+                        Ver reservas
                     </a>
-                @endif
-
-                <span>
-                    Página {{ $reservas->currentPage() }}
-                    de {{ $reservas->lastPage() }}
-                </span>
-
-                @if ($reservas->nextPageUrl())
-                    <a href="{{ $reservas->nextPageUrl() }}">
-                        Siguiente
-                    </a>
-                @endif
-
-            </nav>
-
-        @endif
+                </div>
+            </article>
+        @endforeach
 
     </section>
 

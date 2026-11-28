@@ -26,6 +26,17 @@
         color: var(--slate, #64748b);
     }
 
+    .res-detail__service {
+        display: inline-block;
+        margin: 0 0 12px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: #e0f2fe;
+        color: #0369a1;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
     .res-detail__grid {
         display: grid;
         grid-template-columns: 1.4fr 1fr;
@@ -155,6 +166,10 @@
 
         <h1>Reserva {{ $reserva->id }}</h1>
 
+        <span class="res-detail__service">
+            Servicio: {{ $servicioInfo['singular'] }}
+        </span>
+
         <p>
             Consulta los datos y administra el estado
             de esta reserva.
@@ -196,7 +211,7 @@
                 </div>
 
                 <div class="res-detail__field">
-                    <span>Paquete turístico</span>
+                    <span>Servicio reservado</span>
                     <strong>{{ $reserva->paquete_titulo }}</strong>
                 </div>
 

@@ -298,11 +298,32 @@ Route::middleware(['auth', 'can:administrar'])
     ->name('admin.')
     ->group(function () {
 
-        // RESERVAS: Mostrar listado, búsqueda y filtros.
+        // RESERVAS: Resumen general con acceso a las cuatro subsecciones.
         Route::get(
             '/reservas',
             [ReservaController::class, 'index']
         )->name('reservas.index');
+
+        // RESERVAS: Subsecciones independientes por tipo_servicio.
+        Route::get(
+            '/reservas/vuelos',
+            [ReservaController::class, 'vuelos']
+        )->name('reservas.vuelos');
+
+        Route::get(
+            '/reservas/alojamientos',
+            [ReservaController::class, 'alojamientos']
+        )->name('reservas.alojamientos');
+
+        Route::get(
+            '/reservas/paquetes',
+            [ReservaController::class, 'paquetes']
+        )->name('reservas.paquetes');
+
+        Route::get(
+            '/reservas/ofertas',
+            [ReservaController::class, 'ofertas']
+        )->name('reservas.ofertas');
 
         // RESERVAS: Mostrar detalles de una reserva.
         Route::get(

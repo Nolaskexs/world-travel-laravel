@@ -15,13 +15,59 @@ use Illuminate\View\View;
 
 class PaqueteController extends Controller
 {
-    // READ: Mostrar todos los paquetes
-    public function index(): View
+    /**
+     * Listar, buscar y filtrar los paquetes turísticos.
+     */
+    public function index(Request $request): View
     {
-        $paquetes = Paquete::orderByDesc('created_at')
-            ->paginate(10);
+        $busqueda = trim((string) $request->query('q', ''));
+        $estado = (string) $request->query('estado', '');
+        $destacado = (string) $request->query('destacado', '');
 
-        return view('admin.paquetes.index', compact('paquetes'));
+        $consulta = Paquete::query();
+
+        if ($busqueda !== '') {
+            $consulta->where(function ($query) use ($busqueda) {
+                $query->where('titulo', 'like', "%{$busqueda}%")
+                    ->orWhere('destino', 'like', "%{$busqueda}%")
+                    ->orWhere('pais', 'like', "%{$busqueda}%")
+                    ->orWhere('continente', 'like', "%{$busqueda}%")
+                    ->orWhere('descripcion', 'like', "%{$busqueda}%");
+            });
+        }
+
+        if ($estado === 'activo') {
+            $consulta->where('activo', true);
+        } elseif ($estado === 'inactivo') {
+            $consulta->where('activo', false);
+        }
+
+        if (in_array($destacado, ['1', 'si', 'true', 'destacado'], true)) {
+            $consulta->where('destacado', true);
+        } elseif (in_array($destacado, ['0', 'no', 'false', 'no_destacado'], true)) {
+            $consulta->where('destacado', false);
+        }
+
+        $paquetes = $consulta->latest('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        // Estadísticas calculadas sobre todos los registros reales de la BD.
+        $totalPaquetes = Paquete::count();
+        $paquetesActivos = Paquete::where('activo', true)->count();
+        $paquetesInactivos = Paquete::where('activo', false)->count();
+        $paquetesDestacados = Paquete::where('destacado', true)->count();
+
+        return view('admin.paquetes.index', compact(
+            'paquetes',
+            'busqueda',
+            'estado',
+            'destacado',
+            'totalPaquetes',
+            'paquetesActivos',
+            'paquetesInactivos',
+            'paquetesDestacados'
+        ));
     }
 
     // CREATE: Mostrar el formulario

@@ -44,6 +44,11 @@
         font-size: 13px;
         margin-top: 4px;
     }
+    .wt-help {
+        color: #64798a;
+        font-size: 12px;
+        margin-top: 5px;
+    }
     .wt-btn-primary {
         background: #106d9f;
         color: #fff;
@@ -93,6 +98,38 @@
                 <label class="wt-form-label" for="pais">País *</label>
                 <input class="wt-input" type="text" id="pais" name="pais" value="{{ old('pais') }}" placeholder="Ej: Perú, México, Italia" required>
                 @error('pais')
+                    <p class="wt-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="wt-form-group">
+                <label class="wt-form-label" for="codigo_iata">Código IATA del aeropuerto</label>
+                <input
+                    class="wt-input"
+                    type="text"
+                    id="codigo_iata"
+                    name="codigo_iata"
+                    value="{{ old('codigo_iata') }}"
+                    placeholder="Ej: LIM, CUZ, AQP"
+                    maxlength="3"
+                >
+                <p class="wt-help">Se usa para localizar el destino en el buscador de vuelos.</p>
+                @error('codigo_iata')
+                    <p class="wt-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="wt-form-group">
+                <label class="wt-form-label" for="aeropuerto">Aeropuerto</label>
+                <input
+                    class="wt-input"
+                    type="text"
+                    id="aeropuerto"
+                    name="aeropuerto"
+                    value="{{ old('aeropuerto') }}"
+                    placeholder="Ej: Aeropuerto Internacional Jorge Chávez"
+                >
+                @error('aeropuerto')
                     <p class="wt-error">{{ $message }}</p>
                 @enderror
             </div>

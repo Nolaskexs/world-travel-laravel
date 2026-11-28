@@ -61,6 +61,104 @@
         background: #084e74;
     }
 
+    /* TARJETAS DE RESUMEN */
+    .paquete-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .paquete-stat {
+        background: #fff;
+        border: 1px solid #e0e9ef;
+        border-radius: 12px;
+        padding: 16px 20px;
+        box-shadow: 0 4px 15px rgba(20, 50, 75, .03);
+    }
+
+    .paquete-stat__label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #64798a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .paquete-stat__value {
+        font-size: 26px;
+        font-weight: 800;
+        color: #102331;
+        margin-top: 4px;
+    }
+
+    /* BUSCADOR Y FILTROS */
+    .paquete-filter-card {
+        background: #fff;
+        border: 1px solid #e0e9ef;
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(20, 50, 75, .03);
+    }
+
+    .paquete-filter-form {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: flex-end;
+    }
+
+    .paquete-filter-group {
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .paquete-filter-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #475569;
+    }
+
+    .paquete-input,
+    .paquete-select {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #cfdce5;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .paquete-btn-filter {
+        background: #106d9f;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background .2s ease;
+    }
+
+    .paquete-btn-filter:hover {
+        background: #084e74;
+    }
+
+    .paquete-btn-clean {
+        background: transparent;
+        color: #64798a;
+        border: 1px solid #cfdce5;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
     /* TARJETA DE TABLA */
     .wt-admin__card {
         background: var(--surface, #ffffff);
@@ -301,6 +399,101 @@
 
     @endif
 
+    <!-- TARJETAS DE RESUMEN -->
+    <section class="paquete-stats" aria-label="Resumen de paquetes turísticos">
+
+        <div class="paquete-stat">
+            <div class="paquete-stat__label">Total paquetes</div>
+            <div class="paquete-stat__value">{{ $totalPaquetes }}</div>
+        </div>
+
+        <div class="paquete-stat">
+            <div class="paquete-stat__label">Activos</div>
+            <div class="paquete-stat__value">{{ $paquetesActivos }}</div>
+        </div>
+
+        <div class="paquete-stat">
+            <div class="paquete-stat__label">Inactivos</div>
+            <div class="paquete-stat__value">{{ $paquetesInactivos }}</div>
+        </div>
+
+        <div class="paquete-stat">
+            <div class="paquete-stat__label">Destacados</div>
+            <div class="paquete-stat__value">{{ $paquetesDestacados }}</div>
+        </div>
+
+    </section>
+
+    <!-- BUSCADOR Y FILTROS -->
+    <section class="paquete-filter-card">
+        <form
+            class="paquete-filter-form"
+            method="GET"
+            action="{{ route('admin.paquetes.index') }}"
+        >
+
+            <div class="paquete-filter-group" style="flex: 2;">
+                <label class="paquete-filter-label" for="q">
+                    Buscar paquete o destino
+                </label>
+                <input
+                    class="paquete-input"
+                    type="search"
+                    id="q"
+                    name="q"
+                    value="{{ $busqueda }}"
+                    placeholder="Título, destino, país o descripción..."
+                >
+            </div>
+
+            <div class="paquete-filter-group">
+                <label class="paquete-filter-label" for="estado">
+                    Estado
+                </label>
+                <select class="paquete-select" id="estado" name="estado">
+                    <option value="">Todos</option>
+                    <option value="activo" @selected($estado === 'activo')>
+                        Activos
+                    </option>
+                    <option value="inactivo" @selected($estado === 'inactivo')>
+                        Inactivos
+                    </option>
+                </select>
+            </div>
+
+            <div class="paquete-filter-group">
+                <label class="paquete-filter-label" for="destacado">
+                    Destacado
+                </label>
+                <select class="paquete-select" id="destacado" name="destacado">
+                    <option value="">Todos</option>
+                    <option value="1" @selected(in_array($destacado, ['1', 'si', 'true', 'destacado'], true))>
+                        Solo destacados
+                    </option>
+                    <option value="0" @selected(in_array($destacado, ['0', 'no', 'false', 'no_destacado'], true))>
+                        Sin destacar
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <button type="submit" class="paquete-btn-filter">
+                    Buscar
+                </button>
+
+                @if ($busqueda !== '' || $estado !== '' || $destacado !== '')
+                    <a
+                        href="{{ route('admin.paquetes.index') }}"
+                        class="paquete-btn-clean"
+                    >
+                        Limpiar
+                    </a>
+                @endif
+            </div>
+
+        </form>
+    </section>
+
     <!-- LISTADO DE PAQUETES -->
     <div class="wt-admin__card">
 
@@ -445,9 +638,13 @@
 
                             <div class="wt-admin__empty">
 
-                                Todavía no hay paquetes registrados.
+                                @if ($busqueda !== '' || $estado !== '' || $destacado !== '')
+                                    No se encontraron paquetes con los filtros seleccionados.
+                                @else
+                                    Todavía no hay paquetes registrados.
 
-                                Utiliza «Nuevo paquete» para empezar.
+                                    Utiliza «Nuevo paquete» para empezar.
+                                @endif
 
                             </div>
 

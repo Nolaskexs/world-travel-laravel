@@ -7,6 +7,7 @@ use App\Models\Destino;
 use App\Models\Paquete;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class DestinoController extends Controller
@@ -57,12 +58,7 @@ class DestinoController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $datos = $request->validate([
-            'nombre' => 'required|string|max:100|unique:destinos,nombre',
-            'pais' => 'required|string|max:100',
-            'descripcion' => 'nullable|string|max:2000',
-            'imagen' => 'nullable|string|max:500',
-        ]);
+        $datos = $this->validarDestino($request);
 
         Destino::create($datos);
 
@@ -84,18 +80,71 @@ class DestinoController extends Controller
      */
     public function update(Request $request, Destino $destino): RedirectResponse
     {
-        $datos = $request->validate([
-            'nombre' => 'required|string|max:100|unique:destinos,nombre,'.$destino->id,
-            'pais' => 'required|string|max:100',
-            'descripcion' => 'nullable|string|max:2000',
-            'imagen' => 'nullable|string|max:500',
-        ]);
+        $datos = $this->validarDestino($request, $destino);
 
         $destino->update($datos);
 
         return redirect()
             ->route('admin.destinos.index')
             ->with('success', 'Destino turístico actualizado correctamente.');
+    }
+
+    /**
+     * Validar todos los campos de la tabla destinos para alta y edición.
+     *
+     * @return array<string, mixed>
+     */
+    private function validarDestino(Request $request, ?Destino $destino = null): array
+    {
+        if ($request->filled('codigo_iata')) {
+            $request->merge([
+                'codigo_iata' => strtoupper(trim((string) $request->input('codigo_iata'))),
+            ]);
+        }
+
+        $nombreUnico = Rule::unique('destinos', 'nombre');
+        $iataUnico = Rule::unique('destinos', 'codigo_iata');
+
+        if ($destino !== null) {
+            $nombreUnico->ignore($destino->id);
+            $iataUnico->ignore($destino->id);
+        }
+
+        return $request->validate([
+            'codigo_iata' => [
+                'nullable',
+                'string',
+                'size:3',
+                'regex:/^[A-Z]{3}$/',
+                $iataUnico,
+            ],
+            'aeropuerto' => [
+                'nullable',
+                'string',
+                'max:120',
+            ],
+            'nombre' => [
+                'required',
+                'string',
+                'max:255',
+                $nombreUnico,
+            ],
+            'pais' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'descripcion' => [
+                'nullable',
+                'string',
+                'max:2000',
+            ],
+            'imagen' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+        ]);
     }
 
     /**
